@@ -1,0 +1,11 @@
+﻿{
+  "Name": "MineForMore",
+  "Author": "Darkmushu",
+  "Version": "1.0.0",
+  "Description": "MineForMore",
+  "UniqueID": "Darkmushu.MineForMore",
+  "EntryDll": "MineForMore.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "Nexus:17380" ]
+
+}

@@ -200,7 +200,7 @@ internal class ObjectPatches : BasePatcher
 
 
     //multiple debris
-    public static void Before_createMultipleObjectDebris1(string id, int xTile, int yTile, int number)
+    public static bool Before_createMultipleObjectDebris1(string id, int xTile, int yTile, int number)
     {
         number = getNumber(id, number);
 
@@ -208,42 +208,47 @@ internal class ObjectPatches : BasePatcher
         {
             Game1.createObjectDebris(id, xTile, yTile);
         }
+        return false;  //adding a return false makes it so original code don't run
     }
 
-    public static void Before_createMultipleObjectDebris2(string id, int xTile, int yTile, int number, GameLocation location)
+    public static bool Before_createMultipleObjectDebris2(string id, int xTile, int yTile, int number, GameLocation location)
     {
         number = getNumber(id, number);
         for (int i = 0; i < number; i++)
         {
             Game1.createObjectDebris(id, xTile, yTile, -1, 0, 1f, location);
         }
+        return false;  //adding a return false makes it so original code don't run
     }
 
-    public static void Before_createMultipleObjectDebris3(string id, int xTile, int yTile, int number, float velocityMultiplier)
+    public static bool Before_createMultipleObjectDebris3(string id, int xTile, int yTile, int number, float velocityMultiplier)
     {
         number = getNumber(id, number);
         for (int i = 0; i < number; i++)
         {
             Game1.createObjectDebris(id, xTile, yTile, -1, 0, velocityMultiplier);
         }
+        return false;  //adding a return false makes it so original code don't run
     }
 
-    public static void Before_createMultipleObjectDebris4(string id, int xTile, int yTile, int number, long who)
+    public static bool Before_createMultipleObjectDebris4(string id, int xTile, int yTile, int number, long who)
     {
         number = getNumber(id, number, who);
         for (int i = 0; i < number; i++)
         {
             Game1.createObjectDebris(id, xTile, yTile, who);
         }
+        return false;  //adding a return false makes it so original code don't run
     }
 
-    public static void Before_createMultipleObjectDebris5(string id, int xTile, int yTile, int number, long who, GameLocation location)
+    public static bool Before_createMultipleObjectDebris5(string id, int xTile, int yTile, int number, long who, GameLocation location)
     {
         number = getNumber(id, number, who);
         for (int i = 0; i < number; i++)
         {
             Game1.createObjectDebris(id, xTile, yTile, who, location);
         }
+        return false;  //adding a return false makes it so original code don't run
     }
 
 
@@ -251,40 +256,42 @@ internal class ObjectPatches : BasePatcher
     public static int getNumber(string id, int number)
     {
 
-        int AddStoneCount = 5;
-        int AddCooperOreCount = 5;
-        int AddGoldOreCount = 5;
-        int AddIronOreCount = 5;
-        int AddIridiumOreCount = 5;
-        int AddRadiactiveOreCount = 5;
-        int AddDiamondCount = 5;
-        int AddAmethystCount = 5;
-        int AddAquamarineCount = 5;
-        int AddEarthCrystalCount = 5;
-        int AddEmeraldCount = 5;
-        int AddFireQuartzCount = 5;
-        int AddFrozenTearCount = 5;
-        int AddQuartzCount = 5;
-        int AddRubyCount = 5;
-        int AddTopazCount = 5;
-        int AddJadeCount = 5;
-        double MultiplyStoneCount = 1.5;
-        double MultiplyCooperOreCount = 1.5;
-        double MultiplyGoldOreCount = 1.5;
-        double MultiplyIronOreCount = 1.5;
-        double MultiplyIridiumOreCount = 1.5;
-        double MultiplyRadiactiveOreCount = 1.5;
-        double MultiplyDiamondCount = 1.5;
-        double MultiplyAmethystCount = 1.5;
-        double MultiplyAquamarineCount = 1.5;
-        double MultiplyEarthCrystalCount = 1.5;
-        double MultiplyEmeraldCount = 1.5;
-        double MultiplyFireQuartzCount = 1.5;
-        double MultiplyFrozenTearCount = 1.5;
-        double MultiplyQuartzCount = 1.5;
-        double MultiplyRubyCount = 1.5;
-        double MultiplyTopazCount = 1.5;
-        double MultiplyJadeCount = 1.5;
+        int AddStone = 0;
+        int AddCoal = 0;
+        int AddCooperOre = 0;
+        int AddGoldOre = 0;
+        int AddIronOre = 0;
+        int AddIridiumOre = 0;
+        int AddRadiactiveOre = 0;
+        int AddDiamond = 0;
+        int AddAmethyst = 0;
+        int AddAquamarine = 0;
+        int AddEarthCrystal = 0;
+        int AddEmerald = 0;
+        int AddFireQuartz = 0;
+        int AddFrozenTear = 0;
+        int AddQuartz = 0;
+        int AddRuby = 0;
+        int AddTopaz = 0;
+        int AddJade = 0;
+        double MultiplyStone = 1.0;
+        double MultiplyCoal = 1.0;
+        double MultiplyCooperOre = 1.0;
+        double MultiplyGoldOre = 1.0;
+        double MultiplyIronOre = 1.0;
+        double MultiplyIridiumOre = 1.0;
+        double MultiplyRadiactiveOre = 1.0;
+        double MultiplyDiamond = 1.0;
+        double MultiplyAmethyst = 1.0;
+        double MultiplyAquamarine = 1.0;
+        double MultiplyEarthCrystal = 1.0;
+        double MultiplyEmerald = 1.0;
+        double MultiplyFireQuartz = 1.0;
+        double MultiplyFrozenTear = 1.0;
+        double MultiplyQuartz = 1.0;
+        double MultiplyRuby = 1.0;
+        double MultiplyTopaz = 1.0;
+        double MultiplyJade = 1.0;
 
         // Get the current directory
         string filePath = Directory.GetCurrentDirectory() + "\\Mods\\MineForMore\\config.json";
@@ -303,46 +310,42 @@ internal class ObjectPatches : BasePatcher
             {
                 //Console.WriteLine($"{((JProperty)item).Name}: {((JProperty)item).Value}");
                 string propertyName = ((JProperty)item).Name.ToString();
-                if (propertyName == "AddStoneCount")
-                {
-                    AddStoneCount = (int)((JProperty)item).Value;
-
-                }
-
-                else if (propertyName == "AddStoneCount") { AddStoneCount = (int)((JProperty)item).Value; }
-                else if (propertyName == "AddCooperOreCount") { AddCooperOreCount = (int)((JProperty)item).Value; }
-                else if (propertyName == "AddGoldOreCount") { AddGoldOreCount = (int)((JProperty)item).Value; }
-                else if (propertyName == "AddIronOreCount") { AddIronOreCount = (int)((JProperty)item).Value; }
-                else if (propertyName == "AddIridiumOreCount") { AddIridiumOreCount = (int)((JProperty)item).Value; }
-                else if (propertyName == "AddRadiactiveOreCount") { AddRadiactiveOreCount = (int)((JProperty)item).Value; }
-                else if (propertyName == "AddDiamondCount") { AddDiamondCount = (int)((JProperty)item).Value; }
-                else if (propertyName == "AddAmethystCount") { AddAmethystCount = (int)((JProperty)item).Value; }
-                else if (propertyName == "AddAquamarineCount") { AddAquamarineCount = (int)((JProperty)item).Value; }
-                else if (propertyName == "AddEarthCrystalCount") { AddEarthCrystalCount = (int)((JProperty)item).Value; }
-                else if (propertyName == "AddEmeraldCount") { AddEmeraldCount = (int)((JProperty)item).Value; }
-                else if (propertyName == "AddFireQuartzCount") { AddFireQuartzCount = (int)((JProperty)item).Value; }
-                else if (propertyName == "AddFrozenTearCount") { AddFrozenTearCount = (int)((JProperty)item).Value; }
-                else if (propertyName == "AddQuartzCount") { AddQuartzCount = (int)((JProperty)item).Value; }
-                else if (propertyName == "AddRubyCount") { AddRubyCount = (int)((JProperty)item).Value; }
-                else if (propertyName == "AddTopazCount") { AddTopazCount = (int)((JProperty)item).Value; }
-                else if (propertyName == "AddJadeCount") { AddJadeCount = (int)((JProperty)item).Value; }
-                else if (propertyName == "MultiplyStoneCount") { MultiplyStoneCount = (int)((JProperty)item).Value; }
-                else if (propertyName == "MultiplyCooperOreCount") { MultiplyCooperOreCount = (int)((JProperty)item).Value; }
-                else if (propertyName == "MultiplyGoldOreCount") { MultiplyGoldOreCount = (int)((JProperty)item).Value; }
-                else if (propertyName == "MultiplyIronOreCount") { MultiplyIronOreCount = (int)((JProperty)item).Value; }
-                else if (propertyName == "MultiplyIridiumOreCount") { MultiplyIridiumOreCount = (int)((JProperty)item).Value; }
-                else if (propertyName == "MultiplyRadiactiveOreCount") { MultiplyRadiactiveOreCount = (int)((JProperty)item).Value; }
-                else if (propertyName == "MultiplyDiamondCount") { MultiplyDiamondCount = (int)((JProperty)item).Value; }
-                else if (propertyName == "MultiplyAmethystCount") { MultiplyAmethystCount = (int)((JProperty)item).Value; }
-                else if (propertyName == "MultiplyAquamarineCount") { MultiplyAquamarineCount = (int)((JProperty)item).Value; }
-                else if (propertyName == "MultiplyEarthCrystalCount") { MultiplyEarthCrystalCount = (int)((JProperty)item).Value; }
-                else if (propertyName == "MultiplyEmeraldCount") { MultiplyEmeraldCount = (int)((JProperty)item).Value; }
-                else if (propertyName == "MultiplyFireQuartzCount") { MultiplyFireQuartzCount = (int)((JProperty)item).Value; }
-                else if (propertyName == "MultiplyFrozenTearCount") { MultiplyFrozenTearCount = (int)((JProperty)item).Value; }
-                else if (propertyName == "MultiplyQuartzCount") { MultiplyQuartzCount = (int)((JProperty)item).Value; }
-                else if (propertyName == "MultiplyRubyCount") { MultiplyRubyCount = (int)((JProperty)item).Value; }
-                else if (propertyName == "MultiplyTopazCount") { MultiplyTopazCount = (int)((JProperty)item).Value; }
-                else if (propertyName == "MultiplyJadeCount") { MultiplyJadeCount = (int)((JProperty)item).Value; }
+                if(propertyName == "AddStone"){AddStone = (int)((JProperty)item).Value;}
+                else if (propertyName == "AddCoal") { AddCoal = (int)((JProperty)item).Value; }
+                else if (propertyName == "AddCooperOre") { AddCooperOre = (int)((JProperty)item).Value; }
+                else if (propertyName == "AddGoldOre") { AddGoldOre = (int)((JProperty)item).Value; }
+                else if (propertyName == "AddIronOre") { AddIronOre = (int)((JProperty)item).Value; }
+                else if (propertyName == "AddIridiumOre") { AddIridiumOre = (int)((JProperty)item).Value; }
+                else if (propertyName == "AddRadiactiveOre") { AddRadiactiveOre = (int)((JProperty)item).Value; }
+                else if (propertyName == "AddDiamond") { AddDiamond = (int)((JProperty)item).Value; }
+                else if (propertyName == "AddAmethyst") { AddAmethyst = (int)((JProperty)item).Value; }
+                else if (propertyName == "AddAquamarine") { AddAquamarine = (int)((JProperty)item).Value; }
+                else if (propertyName == "AddEarthCrystal") { AddEarthCrystal = (int)((JProperty)item).Value; }
+                else if (propertyName == "AddEmerald") { AddEmerald = (int)((JProperty)item).Value; }
+                else if (propertyName == "AddFireQuartz") { AddFireQuartz = (int)((JProperty)item).Value; }
+                else if (propertyName == "AddFrozenTear") { AddFrozenTear = (int)((JProperty)item).Value; }
+                else if (propertyName == "AddQuartz") { AddQuartz = (int)((JProperty)item).Value; }
+                else if (propertyName == "AddRuby") { AddRuby = (int)((JProperty)item).Value; }
+                else if (propertyName == "AddTopaz") { AddTopaz = (int)((JProperty)item).Value; }
+                else if (propertyName == "AddJade") { AddJade = (int)((JProperty)item).Value; }
+                else if (propertyName == "MultiplyStone") { MultiplyStone = (int)((JProperty)item).Value; }
+                else if (propertyName == "MultiplyCoal") { MultiplyCoal = (int)((JProperty)item).Value; }
+                else if (propertyName == "MultiplyCooperOre") { MultiplyCooperOre = (int)((JProperty)item).Value; }
+                else if (propertyName == "MultiplyGoldOre") { MultiplyGoldOre = (int)((JProperty)item).Value; }
+                else if (propertyName == "MultiplyIronOre") { MultiplyIronOre = (int)((JProperty)item).Value; }
+                else if (propertyName == "MultiplyIridiumOre") { MultiplyIridiumOre = (int)((JProperty)item).Value; }
+                else if (propertyName == "MultiplyRadiactiveOre") { MultiplyRadiactiveOre = (int)((JProperty)item).Value; }
+                else if (propertyName == "MultiplyDiamond") { MultiplyDiamond = (int)((JProperty)item).Value; }
+                else if (propertyName == "MultiplyAmethyst") { MultiplyAmethyst = (int)((JProperty)item).Value; }
+                else if (propertyName == "MultiplyAquamarine") { MultiplyAquamarine = (int)((JProperty)item).Value; }
+                else if (propertyName == "MultiplyEarthCrystal") { MultiplyEarthCrystal = (int)((JProperty)item).Value; }
+                else if (propertyName == "MultiplyEmerald") { MultiplyEmerald = (int)((JProperty)item).Value; }
+                else if (propertyName == "MultiplyFireQuartz") { MultiplyFireQuartz = (int)((JProperty)item).Value; }
+                else if (propertyName == "MultiplyFrozenTear") { MultiplyFrozenTear = (int)((JProperty)item).Value; }
+                else if (propertyName == "MultiplyQuartz") { MultiplyQuartz = (int)((JProperty)item).Value; }
+                else if (propertyName == "MultiplyRuby") { MultiplyRuby = (int)((JProperty)item).Value; }
+                else if (propertyName == "MultiplyTopaz") { MultiplyTopaz = (int)((JProperty)item).Value; }
+                else if (propertyName == "MultiplyJade") { MultiplyJade = (int)((JProperty)item).Value; }
 
 
             }
@@ -360,76 +363,72 @@ internal class ObjectPatches : BasePatcher
             Console.WriteLine($"An error occurred: {ex.Message}");
         }
 
-   
 
+        //Console.WriteLine("Item is: " + id + " - Number Count Before adding value is: " + number + " StoneMultiplyValue is: " + MultiplyStone);
         //Adds and Mulitple Number if item is part of one of these items
-        if (id == ("(O)390")) { number = (int)((number + AddStoneCount) * MultiplyStoneCount); }
-        if (id == ("(O)343")) { number = (int)((number + AddStoneCount) * MultiplyStoneCount); }
-        if (id == ("(O)450")) { number = (int)((number + AddStoneCount) * MultiplyStoneCount); }
-        if (id == ("(O)760")) { number = (int)((number + AddStoneCount) * MultiplyStoneCount); }
-        if (id == ("(O)762")) { number = (int)((number + AddStoneCount) * MultiplyStoneCount); }
-        if (id == ("(O)845")) { number = (int)((number + AddStoneCount) * MultiplyStoneCount); }
-        if (id == ("(O)846")) { number = (int)((number + AddStoneCount) * MultiplyStoneCount); }
-        if (id == ("(O)847")) { number = (int)((number + AddStoneCount) * MultiplyStoneCount); }
-        if (id == ("(O)378")) { number = (int)((number + AddCooperOreCount) * MultiplyCooperOreCount); }
-        if (id == ("(O)384")) { number = (int)((number + AddGoldOreCount) * MultiplyGoldOreCount); }
-        if (id == ("(O)380")) { number = (int)((number + AddIronOreCount) * MultiplyIronOreCount); }
-        if (id == ("(O)386")) { number = (int)((number + AddIridiumOreCount) * MultiplyIridiumOreCount); }
-        if (id == ("(O)909")) { number = (int)((number + AddRadiactiveOreCount) * MultiplyRadiactiveOreCount); }
-        if (id == ("(O)72")) { number = (int)((number + AddDiamondCount) * MultiplyDiamondCount); }
-        if (id == ("(O)66")) { number = (int)((number + AddAmethystCount) * MultiplyAmethystCount); }
-        if (id == ("(O)62")) { number = (int)((number + AddAquamarineCount) * MultiplyAquamarineCount); }
-        if (id == ("(O)86")) { number = (int)((number + AddEarthCrystalCount) * MultiplyEarthCrystalCount); }
-        if (id == ("(O)60")) { number = (int)((number + AddEmeraldCount) * MultiplyEmeraldCount); }
-        if (id == ("(O)82")) { number = (int)((number + AddFireQuartzCount) * MultiplyFireQuartzCount); }
-        if (id == ("(O)84")) { number = (int)((number + AddFrozenTearCount) * MultiplyFrozenTearCount); }
-        if (id == ("(O)80")) { number = (int)((number + AddQuartzCount) * MultiplyQuartzCount); }
-        if (id == ("(O)64")) { number = (int)((number + AddRubyCount) * MultiplyRubyCount); }
-        if (id == ("(O)68")) { number = (int)((number + AddTopazCount) * MultiplyTopazCount); }
-        if (id == ("(O)70")) { number = (int)((number + AddJadeCount) * MultiplyJadeCount); }
+        if (id == ("(O)390")) { number = (int)((number + AddStone) * MultiplyStone); }
+        else if (id == ("(O)382")) { number = (int)((number + AddCoal) * MultiplyCoal); }
+        else if (id == ("(O)378")) { number = (int)((number + AddCooperOre) * MultiplyCooperOre); }
+        else if (id == ("(O)384")) { number = (int)((number + AddGoldOre) * MultiplyGoldOre); }
+        else if (id == ("(O)380")) { number = (int)((number + AddIronOre) * MultiplyIronOre); }
+        else if (id == ("(O)386")) { number = (int)((number + AddIridiumOre) * MultiplyIridiumOre); }
+        else if (id == ("(O)909")) { number = (int)((number + AddRadiactiveOre) * MultiplyRadiactiveOre); }
+        else if (id == ("(O)72")) { number = (int)((number + AddDiamond) * MultiplyDiamond); }
+        else if (id == ("(O)66")) { number = (int)((number + AddAmethyst) * MultiplyAmethyst); }
+        else if (id == ("(O)62")) { number = (int)((number + AddAquamarine) * MultiplyAquamarine); }
+        else if (id == ("(O)86")) { number = (int)((number + AddEarthCrystal) * MultiplyEarthCrystal); }
+        else if (id == ("(O)60")) { number = (int)((number + AddEmerald) * MultiplyEmerald); }
+        else if (id == ("(O)82")) { number = (int)((number + AddFireQuartz) * MultiplyFireQuartz); }
+        else if (id == ("(O)84")) { number = (int)((number + AddFrozenTear) * MultiplyFrozenTear); }
+        else if (id == ("(O)80")) { number = (int)((number + AddQuartz) * MultiplyQuartz); }
+        else if (id == ("(O)64")) { number = (int)((number + AddRuby) * MultiplyRuby); }
+        else if (id == ("(O)68")) { number = (int)((number + AddTopaz) * MultiplyTopaz); }
+        else if (id == ("(O)70")) { number = (int)((number + AddJade) * MultiplyJade); }
 
-
+        //Console.WriteLine("Item is: " + id + " - Number Count after addding/multiplying value is: " + number);
         return number;
     }
 
     //Added a 2nd method to add double Add due to professional to get gets double ores
     public static int getNumber(string id, int number, long who)
     {
-        int BonusOresWithMinerProfession = 1;
-        int AddStoneCount = 5;
-        int AddCooperOreCount = 5;
-        int AddGoldOreCount = 5;
-        int AddIronOreCount = 5;
-        int AddIridiumOreCount = 5;
-        int AddRadiactiveOreCount = 5;
-        int AddDiamondCount = 5;
-        int AddAmethystCount = 5;
-        int AddAquamarineCount = 5;
-        int AddEarthCrystalCount = 5;
-        int AddEmeraldCount = 5;
-        int AddFireQuartzCount = 5;
-        int AddFrozenTearCount = 5;
-        int AddQuartzCount = 5;
-        int AddRubyCount = 5;
-        int AddTopazCount = 5;
-        int AddJadeCount = 5;
-        double MultiplyStoneCount = 1.5;
-        double MultiplyCooperOreCount = 1.5;
-        double MultiplyGoldOreCount = 1.5;
-        double MultiplyIronOreCount = 1.5;
-        double MultiplyIridiumOreCount = 1.5;
-        double MultiplyRadiactiveOreCount = 1.5;
-        double MultiplyDiamondCount = 1.5;
-        double MultiplyAmethystCount = 1.5;
-        double MultiplyAquamarineCount = 1.5;
-        double MultiplyEarthCrystalCount = 1.5;
-        double MultiplyEmeraldCount = 1.5;
-        double MultiplyFireQuartzCount = 1.5;
-        double MultiplyFrozenTearCount = 1.5;
-        double MultiplyQuartzCount = 1.5;
-        double MultiplyRubyCount = 1.5;
-        double MultiplyTopazCount = 1.5;
-        double MultiplyJadeCount = 1.5;
+        int BonusOresWithMinerProfession = 0;
+        int AddStone = 0;
+        int AddCoal = 0;
+        int AddCooperOre = 0;
+        int AddGoldOre = 0;
+        int AddIronOre = 0;
+        int AddIridiumOre = 0;
+        int AddRadiactiveOre = 0;
+        int AddDiamond = 0;
+        int AddAmethyst = 0;
+        int AddAquamarine = 0;
+        int AddEarthCrystal = 0;
+        int AddEmerald = 0;
+        int AddFireQuartz = 0;
+        int AddFrozenTear = 0;
+        int AddQuartz = 0;
+        int AddRuby = 0;
+        int AddTopaz = 0;
+        int AddJade = 0;
+        double MultiplyStone = 1.0;
+        double MultiplyCoal = 1.0;
+        double MultiplyCooperOre = 1.0;
+        double MultiplyGoldOre = 1.0;
+        double MultiplyIronOre = 1.0;
+        double MultiplyIridiumOre = 1.0;
+        double MultiplyRadiactiveOre = 1.0;
+        double MultiplyDiamond = 1.0;
+        double MultiplyAmethyst = 1.0;
+        double MultiplyAquamarine = 1.0;
+        double MultiplyEarthCrystal = 1.0;
+        double MultiplyEmerald = 1.0;
+        double MultiplyFireQuartz = 1.0;
+        double MultiplyFrozenTear = 1.0;
+        double MultiplyQuartz = 1.0;
+        double MultiplyRuby = 1.0;
+        double MultiplyTopaz = 1.0;
+        double MultiplyJade = 1.0;
 
         // Get the current directory
         string filePath = Directory.GetCurrentDirectory() + "\\Mods\\MineForMore\\config.json";
@@ -448,46 +447,42 @@ internal class ObjectPatches : BasePatcher
             {
                 //Console.WriteLine($"{((JProperty)item).Name}: {((JProperty)item).Value}");
                 string propertyName = ((JProperty)item).Name.ToString();
-                if (propertyName == "AddStoneCount")
-                {
-                    AddStoneCount = (int)((JProperty)item).Value;
-
-                }
-
-                else if (propertyName == "AddStoneCount") { AddStoneCount = (int)((JProperty)item).Value; }
-                else if (propertyName == "AddCooperOreCount") { AddCooperOreCount = (int)((JProperty)item).Value; }
-                else if (propertyName == "AddGoldOreCount") { AddGoldOreCount = (int)((JProperty)item).Value; }
-                else if (propertyName == "AddIronOreCount") { AddIronOreCount = (int)((JProperty)item).Value; }
-                else if (propertyName == "AddIridiumOreCount") { AddIridiumOreCount = (int)((JProperty)item).Value; }
-                else if (propertyName == "AddRadiactiveOreCount") { AddRadiactiveOreCount = (int)((JProperty)item).Value; }
-                else if (propertyName == "AddDiamondCount") { AddDiamondCount = (int)((JProperty)item).Value; }
-                else if (propertyName == "AddAmethystCount") { AddAmethystCount = (int)((JProperty)item).Value; }
-                else if (propertyName == "AddAquamarineCount") { AddAquamarineCount = (int)((JProperty)item).Value; }
-                else if (propertyName == "AddEarthCrystalCount") { AddEarthCrystalCount = (int)((JProperty)item).Value; }
-                else if (propertyName == "AddEmeraldCount") { AddEmeraldCount = (int)((JProperty)item).Value; }
-                else if (propertyName == "AddFireQuartzCount") { AddFireQuartzCount = (int)((JProperty)item).Value; }
-                else if (propertyName == "AddFrozenTearCount") { AddFrozenTearCount = (int)((JProperty)item).Value; }
-                else if (propertyName == "AddQuartzCount") { AddQuartzCount = (int)((JProperty)item).Value; }
-                else if (propertyName == "AddRubyCount") { AddRubyCount = (int)((JProperty)item).Value; }
-                else if (propertyName == "AddTopazCount") { AddTopazCount = (int)((JProperty)item).Value; }
-                else if (propertyName == "AddJadeCount") { AddJadeCount = (int)((JProperty)item).Value; }
-                else if (propertyName == "MultiplyStoneCount") { MultiplyStoneCount = (int)((JProperty)item).Value; }
-                else if (propertyName == "MultiplyCooperOreCount") { MultiplyCooperOreCount = (int)((JProperty)item).Value; }
-                else if (propertyName == "MultiplyGoldOreCount") { MultiplyGoldOreCount = (int)((JProperty)item).Value; }
-                else if (propertyName == "MultiplyIronOreCount") { MultiplyIronOreCount = (int)((JProperty)item).Value; }
-                else if (propertyName == "MultiplyIridiumOreCount") { MultiplyIridiumOreCount = (int)((JProperty)item).Value; }
-                else if (propertyName == "MultiplyRadiactiveOreCount") { MultiplyRadiactiveOreCount = (int)((JProperty)item).Value; }
-                else if (propertyName == "MultiplyDiamondCount") { MultiplyDiamondCount = (int)((JProperty)item).Value; }
-                else if (propertyName == "MultiplyAmethystCount") { MultiplyAmethystCount = (int)((JProperty)item).Value; }
-                else if (propertyName == "MultiplyAquamarineCount") { MultiplyAquamarineCount = (int)((JProperty)item).Value; }
-                else if (propertyName == "MultiplyEarthCrystalCount") { MultiplyEarthCrystalCount = (int)((JProperty)item).Value; }
-                else if (propertyName == "MultiplyEmeraldCount") { MultiplyEmeraldCount = (int)((JProperty)item).Value; }
-                else if (propertyName == "MultiplyFireQuartzCount") { MultiplyFireQuartzCount = (int)((JProperty)item).Value; }
-                else if (propertyName == "MultiplyFrozenTearCount") { MultiplyFrozenTearCount = (int)((JProperty)item).Value; }
-                else if (propertyName == "MultiplyQuartzCount") { MultiplyQuartzCount = (int)((JProperty)item).Value; }
-                else if (propertyName == "MultiplyRubyCount") { MultiplyRubyCount = (int)((JProperty)item).Value; }
-                else if (propertyName == "MultiplyTopazCount") { MultiplyTopazCount = (int)((JProperty)item).Value; }
-                else if (propertyName == "MultiplyJadeCount") { MultiplyJadeCount = (int)((JProperty)item).Value; }
+                if (propertyName == "AddStone") {AddStone = (int)((JProperty)item).Value;}
+                else if (propertyName == "AddCoal") { AddCoal = (int)((JProperty)item).Value; }
+                else if (propertyName == "AddCooperOre") { AddCooperOre = (int)((JProperty)item).Value; }
+                else if (propertyName == "AddGoldOre") { AddGoldOre = (int)((JProperty)item).Value; }
+                else if (propertyName == "AddIronOre") { AddIronOre = (int)((JProperty)item).Value; }
+                else if (propertyName == "AddIridiumOre") { AddIridiumOre = (int)((JProperty)item).Value; }
+                else if (propertyName == "AddRadiactiveOre") { AddRadiactiveOre = (int)((JProperty)item).Value; }
+                else if (propertyName == "AddDiamond") { AddDiamond = (int)((JProperty)item).Value; }
+                else if (propertyName == "AddAmethyst") { AddAmethyst = (int)((JProperty)item).Value; }
+                else if (propertyName == "AddAquamarine") { AddAquamarine = (int)((JProperty)item).Value; }
+                else if (propertyName == "AddEarthCrystal") { AddEarthCrystal = (int)((JProperty)item).Value; }
+                else if (propertyName == "AddEmerald") { AddEmerald = (int)((JProperty)item).Value; }
+                else if (propertyName == "AddFireQuartz") { AddFireQuartz = (int)((JProperty)item).Value; }
+                else if (propertyName == "AddFrozenTear") { AddFrozenTear = (int)((JProperty)item).Value; }
+                else if (propertyName == "AddQuartz") { AddQuartz = (int)((JProperty)item).Value; }
+                else if (propertyName == "AddRuby") { AddRuby = (int)((JProperty)item).Value; }
+                else if (propertyName == "AddTopaz") { AddTopaz = (int)((JProperty)item).Value; }
+                else if (propertyName == "AddJade") { AddJade = (int)((JProperty)item).Value; }
+                else if (propertyName == "MultiplyStone") { MultiplyStone = (int)((JProperty)item).Value; }
+                else if (propertyName == "MultiplyCoal") { MultiplyCoal = (int)((JProperty)item).Value; }
+                else if (propertyName == "MultiplyCooperOre") { MultiplyCooperOre = (int)((JProperty)item).Value; }
+                else if (propertyName == "MultiplyGoldOre") { MultiplyGoldOre = (int)((JProperty)item).Value; }
+                else if (propertyName == "MultiplyIronOre") { MultiplyIronOre = (int)((JProperty)item).Value; }
+                else if (propertyName == "MultiplyIridiumOre") { MultiplyIridiumOre = (int)((JProperty)item).Value; }
+                else if (propertyName == "MultiplyRadiactiveOre") { MultiplyRadiactiveOre = (int)((JProperty)item).Value; }
+                else if (propertyName == "MultiplyDiamond") { MultiplyDiamond = (int)((JProperty)item).Value; }
+                else if (propertyName == "MultiplyAmethyst") { MultiplyAmethyst = (int)((JProperty)item).Value; }
+                else if (propertyName == "MultiplyAquamarine") { MultiplyAquamarine = (int)((JProperty)item).Value; }
+                else if (propertyName == "MultiplyEarthCrystal") { MultiplyEarthCrystal = (int)((JProperty)item).Value; }
+                else if (propertyName == "MultiplyEmerald") { MultiplyEmerald = (int)((JProperty)item).Value; }
+                else if (propertyName == "MultiplyFireQuartz") { MultiplyFireQuartz = (int)((JProperty)item).Value; }
+                else if (propertyName == "MultiplyFrozenTear") { MultiplyFrozenTear = (int)((JProperty)item).Value; }
+                else if (propertyName == "MultiplyQuartz") { MultiplyQuartz = (int)((JProperty)item).Value; }
+                else if (propertyName == "MultiplyRuby") { MultiplyRuby = (int)((JProperty)item).Value; }
+                else if (propertyName == "MultiplyTopaz") { MultiplyTopaz = (int)((JProperty)item).Value; }
+                else if (propertyName == "MultiplyJade") { MultiplyJade = (int)((JProperty)item).Value; }
                 else if (propertyName == "BonusOresWithMinerProfession") { BonusOresWithMinerProfession = (int)((JProperty)item).Value; }
 
 
@@ -508,37 +503,29 @@ internal class ObjectPatches : BasePatcher
 
 
         Farmer forPlayer = Game1.GetPlayer(who) ?? Game1.player;
-
-        
         int addedOres = ((forPlayer != null && forPlayer.professions.Contains(18)) ? BonusOresWithMinerProfession : 0);
-
+       // Console.WriteLine("Item is: " + id + " - Number Count Before adding value is: " + number + " StoneMultiplyValue is: " + MultiplyStone);
         //Adds and Mulitple Number if item is part of one of these items
-        if (id == ("(O)390")) { number = (int)((number + addedOres + AddStoneCount) * MultiplyStoneCount); }
-        if (id == ("(O)343")) { number = (int)((number + addedOres + AddStoneCount) * MultiplyStoneCount); }
-        if (id == ("(O)450")) { number = (int)((number + addedOres + AddStoneCount) * MultiplyStoneCount); }
-        if (id == ("(O)760")) { number = (int)((number + addedOres + AddStoneCount) * MultiplyStoneCount); }
-        if (id == ("(O)762")) { number = (int)((number + addedOres + AddStoneCount) * MultiplyStoneCount); }
-        if (id == ("(O)845")) { number = (int)((number + addedOres + AddStoneCount) * MultiplyStoneCount); }
-        if (id == ("(O)846")) { number = (int)((number + addedOres + AddStoneCount) * MultiplyStoneCount); }
-        if (id == ("(O)847")) { number = (int)((number + addedOres + AddStoneCount) * MultiplyStoneCount); }
-        if (id == ("(O)378")) { number = (int)((number + addedOres + AddCooperOreCount) * MultiplyCooperOreCount); }
-        if (id == ("(O)384")) { number = (int)((number + addedOres + AddGoldOreCount) * MultiplyGoldOreCount); }
-        if (id == ("(O)380")) { number = (int)((number + addedOres + AddIronOreCount) * MultiplyIronOreCount); }
-        if (id == ("(O)386")) { number = (int)((number + addedOres + AddIridiumOreCount) * MultiplyIridiumOreCount); }
-        if (id == ("(O)909")) { number = (int)((number + addedOres + AddRadiactiveOreCount) * MultiplyRadiactiveOreCount); }
-        if (id == ("(O)72")) { number = (int)((number + addedOres + AddDiamondCount) * MultiplyDiamondCount); }
-        if (id == ("(O)66")) { number = (int)((number + addedOres + AddAmethystCount) * MultiplyAmethystCount); }
-        if (id == ("(O)62")) { number = (int)((number + addedOres + AddAquamarineCount) * MultiplyAquamarineCount); }
-        if (id == ("(O)86")) { number = (int)((number + addedOres + AddEarthCrystalCount) * MultiplyEarthCrystalCount); }
-        if (id == ("(O)60")) { number = (int)((number + addedOres + AddEmeraldCount) * MultiplyEmeraldCount); }
-        if (id == ("(O)82")) { number = (int)((number + addedOres + AddFireQuartzCount) * MultiplyFireQuartzCount); }
-        if (id == ("(O)84")) { number = (int)((number + addedOres + AddFrozenTearCount) * MultiplyFrozenTearCount); }
-        if (id == ("(O)80")) { number = (int)((number + addedOres + AddQuartzCount) * MultiplyQuartzCount); }
-        if (id == ("(O)64")) { number = (int)((number + addedOres + AddRubyCount) * MultiplyRubyCount); }
-        if (id == ("(O)68")) { number = (int)((number + addedOres + AddTopazCount) * MultiplyTopazCount); }
-        if (id == ("(O)70")) { number = (int)((number + addedOres + AddJadeCount) * MultiplyJadeCount); }
+        if (id == ("(O)390")) { number = (int)((number + addedOres + AddStone) * MultiplyStone); }
+        else if (id == ("(O)382")) { number = (int)((number + addedOres + AddCoal) * MultiplyCoal); }
+        else if (id == ("(O)378")) { number = (int)((number + addedOres + AddCooperOre) * MultiplyCooperOre); }
+        else if (id == ("(O)384")) { number = (int)((number + addedOres + AddGoldOre) * MultiplyGoldOre); }
+        else if (id == ("(O)380")) { number = (int)((number + addedOres + AddIronOre) * MultiplyIronOre); }
+        else if (id == ("(O)386")) { number = (int)((number + addedOres + AddIridiumOre) * MultiplyIridiumOre); }
+        else if (id == ("(O)909")) { number = (int)((number + addedOres + AddRadiactiveOre) * MultiplyRadiactiveOre); }
+        else if (id == ("(O)72")) { number = (int)((number + addedOres + AddDiamond) * MultiplyDiamond); }
+        else if (id == ("(O)66")) { number = (int)((number + addedOres + AddAmethyst) * MultiplyAmethyst); }
+        else if (id == ("(O)62")) { number = (int)((number + addedOres + AddAquamarine) * MultiplyAquamarine); }
+        else if (id == ("(O)86")) { number = (int)((number + addedOres + AddEarthCrystal) * MultiplyEarthCrystal); }
+        else if (id == ("(O)60")) { number = (int)((number + addedOres + AddEmerald) * MultiplyEmerald); }
+        else if (id == ("(O)82")) { number = (int)((number + addedOres + AddFireQuartz) * MultiplyFireQuartz); }
+        else if (id == ("(O)84")) { number = (int)((number + addedOres + AddFrozenTear) * MultiplyFrozenTear); }
+        else if (id == ("(O)80")) { number = (int)((number + addedOres + AddQuartz) * MultiplyQuartz); }
+        else if (id == ("(O)64")) { number = (int)((number + addedOres + AddRuby) * MultiplyRuby); }
+        else if (id == ("(O)68")) { number = (int)((number + addedOres + AddTopaz) * MultiplyTopaz); }
+        else if (id == ("(O)70")) { number = (int)((number + addedOres + AddJade) * MultiplyJade); }
 
-
+        //Console.WriteLine("Item is: " + id + " - Number Count after addding/multiplying value is: " + number);
         return number;
     }
 

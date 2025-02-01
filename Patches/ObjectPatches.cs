@@ -22,6 +22,11 @@ using StardewValley.TerrainFeatures;
 using System.Threading;
 using System.Security.Cryptography;
 using System.Xml.Serialization;
+using System.Runtime.CompilerServices;
+using MineForMore;
+using static MineForMore.ModEntry;
+using StardewValley.Menus;
+using MineForMore.Classes; // To access CustomProfessions
 
 /// <summary>Applies Harmony patches to <see cref="GameLocation"/>.</summary>
 
@@ -30,50 +35,24 @@ using System.Xml.Serialization;
 internal class ObjectPatches : BasePatcher
 {
 
+    private readonly Config _config;
 
+    public ObjectPatches(Config config)
+    {
+        _config = config;
+    }
 
     public override void Apply(Harmony harmony, IMonitor monitor)
     {
-        // Debug log to confirm patching process starts
-        //Console.WriteLine("Attempting to patch GameLocation.OnStoneDestroyed", LogLevel.Debug);
-
-
-        /*
+        //1.patch profession descriptions
         harmony.Patch(
-            original: this.RequireMethod<Game1>(
-                nameof(Game1.createObjectDebris),
-                new[] { typeof(string), typeof(int), typeof(int), typeof(long) } // Correct parameter types
-            ),
-            prefix: this.GetHarmonyMethod(nameof(Before_createObjectDebris1)) // prefix method
-        );
+            original: this.RequireMethod<LevelUpMenu>(
+            nameof(LevelUpMenu.getProfessionDescription) // Correct parameter types
+        ),
+        postfix: this.GetHarmonyMethod(nameof(ModifyProfessionDescription)) // prefix method
+);
 
-        harmony.Patch(
-            original: this.RequireMethod<Game1>(
-                nameof(Game1.createObjectDebris),
-                new[] { typeof(string), typeof(int), typeof(int), typeof(long), typeof(GameLocation) } // Correct parameter types
-            ),
-            prefix: this.GetHarmonyMethod(nameof(Before_createObjectDebris2)) // prefix method
-        );
-
-        harmony.Patch(
-            original: this.RequireMethod<Game1>(
-                nameof(Game1.createObjectDebris),
-                new[] { typeof(string), typeof(int), typeof(int), typeof(GameLocation) } // Correct parameter types
-            ),
-            prefix: this.GetHarmonyMethod(nameof(Before_createObjectDebris3)) // prefix method
-        );
-
-        harmony.Patch(
-            original: this.RequireMethod<Game1>(
-                nameof(Game1.createObjectDebris),
-                new[] { typeof(string), typeof(int), typeof(int), typeof(int), typeof(int), typeof(float), typeof(GameLocation) } // Correct parameter types
-            ),
-            prefix: this.GetHarmonyMethod(nameof(Before_createObjectDebris4)) // prefix method
-        );
-        */
-
-        
-        //Multiple Objects
+        //2. 4 sets of code to patch what item drops
         harmony.Patch(
             original: this.RequireMethod<Game1>(
                 nameof(Game1.createMultipleObjectDebris),
@@ -113,93 +92,26 @@ internal class ObjectPatches : BasePatcher
             ),
             prefix: this.GetHarmonyMethod(nameof(Before_createMultipleObjectDebris5)) // prefix method
         );
-        
-
-
-
-        
+ 
 
     }
 
-
-
-    public class RootObject
+    //1. Updates profession profession Text Display to align with Config file's BonusOresWithMinerProfession amount.
+    public static void ModifyProfessionDescription(int whichProfession, ref List<string> __result)
     {
-        public string url_short { get; set; }
-        public string url_long { get; set; }
-        public int type { get; set; }
-    }
-
-
-
-
-    //single debris
-    /*
-    public static void Before_createObjectDebris1(string id, int xTile, int yTile, long whichPlayer)
-    {
-        int number = getNumber(id, 0);
-        for (int i = 0; i < number; i++)
+        // Miner Profession ID is 18 (Miner)
+        if (whichProfession == 18)
         {
-
-
-            Farmer forPlayer = Game1.GetPlayer(whichPlayer) ?? Game1.player;
-            Game1.currentLocation.debris.Add(new Debris(id, new Vector2(xTile * 64 + 32, yTile * 64 + 32), forPlayer.getStandingPosition()));
-
+            __result.Clear(); // Clear the existing list first (optional, just to be safe)
+            __result.Add("Master Miner"); // Custom profession name
+            __result.Add("Gain +" + Instance.Config.BonusOresWithMinerProfession + " ore per mined rock instead of +1!"); // Custom profession description
+            
         }
     }
 
-    public static void Before_createObjectDebris2(string id, int xTile, int yTile, long whichPlayer, GameLocation location)
-    {
-        int number = getNumber(id, 0);
-        for (int i = 0; i < number; i++)
-        {
-
-            Farmer forPlayer = Game1.GetPlayer(whichPlayer) ?? Game1.player;
-            location.debris.Add(new Debris(id, new Vector2(xTile * 64 + 32, yTile * 64 + 32), forPlayer.getStandingPosition()));
-        }
-    }
-
-    public static void Before_createObjectDebris3(string id, int xTile, int yTile, GameLocation location)
-    {
-        int number = getNumber(id, 0);
-        for (int i = 0; i < number; i++)
-        {
-
-            Game1.createObjectDebris(id, xTile, yTile, -1, 0, 1f, location);
-        }
-    }
-
-    public static void Before_createObjectDebris4(string id, int xTile, int yTile, int groundLevel = -1, int itemQuality = 0, float velocityMultiplyer = 1f, GameLocation location = null)
-    {
-        int number = getNumber(id, 0);
-        for (int i = 0; i < number; i++)
-        {
-
-            if (location == null)
-            {
-                location = Game1.currentLocation;
-            }
-            Debris d = new Debris(id, new Vector2(xTile * 64 + 32, yTile * 64 + 32), Game1.player.getStandingPosition())
-            {
-                itemQuality = itemQuality
-            };
-            foreach (Chunk chunk in d.Chunks)
-            {
-                chunk.xVelocity.Value *= velocityMultiplyer;
-                chunk.yVelocity.Value *= velocityMultiplyer;
-            }
-            if (groundLevel != -1)
-            {
-                d.chunkFinalYLevel = groundLevel;
-            }
-            location.debris.Add(d);
-        }
-    }
-
-    */
 
 
-    //multiple debris
+    //2. multiple debris
     public static bool Before_createMultipleObjectDebris1(string id, int xTile, int yTile, int number)
     {
         number = getNumber(id, number);
@@ -252,286 +164,68 @@ internal class ObjectPatches : BasePatcher
     }
 
 
-    //adds number for more ore drops
+    //2. adds number for more ore drops used for multiple debris function
     public static int getNumber(string id, int number)
     {
 
-        int AddStone = 0;
-        int AddCoal = 0;
-        int AddCooperOre = 0;
-        int AddGoldOre = 0;
-        int AddIronOre = 0;
-        int AddIridiumOre = 0;
-        int AddRadiactiveOre = 0;
-        int AddDiamond = 0;
-        int AddAmethyst = 0;
-        int AddAquamarine = 0;
-        int AddEarthCrystal = 0;
-        int AddEmerald = 0;
-        int AddFireQuartz = 0;
-        int AddFrozenTear = 0;
-        int AddQuartz = 0;
-        int AddRuby = 0;
-        int AddTopaz = 0;
-        int AddJade = 0;
-        double MultiplyStone = 1.0;
-        double MultiplyCoal = 1.0;
-        double MultiplyCooperOre = 1.0;
-        double MultiplyGoldOre = 1.0;
-        double MultiplyIronOre = 1.0;
-        double MultiplyIridiumOre = 1.0;
-        double MultiplyRadiactiveOre = 1.0;
-        double MultiplyDiamond = 1.0;
-        double MultiplyAmethyst = 1.0;
-        double MultiplyAquamarine = 1.0;
-        double MultiplyEarthCrystal = 1.0;
-        double MultiplyEmerald = 1.0;
-        double MultiplyFireQuartz = 1.0;
-        double MultiplyFrozenTear = 1.0;
-        double MultiplyQuartz = 1.0;
-        double MultiplyRuby = 1.0;
-        double MultiplyTopaz = 1.0;
-        double MultiplyJade = 1.0;
-
-        // Get the current directory
-        string filePath = Directory.GetCurrentDirectory() + "\\Mods\\MineForMore\\config.json";
-
-        //assign value to from config.json
-        try
-        {
-            // Read the JSON file
-            string jsonString = File.ReadAllText(filePath);
-
-            // Deserialize the JSON string into a dynamic object
-            dynamic jsonObj = JsonConvert.DeserializeObject(jsonString);
-
-            // Access the properties of the JSON object
-            foreach (var item in jsonObj)
-            {
-                //Console.WriteLine($"{((JProperty)item).Name}: {((JProperty)item).Value}");
-                string propertyName = ((JProperty)item).Name.ToString();
-                if(propertyName == "AddStone"){AddStone = (int)((JProperty)item).Value;}
-                else if (propertyName == "AddCoal") { AddCoal = (int)((JProperty)item).Value; }
-                else if (propertyName == "AddCooperOre") { AddCooperOre = (int)((JProperty)item).Value; }
-                else if (propertyName == "AddGoldOre") { AddGoldOre = (int)((JProperty)item).Value; }
-                else if (propertyName == "AddIronOre") { AddIronOre = (int)((JProperty)item).Value; }
-                else if (propertyName == "AddIridiumOre") { AddIridiumOre = (int)((JProperty)item).Value; }
-                else if (propertyName == "AddRadiactiveOre") { AddRadiactiveOre = (int)((JProperty)item).Value; }
-                else if (propertyName == "AddDiamond") { AddDiamond = (int)((JProperty)item).Value; }
-                else if (propertyName == "AddAmethyst") { AddAmethyst = (int)((JProperty)item).Value; }
-                else if (propertyName == "AddAquamarine") { AddAquamarine = (int)((JProperty)item).Value; }
-                else if (propertyName == "AddEarthCrystal") { AddEarthCrystal = (int)((JProperty)item).Value; }
-                else if (propertyName == "AddEmerald") { AddEmerald = (int)((JProperty)item).Value; }
-                else if (propertyName == "AddFireQuartz") { AddFireQuartz = (int)((JProperty)item).Value; }
-                else if (propertyName == "AddFrozenTear") { AddFrozenTear = (int)((JProperty)item).Value; }
-                else if (propertyName == "AddQuartz") { AddQuartz = (int)((JProperty)item).Value; }
-                else if (propertyName == "AddRuby") { AddRuby = (int)((JProperty)item).Value; }
-                else if (propertyName == "AddTopaz") { AddTopaz = (int)((JProperty)item).Value; }
-                else if (propertyName == "AddJade") { AddJade = (int)((JProperty)item).Value; }
-                else if (propertyName == "MultiplyStone") { MultiplyStone = (int)((JProperty)item).Value; }
-                else if (propertyName == "MultiplyCoal") { MultiplyCoal = (int)((JProperty)item).Value; }
-                else if (propertyName == "MultiplyCooperOre") { MultiplyCooperOre = (int)((JProperty)item).Value; }
-                else if (propertyName == "MultiplyGoldOre") { MultiplyGoldOre = (int)((JProperty)item).Value; }
-                else if (propertyName == "MultiplyIronOre") { MultiplyIronOre = (int)((JProperty)item).Value; }
-                else if (propertyName == "MultiplyIridiumOre") { MultiplyIridiumOre = (int)((JProperty)item).Value; }
-                else if (propertyName == "MultiplyRadiactiveOre") { MultiplyRadiactiveOre = (int)((JProperty)item).Value; }
-                else if (propertyName == "MultiplyDiamond") { MultiplyDiamond = (int)((JProperty)item).Value; }
-                else if (propertyName == "MultiplyAmethyst") { MultiplyAmethyst = (int)((JProperty)item).Value; }
-                else if (propertyName == "MultiplyAquamarine") { MultiplyAquamarine = (int)((JProperty)item).Value; }
-                else if (propertyName == "MultiplyEarthCrystal") { MultiplyEarthCrystal = (int)((JProperty)item).Value; }
-                else if (propertyName == "MultiplyEmerald") { MultiplyEmerald = (int)((JProperty)item).Value; }
-                else if (propertyName == "MultiplyFireQuartz") { MultiplyFireQuartz = (int)((JProperty)item).Value; }
-                else if (propertyName == "MultiplyFrozenTear") { MultiplyFrozenTear = (int)((JProperty)item).Value; }
-                else if (propertyName == "MultiplyQuartz") { MultiplyQuartz = (int)((JProperty)item).Value; }
-                else if (propertyName == "MultiplyRuby") { MultiplyRuby = (int)((JProperty)item).Value; }
-                else if (propertyName == "MultiplyTopaz") { MultiplyTopaz = (int)((JProperty)item).Value; }
-                else if (propertyName == "MultiplyJade") { MultiplyJade = (int)((JProperty)item).Value; }
-
-
-            }
-        }
-        catch (FileNotFoundException)
-        {
-            Console.WriteLine($"File '{filePath}' not found.");
-        }
-        catch (JsonException)
-        {
-            Console.WriteLine($"Invalid JSON format in '{filePath}'.");
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"An error occurred: {ex.Message}");
+        //Console.WriteLine("Item is: " + id + " - Number Count Before adding value is: " + number + " StoneCount is  "+ Instance.Config.AddStone+ " StoneMultiplyValue is: " + Instance.Config.MultiplyStone);
+        if (id == ("(O)390")) { number = (int)((number + Instance.Config.AddStone) * Instance.Config.MultiplyStone);
+            //Console.WriteLine("Item is: " + id + " - Number Count after adding value is: " + number);
         }
 
-
-        //Console.WriteLine("Item is: " + id + " - Number Count Before adding value is: " + number + " StoneMultiplyValue is: " + MultiplyStone);
-        //Adds and Mulitple Number if item is part of one of these items
-        if (id == ("(O)390")) { number = (int)((number + AddStone) * MultiplyStone); }
-        else if (id == ("(O)382")) { number = (int)((number + AddCoal) * MultiplyCoal); }
-        else if (id == ("(O)378")) { number = (int)((number + AddCooperOre) * MultiplyCooperOre); }
-        else if (id == ("(O)384")) { number = (int)((number + AddGoldOre) * MultiplyGoldOre); }
-        else if (id == ("(O)380")) { number = (int)((number + AddIronOre) * MultiplyIronOre); }
-        else if (id == ("(O)386")) { number = (int)((number + AddIridiumOre) * MultiplyIridiumOre); }
-        else if (id == ("(O)909")) { number = (int)((number + AddRadiactiveOre) * MultiplyRadiactiveOre); }
-        else if (id == ("(O)72")) { number = (int)((number + AddDiamond) * MultiplyDiamond); }
-        else if (id == ("(O)66")) { number = (int)((number + AddAmethyst) * MultiplyAmethyst); }
-        else if (id == ("(O)62")) { number = (int)((number + AddAquamarine) * MultiplyAquamarine); }
-        else if (id == ("(O)86")) { number = (int)((number + AddEarthCrystal) * MultiplyEarthCrystal); }
-        else if (id == ("(O)60")) { number = (int)((number + AddEmerald) * MultiplyEmerald); }
-        else if (id == ("(O)82")) { number = (int)((number + AddFireQuartz) * MultiplyFireQuartz); }
-        else if (id == ("(O)84")) { number = (int)((number + AddFrozenTear) * MultiplyFrozenTear); }
-        else if (id == ("(O)80")) { number = (int)((number + AddQuartz) * MultiplyQuartz); }
-        else if (id == ("(O)64")) { number = (int)((number + AddRuby) * MultiplyRuby); }
-        else if (id == ("(O)68")) { number = (int)((number + AddTopaz) * MultiplyTopaz); }
-        else if (id == ("(O)70")) { number = (int)((number + AddJade) * MultiplyJade); }
-
-        //Console.WriteLine("Item is: " + id + " - Number Count after addding/multiplying value is: " + number);
+        else if (id == ("(O)382")) { number = (int)((number + Instance.Config.AddCoal) * Instance.Config.MultiplyCoal); }
+        else if (id == ("(O)378")) { number = (int)((number + Instance.Config.AddCooperOre) * Instance.Config.MultiplyCooperOre); }
+        else if (id == ("(O)384")) { number = (int)((number + Instance.Config.AddGoldOre) * Instance.Config.MultiplyGoldOre); }
+        else if (id == ("(O)380")) { number = (int)((number + Instance.Config.AddIronOre) * Instance.Config.MultiplyIronOre); }
+        else if (id == ("(O)386")) { number = (int)((number + Instance.Config.AddIridiumOre) * Instance.Config.MultiplyIridiumOre); }
+        else if (id == ("(O)909")) { number = (int)((number + Instance.Config.AddRadiactiveOre) * Instance.Config.MultiplyRadiactiveOre); }
+        else if (id == ("(O)72")) { number = (int)((number + Instance.Config.AddDiamond) * Instance.Config.MultiplyDiamond); }
+        else if (id == ("(O)66")) { number = (int)((number + Instance.Config.AddAmethyst) * Instance.Config.MultiplyAmethyst); }
+        else if (id == ("(O)62")) { number = (int)((number + Instance.Config.AddAquamarine) * Instance.Config.MultiplyAquamarine); }
+        else if (id == ("(O)86")) { number = (int)((number + Instance.Config.AddEarthCrystal) * Instance.Config.MultiplyEarthCrystal); }
+        else if (id == ("(O)60")) { number = (int)((number + Instance.Config.AddEmerald) * Instance.Config.MultiplyEmerald); }
+        else if (id == ("(O)82")) { number = (int)((number + Instance.Config.AddFireQuartz) * Instance.Config.MultiplyFireQuartz); }
+        else if (id == ("(O)84")) { number = (int)((number + Instance.Config.AddFrozenTear) * Instance.Config.MultiplyFrozenTear); }
+        else if (id == ("(O)80")) { number = (int)((number + Instance.Config.AddQuartz) * Instance.Config.MultiplyQuartz); }
+        else if (id == ("(O)64")) { number = (int)((number + Instance.Config.AddRuby) * Instance.Config.MultiplyRuby); }
+        else if (id == ("(O)68")) { number = (int)((number + Instance.Config.AddTopaz) * Instance.Config.MultiplyTopaz); }
+        else if (id == ("(O)70")) { number = (int)((number + Instance.Config.AddJade) * Instance.Config.MultiplyJade); }
+        
         return number;
     }
 
-    //Added a 2nd method to add double Add due to professional to get gets double ores
+    //2. Added a 2nd method to add double Add due to professional to get gets double ores. used for multiple debris function
     public static int getNumber(string id, int number, long who)
     {
-        int BonusOresWithMinerProfession = 0;
-        int AddStone = 0;
-        int AddCoal = 0;
-        int AddCooperOre = 0;
-        int AddGoldOre = 0;
-        int AddIronOre = 0;
-        int AddIridiumOre = 0;
-        int AddRadiactiveOre = 0;
-        int AddDiamond = 0;
-        int AddAmethyst = 0;
-        int AddAquamarine = 0;
-        int AddEarthCrystal = 0;
-        int AddEmerald = 0;
-        int AddFireQuartz = 0;
-        int AddFrozenTear = 0;
-        int AddQuartz = 0;
-        int AddRuby = 0;
-        int AddTopaz = 0;
-        int AddJade = 0;
-        double MultiplyStone = 1.0;
-        double MultiplyCoal = 1.0;
-        double MultiplyCooperOre = 1.0;
-        double MultiplyGoldOre = 1.0;
-        double MultiplyIronOre = 1.0;
-        double MultiplyIridiumOre = 1.0;
-        double MultiplyRadiactiveOre = 1.0;
-        double MultiplyDiamond = 1.0;
-        double MultiplyAmethyst = 1.0;
-        double MultiplyAquamarine = 1.0;
-        double MultiplyEarthCrystal = 1.0;
-        double MultiplyEmerald = 1.0;
-        double MultiplyFireQuartz = 1.0;
-        double MultiplyFrozenTear = 1.0;
-        double MultiplyQuartz = 1.0;
-        double MultiplyRuby = 1.0;
-        double MultiplyTopaz = 1.0;
-        double MultiplyJade = 1.0;
 
-        // Get the current directory
-        string filePath = Directory.GetCurrentDirectory() + "\\Mods\\MineForMore\\config.json";
+       Farmer forPlayer = Game1.GetPlayer(who) ?? Game1.player;
+       int addedOres = ((forPlayer != null && forPlayer.professions.Contains(18)) ? Instance.Config.BonusOresWithMinerProfession : 0);
+       //Console.WriteLine("Item is: " + id + " - Number Count Before adding value is: " + number + " StoneCount is " + Instance.Config.AddStone + " professionAddedOres: "+ Instance.Config.BonusOresWithMinerProfession+  " StoneMultiplyValue is: " + Instance.Config.MultiplyStone);
 
-        //assign value to from config.json
-        try
-        {
-            // Read the JSON file
-            string jsonString = File.ReadAllText(filePath);
-
-            // Deserialize the JSON string into a dynamic object
-            dynamic jsonObj = JsonConvert.DeserializeObject(jsonString);
-
-            // Access the properties of the JSON object
-            foreach (var item in jsonObj)
-            {
-                //Console.WriteLine($"{((JProperty)item).Name}: {((JProperty)item).Value}");
-                string propertyName = ((JProperty)item).Name.ToString();
-                if (propertyName == "AddStone") {AddStone = (int)((JProperty)item).Value;}
-                else if (propertyName == "AddCoal") { AddCoal = (int)((JProperty)item).Value; }
-                else if (propertyName == "AddCooperOre") { AddCooperOre = (int)((JProperty)item).Value; }
-                else if (propertyName == "AddGoldOre") { AddGoldOre = (int)((JProperty)item).Value; }
-                else if (propertyName == "AddIronOre") { AddIronOre = (int)((JProperty)item).Value; }
-                else if (propertyName == "AddIridiumOre") { AddIridiumOre = (int)((JProperty)item).Value; }
-                else if (propertyName == "AddRadiactiveOre") { AddRadiactiveOre = (int)((JProperty)item).Value; }
-                else if (propertyName == "AddDiamond") { AddDiamond = (int)((JProperty)item).Value; }
-                else if (propertyName == "AddAmethyst") { AddAmethyst = (int)((JProperty)item).Value; }
-                else if (propertyName == "AddAquamarine") { AddAquamarine = (int)((JProperty)item).Value; }
-                else if (propertyName == "AddEarthCrystal") { AddEarthCrystal = (int)((JProperty)item).Value; }
-                else if (propertyName == "AddEmerald") { AddEmerald = (int)((JProperty)item).Value; }
-                else if (propertyName == "AddFireQuartz") { AddFireQuartz = (int)((JProperty)item).Value; }
-                else if (propertyName == "AddFrozenTear") { AddFrozenTear = (int)((JProperty)item).Value; }
-                else if (propertyName == "AddQuartz") { AddQuartz = (int)((JProperty)item).Value; }
-                else if (propertyName == "AddRuby") { AddRuby = (int)((JProperty)item).Value; }
-                else if (propertyName == "AddTopaz") { AddTopaz = (int)((JProperty)item).Value; }
-                else if (propertyName == "AddJade") { AddJade = (int)((JProperty)item).Value; }
-                else if (propertyName == "MultiplyStone") { MultiplyStone = (int)((JProperty)item).Value; }
-                else if (propertyName == "MultiplyCoal") { MultiplyCoal = (int)((JProperty)item).Value; }
-                else if (propertyName == "MultiplyCooperOre") { MultiplyCooperOre = (int)((JProperty)item).Value; }
-                else if (propertyName == "MultiplyGoldOre") { MultiplyGoldOre = (int)((JProperty)item).Value; }
-                else if (propertyName == "MultiplyIronOre") { MultiplyIronOre = (int)((JProperty)item).Value; }
-                else if (propertyName == "MultiplyIridiumOre") { MultiplyIridiumOre = (int)((JProperty)item).Value; }
-                else if (propertyName == "MultiplyRadiactiveOre") { MultiplyRadiactiveOre = (int)((JProperty)item).Value; }
-                else if (propertyName == "MultiplyDiamond") { MultiplyDiamond = (int)((JProperty)item).Value; }
-                else if (propertyName == "MultiplyAmethyst") { MultiplyAmethyst = (int)((JProperty)item).Value; }
-                else if (propertyName == "MultiplyAquamarine") { MultiplyAquamarine = (int)((JProperty)item).Value; }
-                else if (propertyName == "MultiplyEarthCrystal") { MultiplyEarthCrystal = (int)((JProperty)item).Value; }
-                else if (propertyName == "MultiplyEmerald") { MultiplyEmerald = (int)((JProperty)item).Value; }
-                else if (propertyName == "MultiplyFireQuartz") { MultiplyFireQuartz = (int)((JProperty)item).Value; }
-                else if (propertyName == "MultiplyFrozenTear") { MultiplyFrozenTear = (int)((JProperty)item).Value; }
-                else if (propertyName == "MultiplyQuartz") { MultiplyQuartz = (int)((JProperty)item).Value; }
-                else if (propertyName == "MultiplyRuby") { MultiplyRuby = (int)((JProperty)item).Value; }
-                else if (propertyName == "MultiplyTopaz") { MultiplyTopaz = (int)((JProperty)item).Value; }
-                else if (propertyName == "MultiplyJade") { MultiplyJade = (int)((JProperty)item).Value; }
-                else if (propertyName == "BonusOresWithMinerProfession") { BonusOresWithMinerProfession = (int)((JProperty)item).Value; }
-
-
-            }
-        }
-        catch (FileNotFoundException)
-        {
-            Console.WriteLine($"File '{filePath}' not found.");
-        }
-        catch (JsonException)
-        {
-            Console.WriteLine($"Invalid JSON format in '{filePath}'.");
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"An error occurred: {ex.Message}");
+        if (id == ("(O)390")) { number = (int)((number + addedOres+  Instance.Config.AddStone) * Instance.Config.MultiplyStone);
+            //Console.WriteLine("Item is: " + id + " - Number Count after adding value is: " + number);
         }
 
+        else if (id == ("(O)382")) { number = (int)((number + addedOres + Instance.Config.AddCoal) * Instance.Config.MultiplyCoal); }
+        else if (id == ("(O)378")) { number = (int)((number + addedOres + Instance.Config.AddCooperOre) * Instance.Config.MultiplyCooperOre); }
+        else if (id == ("(O)384")) { number = (int)((number + addedOres + Instance.Config.AddGoldOre) * Instance.Config.MultiplyGoldOre); }
+        else if (id == ("(O)380")) { number = (int)((number + addedOres + Instance.Config.AddIronOre) * Instance.Config.MultiplyIronOre); }
+        else if (id == ("(O)386")) { number = (int)((number + addedOres + Instance.Config.AddIridiumOre) * Instance.Config.MultiplyIridiumOre); }
+        else if (id == ("(O)909")) { number = (int)((number + addedOres + Instance.Config.AddRadiactiveOre) * Instance.Config.MultiplyRadiactiveOre); }
+        else if (id == ("(O)72")) { number = (int)((number + addedOres + Instance.Config.AddDiamond) * Instance.Config.MultiplyDiamond); }
+        else if (id == ("(O)66")) { number = (int)((number + addedOres + Instance.Config.AddAmethyst) * Instance.Config.MultiplyAmethyst); }
+        else if (id == ("(O)62")) { number = (int)((number + addedOres + Instance.Config.AddAquamarine) * Instance.Config.MultiplyAquamarine); }
+        else if (id == ("(O)86")) { number = (int)((number + addedOres + Instance.Config.AddEarthCrystal) * Instance.Config.MultiplyEarthCrystal); }
+        else if (id == ("(O)60")) { number = (int)((number + addedOres + Instance.Config.AddEmerald) * Instance.Config.MultiplyEmerald); }
+        else if (id == ("(O)82")) { number = (int)((number + addedOres + Instance.Config.AddFireQuartz) * Instance.Config.MultiplyFireQuartz); }
+        else if (id == ("(O)84")) { number = (int)((number + addedOres + Instance.Config.AddFrozenTear) * Instance.Config.MultiplyFrozenTear); }
+        else if (id == ("(O)80")) { number = (int)((number + addedOres + Instance.Config.AddQuartz) * Instance.Config.MultiplyQuartz); }
+        else if (id == ("(O)64")) { number = (int)((number + addedOres + Instance.Config.AddRuby) * Instance.Config.MultiplyRuby); }
+        else if (id == ("(O)68")) { number = (int)((number + addedOres + Instance.Config.AddTopaz) * Instance.Config.MultiplyTopaz); }
+        else if (id == ("(O)70")) { number = (int)((number + addedOres + Instance.Config.AddJade) * Instance.Config.MultiplyJade); }
 
-        Farmer forPlayer = Game1.GetPlayer(who) ?? Game1.player;
-        int addedOres = ((forPlayer != null && forPlayer.professions.Contains(18)) ? BonusOresWithMinerProfession : 0);
-       // Console.WriteLine("Item is: " + id + " - Number Count Before adding value is: " + number + " StoneMultiplyValue is: " + MultiplyStone);
-        //Adds and Mulitple Number if item is part of one of these items
-        if (id == ("(O)390")) { number = (int)((number + addedOres + AddStone) * MultiplyStone); }
-        else if (id == ("(O)382")) { number = (int)((number + addedOres + AddCoal) * MultiplyCoal); }
-        else if (id == ("(O)378")) { number = (int)((number + addedOres + AddCooperOre) * MultiplyCooperOre); }
-        else if (id == ("(O)384")) { number = (int)((number + addedOres + AddGoldOre) * MultiplyGoldOre); }
-        else if (id == ("(O)380")) { number = (int)((number + addedOres + AddIronOre) * MultiplyIronOre); }
-        else if (id == ("(O)386")) { number = (int)((number + addedOres + AddIridiumOre) * MultiplyIridiumOre); }
-        else if (id == ("(O)909")) { number = (int)((number + addedOres + AddRadiactiveOre) * MultiplyRadiactiveOre); }
-        else if (id == ("(O)72")) { number = (int)((number + addedOres + AddDiamond) * MultiplyDiamond); }
-        else if (id == ("(O)66")) { number = (int)((number + addedOres + AddAmethyst) * MultiplyAmethyst); }
-        else if (id == ("(O)62")) { number = (int)((number + addedOres + AddAquamarine) * MultiplyAquamarine); }
-        else if (id == ("(O)86")) { number = (int)((number + addedOres + AddEarthCrystal) * MultiplyEarthCrystal); }
-        else if (id == ("(O)60")) { number = (int)((number + addedOres + AddEmerald) * MultiplyEmerald); }
-        else if (id == ("(O)82")) { number = (int)((number + addedOres + AddFireQuartz) * MultiplyFireQuartz); }
-        else if (id == ("(O)84")) { number = (int)((number + addedOres + AddFrozenTear) * MultiplyFrozenTear); }
-        else if (id == ("(O)80")) { number = (int)((number + addedOres + AddQuartz) * MultiplyQuartz); }
-        else if (id == ("(O)64")) { number = (int)((number + addedOres + AddRuby) * MultiplyRuby); }
-        else if (id == ("(O)68")) { number = (int)((number + addedOres + AddTopaz) * MultiplyTopaz); }
-        else if (id == ("(O)70")) { number = (int)((number + addedOres + AddJade) * MultiplyJade); }
-
-        //Console.WriteLine("Item is: " + id + " - Number Count after addding/multiplying value is: " + number);
         return number;
     }
-
-
-
-
 
 
 

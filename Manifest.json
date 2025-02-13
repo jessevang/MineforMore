@@ -1,7 +1,7 @@
 ﻿{
   "Name": "MineForMore",
   "Author": "Darkmushu",
-  "Version": "1.0.1",
+  "Version": "1.0.3",
   "Description": "MineForMore",
   "UniqueID": "Darkmushu.MineForMore",
   "EntryDll": "MineForMore.dll",

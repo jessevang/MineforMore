@@ -1,74 +1,230 @@
-﻿using Spacechase.Shared.Patching;
+﻿using HarmonyLib;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
+using MineForMore.Classes;
+using Spacechase.Shared.Patching;
 using StardewModdingAPI;
+using StardewModdingAPI.Events;
 using StardewValley;
+using StardewValley.Enchantments;
+using StardewValley.GameData.Weapons;
+using StardewValley.ItemTypeDefinitions;
+using StardewValley.Locations;
+using StardewValley.Minigames;
+using StardewValley.Objects;
+using StardewValley.Tools;
+using System.Runtime.InteropServices;
+
+
 
 namespace MineForMore
 {
     public class Config
     {
-        public int BonusOresWithMinerProfession { get; set; } = 5;
-        public int AddStone { get; set; } = 5;
-        public int AddCoal { get; set; } = 5;
-        public int AddCooperOre { get; set; } = 5;
-        public int AddGoldOre { get; set; } = 5;
-        public int AddIronOre { get; set; } = 5;
-        public int AddIridiumOre { get; set; } = 5;
-        public int AddRadiactiveOre { get; set; } = 5;
-        public int AddDiamond { get; set; } = 5;
-        public int AddAmethyst { get; set; } = 5;
-        public int AddAquamarine { get; set; } = 5;
-        public int AddEarthCrystal { get; set; } = 5;
-        public int AddEmerald { get; set; } = 5;
-        public int AddFireQuartz { get; set; } = 5;
-        public int AddFrozenTear { get; set; } = 5;
-        public int AddQuartz { get; set; } = 5;
-        public int AddRuby { get; set; } = 5;
-        public int AddTopaz { get; set; } = 5;
-        public int AddJade { get; set; } = 5;
-        public double MultiplyStone { get; set; } = 2.0;
-        public double MultiplyCoal { get; set; } = 2.0;
-        public double MultiplyCooperOre { get; set; } = 2.0;
-        public double MultiplyGoldOre { get; set; } = 2.0;
-        public double MultiplyIronOre { get; set; } = 2.0;
-        public double MultiplyIridiumOre { get; set; } = 2.0;
-        public double MultiplyRadiactiveOre { get; set; } = 2.0;
-        public double MultiplyDiamond { get; set; } = 2.0;
-        public double MultiplyAmethyst { get; set; } = 2.0;
-        public double MultiplyAquamarine { get; set; } = 2.0;
-        public double MultiplyEarthCrystal { get; set; } = 2.0;
-        public double MultiplyEmerald { get; set; } = 2.0;
-        public double MultiplyFireQuartz { get; set; } = 2.0;
-        public double MultiplyFrozenTear { get; set; } = 2.0;
-        public double MultiplyQuartz { get; set; } = 2.0;
-        public double MultiplyRuby { get; set; } = 2.0;
-        public double MultiplyTopaz { get; set; } = 2.0;
-        public double MultiplyJade { get; set; } = 2.0;
+
+        public string Comment1 { get; set; } = "======================================Turn On/Off Certain Features ======================================";
+        public bool TurnOnMineOnDay1{ get; set; } = true;
+        public bool TurnOnMineForMore {  get; set; } = true;
+        public bool TurnOnMaxLevelFrom10toUnlimited { get; set; } = true;
+        public bool TurnOnIncreasePickAxeDamagePerMiningLevel { get; set; } = true;
+        public string Comment { get; set; } = "======================================Mine for More Settings ============================================";
+        public double MinerProfessionBonusOrePerLevel { get; set; } = 1;
+        public double GeologistProfessionBonusGemsPerLevel { get; set; } = 1;
+        public double ProspectorProfessionBonusCoalPerLevel { get; set; } = 1;
+        public double ExcavatorProfessionBonusGeodesPerLevel { get; set; } = 1;
+        public double IncreasePickAxeDamagePerMiningLevel { get; set; } = 0.25;
+        //Flat Value Added/Multiply with ore drops regardless of if a mining profession is chosen.
+        public int AddStone { get; set; } = 0;
+        public int AddCoal { get; set; } = 0;
+        public int AddCooperOre { get; set; } = 0;
+        public int AddGoldOre { get; set; } = 0;
+        public int AddIronOre { get; set; } = 0;
+        public int AddIridiumOre { get; set; } = 0;
+        public int AddRadiactiveOre { get; set; } = 0;
+        public int AddDiamond { get; set; } = 0;
+        public int AddAmethyst { get; set; } = 0;
+        public int AddAquamarine { get; set; } = 0;
+        public int AddEarthCrystal { get; set; } = 0;
+        public int AddEmerald { get; set; } = 0;
+        public int AddRuby { get; set; } = 0;
+        public int AddTopaz { get; set; } = 0;
+        public int AddJade { get; set; } = 0;
+        public int AddCinderShard { get; set; } = 0;
+        public int AddGeode { get; set; } = 0;
+        public int AddFrozenGeode { get; set; } = 0;
+        public int AddMagmaGeode { get; set; } = 0;
+        public int AddOmniGeode { get; set; } = 0;
+        public int AddClay {  get; set; } = 0;
+        public double MultiplyStone { get; set; } = 1.0;
+        public double MultiplyCoal { get; set; } = 1.0;
+        public double MultiplyCooperOre { get; set; } = 1.0;
+        public double MultiplyGoldOre { get; set; } = 1.0;
+        public double MultiplyIronOre { get; set; } = 1.0;
+        public double MultiplyIridiumOre { get; set; } = 1.0;
+        public double MultiplyRadiactiveOre { get; set; } = 1.0;
+        public double MultiplyDiamond { get; set; } = 1.0;
+        public double MultiplyAmethyst { get; set; } = 1.0;
+        public double MultiplyAquamarine { get; set; } = 1.0;
+        public double MultiplyEarthCrystal { get; set; } = 1.0;
+        public double MultiplyEmerald { get; set; } = 1.0;
+        public double MultiplyRuby { get; set; } = 1.0;
+        public double MultiplyTopaz { get; set; } = 1.0;
+        public double MultiplyJade { get; set; } = 1.0;
+        public double MultiplyCinderShard { get; set; } = 1.0;
+        public double MultiplyGeode { get; set; } = 1.0;
+        public double MultiplyFrozenGeode { get; set; } = 1.0;
+        public double MultiplyMagmaGeode { get; set; } = 1.0;
+        public double MultiplyOmniGeode { get; set; } = 1.0;
+        public double MultiplyClay { get; set; } = 1.0;
+
     }
 
     internal sealed class ModEntry : Mod
     {
-        public static ModEntry Instance { get; private set; } // Singleton instance for global access
-        public Config Config { get; private set; } // Store the config
-        public uint NumberOfDrops;
-        public uint NumberOfDropsWithRing;
+
+        public static ModEntry Instance { get; private set; }
+        public Config Config { get; private set; }
+        public uint realCurrentDay; //Used for MineOnDay1
+        public bool AddedAddQuickSmeltRecipes = false;
+        public bool AddedGemologistRecipes = false;
+        private Harmony _harmony;
 
         public override void Entry(IModHelper helper)
         {
-            Instance = this; // Assign the instance for global access
+            _harmony = new Harmony(ModManifest.UniqueID);
+   
+            Instance = this; 
             Config = helper.ReadConfig<Config>() ?? new Config();
+            Farmer self = Game1.player;
 
-            //This Harmony Patcher turns on more monster drops
-            HarmonyPatcher.Apply(this,
-            new ObjectPatches(Config)
-            );
+
+
+
+            //TurnOnMineForMore
+            if (Instance.Config.TurnOnMineForMore)
+            {
+                HarmonyPatcher.Apply(this,
+                 new UpdateOreGemDropsPatch(Config)
+                 );
+                HarmonyPatcher.Apply(this,
+                new MineProfessionLevelDescriptionPatch(Config)
+                );
+                HarmonyPatcher.Apply(this,
+                new MineShaftOresPatches(Config)
+                );
+                HarmonyPatcher.Apply(this,
+                new MineShaftOresPatches(Config)
+                );
+
+                // Apply Harmony Patches for private functions
+                var MineShaftpatches = new MineShaftOresPatches(Config);
+                MineShaftpatches.Apply(_harmony, Monitor);
+
+
+ 
+            }
+
+            //TurnOnMaxLevelFrom10toUnlimited
+            if (Instance.Config.TurnOnMaxLevelFrom10toUnlimited)
+            {
+                HarmonyPatcher.Apply(this,
+                new UnlimitedMiningLevel(Config)
+                );
+            }
+            
+
+            //Event handlers
+            helper.Events.GameLoop.DayStarted += onStartOfDay;
+            helper.Events.GameLoop.DayEnding += onEndOfDay;
+            helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
+
+
+            // Unpatch on game exit
+
+
         }
 
 
-        // Save config method for later use
-        public void SaveConfig()
+
+
+
+
+        private void onStartOfDay(object sender, EventArgs e)
         {
-            Helper.WriteConfig(Config);
+            Monitor.Log("DayStarted event triggered!", LogLevel.Info);
+            this.realCurrentDay = (uint)Game1.stats.DaysPlayed;
+            // Check the number of days played
+            if (Game1.stats.DaysPlayed <= 5 && !Instance.Config.TurnOnMineOnDay1)
+            {
+                Game1.stats.DaysPlayed = 5; // Set the days played to 5
+            }
+
+
+            if (Config.TurnOnMineForMore)
+            {
+                Game1.delayedActions.Add(new DelayedAction(0, () =>
+                {
+                    ModEntry.Instance.Monitor.Log("Adding recipes after slight delay...", LogLevel.Info);
+                    if (Game1.player.professions.Contains(20) && !AddedAddQuickSmeltRecipes)
+                    {
+
+                        Recipe recipe = new Recipe(Instance);
+                        recipe.AddQuickSmeltRecipes();  //AddsQuickSmeltRecipes
+                        AddedAddQuickSmeltRecipes = true;
+                        Monitor.Log("Quick Smelt Recipes added!", LogLevel.Info);
+                    }
+
+                    if (Game1.player.professions.Contains(23) && !AddedGemologistRecipes)
+                    {
+
+                        Recipe recipe = new Recipe(Instance);
+                        recipe.AddGemologistRecipes();  //AddsQuickSmeltRecipes
+                        AddedGemologistRecipes = true;
+                        //Monitor.Log("Gemologist Recipes added!", LogLevel.Info);
+
+                    }
+
+                    
+                }));
+               
+            }
+
+
+
+
         }
+
+        //resets the day back to the original current day at the end of the day so calendar
+        private void onEndOfDay(object sender, EventArgs e)
+        {
+            if (!Instance.Config.TurnOnMineOnDay1)
+                return;
+            Game1.stats.DaysPlayed = this.realCurrentDay;
+
+        }
+
+        private void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
+        {
+            // Only run this logic for the local player
+            if (!Context.IsWorldReady || !Game1.player.IsLocalPlayer)
+                return;
+
+
+            //TurnOnMineForMore
+            if (Config.TurnOnIncreasePickAxeDamagePerMiningLevel)
+            {
+                double damage = Config.IncreasePickAxeDamagePerMiningLevel;
+                IncreasePickAxeDamage pickaxe1 = new IncreasePickAxeDamage(damage);
+                pickaxe1.ApplyIncreasedDamage();
+            }
+
+
+
+
+        }
+
+
+
 
 
 

@@ -46,14 +46,16 @@ internal class MineShaftOresPatches : BasePatcher
 
     private static void ModifiedcreateLitterObject(double chanceForPurpleStone, double chanceForMysticStone, double gemStoneChance, Vector2 tile, ref Object __result)
     {
+        Random rand = new Random();
+        int randomChance = rand.Next(1, 101);
+        int chosenNode = rand.Next(1, 5);
+        int chosenGem = rand.Next(1, 8);
         // Change result to a random geode if user has profession node 5% chance to convert any stones to geode
         if (Game1.player.professions.Contains(22))
         {
-            Random rand = new Random();
-            int randomChance = rand.Next(1, 201);
-            int chosenNode = rand.Next(1, 5);
 
-            if (randomChance <=5)
+
+            if (randomChance ==1)
             {  
                 if (chosenNode == 1)
                 {
@@ -75,6 +77,65 @@ internal class MineShaftOresPatches : BasePatcher
                 }
             }
 
+        }
+
+        //adds more gems for Gemologist
+        if (Game1.player.professions.Contains(23))
+        {
+
+            if (randomChance == 2)
+            {
+                if (chosenGem == 1)
+                {
+                    __result = new Object("60", 1); // Emerald
+
+                }
+                else if (chosenGem == 2)
+                {
+                    __result = new Object("62", 1); //Aquamarine
+                }
+                else if (chosenGem == 3)
+                {
+                    __result = new Object("64", 1); //Ruby
+                }
+
+                else if (chosenGem == 4)
+                {
+                    __result = new Object("66", 1); //Amethyst
+
+                }
+                else if (chosenGem == 5)
+                {
+                    __result = new Object("68", 1); //Topaz
+
+
+                }
+                else if (chosenGem == 6)
+                {
+                    __result = new Object("70", 1); //Jade
+
+
+                }
+                else if (chosenGem == 7)
+                {
+                    __result = new Object("72", 1); //Diamond
+
+
+                }
+            }
+
+        }
+
+
+
+        if (Game1.player.professions.Contains(21))  //Prospector or burrower
+        {
+
+            if (randomChance == 3)
+            {
+                __result = new Object("VolcanoCoalNode0", 1); // Geode Stone
+
+            }
 
         }
 

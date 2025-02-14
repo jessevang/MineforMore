@@ -7,6 +7,7 @@ using MineForMore;
 using static MineForMore.ModEntry;
 using StardewValley.Menus;
 using System.Reflection.Emit;
+using StardewValley.Locations;
 
 
 
@@ -37,13 +38,14 @@ internal class MineProfessionLevelDescriptionPatch : BasePatcher
 
          );
 
+
+
+
     }
 
 
     public static void ModifyProfessionDescription(int whichProfession, ref List<string> __result)
     {
-
-
 
         // Farmer.cs Miner Profession ID is 18 (Miner)
         if (whichProfession == 18)
@@ -80,7 +82,7 @@ internal class MineProfessionLevelDescriptionPatch : BasePatcher
             __result.Clear();
             __result.Add("Prospector");
             __result.Add("Chance to find Coal doubled. +" 
-                + Instance.Config.ProspectorProfessionBonusCoalPerLevel + " extra coal drops per mining level."); // Custom profession description
+                + Instance.Config.ProspectorProfessionBonusCoalPerLevel + " extra coal drops per mining level. +1% Coal Nodes in Mine"); // Custom profession description
 
         }
         // Miner Profession ID is 22 (Excavator) 
@@ -88,7 +90,7 @@ internal class MineProfessionLevelDescriptionPatch : BasePatcher
         {
             __result.Clear();
             __result.Add("Excavator");
-            __result.Add("Chance to find geodes doubled. +" + Instance.Config.ExcavatorProfessionBonusGeodesPerLevel +" additional node drop per mining level.\n Unlock Geode Nodes in Mines"); // Custom profession description
+            __result.Add("Chance to find geodes doubled. +" + Instance.Config.ExcavatorProfessionBonusGeodesPerLevel +" additional node drop per mining level.\n +1% Geode Nodes in Mines"); // Custom profession description
 
         }
         // Miner Profession ID is 23 (Gemologist) 
@@ -96,7 +98,7 @@ internal class MineProfessionLevelDescriptionPatch : BasePatcher
         {
             __result.Clear();
             __result.Add("Gemologist");
-            __result.Add("Gems Worth 30% more. \n New crafting recipes: jewel crafting"); // Custom profession description
+            __result.Add("Gems Worth 30% more. \n New crafting recipes: Transmute Gems \n +1% more gem nodes"); // Custom profession description
 
         }
 

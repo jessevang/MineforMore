@@ -206,7 +206,7 @@ internal class UpdateOreGemDropsPatch : BasePatcher
     {
         int number = 0;
 
-        // Check if the Excavator profession is present
+        // Check if the Excavator profession and adds extra Geode drops
         if (who.professions.Contains(22))
         {
             if (stoneId.Equals("75")) // If stone is geo, drop extra geodes.
@@ -244,7 +244,31 @@ internal class UpdateOreGemDropsPatch : BasePatcher
 
         }
 
-        return true;
+        // Check if the Miner Profession adds additional stone drops if the node is one of the stone versions.
+        if (who.professions.Contains(18))
+        {
+
+            if (stoneId == "450"|| stoneId == "32" || stoneId == "34" || stoneId == "36" || stoneId == "38" 
+                || stoneId == "40" || stoneId == "343" || stoneId == "760" || stoneId == "762" 
+                || stoneId == "48" || stoneId == "50" || stoneId == "52" || stoneId == "54" || stoneId == "56" || stoneId == "58"
+                || stoneId == "668" || stoneId == "670" || stoneId == "845" || stoneId == "846" || stoneId == "847")
+
+            {
+
+                Double MinerProfessionBonusOrePerLevel = Instance.Config.MinerProfessionBonusOrePerLevel * who.MiningLevel;
+                number = (int)((number + MinerProfessionBonusOrePerLevel + Instance.Config.AddStone) * Instance.Config.MultiplyStone);
+                for (int i = 0; i < number; i++)
+                {
+                    Game1.createObjectDebris("(O)390", x, y, Game1.player.UniqueMultiplayerID);
+                }
+
+            }
+
+        }
+
+
+
+            return true;
     }
 
     //handle geodes
@@ -253,8 +277,7 @@ internal class UpdateOreGemDropsPatch : BasePatcher
 
         int number = 0;
         double ExcavatorProfessionBonusGeodesPerLevel = Instance.Config.ExcavatorProfessionBonusGeodesPerLevel * who.MiningLevel;
-
-
+        
         if (id == ("535")) { number = (int)((number + ExcavatorProfessionBonusGeodesPerLevel + Instance.Config.AddGeode) * Instance.Config.MultiplyGeode); }
         if (id == ("536")) { number = (int)((number + ExcavatorProfessionBonusGeodesPerLevel + Instance.Config.AddFrozenGeode) * Instance.Config.MultiplyFrozenGeode); }
         if (id == ("537")) { number = (int)((number + ExcavatorProfessionBonusGeodesPerLevel + Instance.Config.AddMagmaGeode) * Instance.Config.MultiplyMagmaGeode); }

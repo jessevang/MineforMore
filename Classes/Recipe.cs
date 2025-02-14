@@ -22,7 +22,7 @@ namespace MineForMore.Classes
 
         public void AddQuickSmeltRecipes()
         {
-
+            
             string recipeKey = "QuickSmelt (Cu)"; // Unique key for the recipe
             string recipeValue = "378 10 382 2/Home/334/false/Mining 10/Quicksmelt (Cu)";
             CraftingRecipe.craftingRecipes.Add(recipeKey, recipeValue);
@@ -57,30 +57,42 @@ namespace MineForMore.Classes
             //ring.createUsingGameIcon(10000, 888, "Perfect Glowstone Ring/5000/-300/Ring/-98/Perfect Glowstone Ring/Triple the Light of a Glowstone Ring/ring/0"); 
 
 
-            //Unlocks Jewelry Rings
-            String recipeKey = "Amethyst Rings";
-            String recipeValue = "66 1/Home/529/true/Mining 10/";
-            CraftingRecipe.craftingRecipes.Add(recipeKey, recipeValue);
+            //Unlocks Gem transmult
+
+            // CraftingRecipe.craftingRecipes.Add(recipeKey, recipeValue);
             //Instance.Monitor.Log("Perfect Amethyst Rings Recipe added!", LogLevel.Info);
 
-            recipeKey = "Ruby Rings";
-            recipeValue = "64 1/Home/534/true/Mining 10/";
+
+            String recipeKey = "Prismatic Shard";
+            String recipeValue = "60 5 62 5 64 5 66 5 68 5 70 5 72 5/Home/74/true/Mining 10/";
             CraftingRecipe.craftingRecipes.Add(recipeKey, recipeValue);
 
-            recipeKey = "Topaz Ring";
-            recipeValue = "68 1/Home/530/true/Mining 9/";
+            recipeKey = "Transmute Jade";
+            recipeValue = "72 1/Home/70 2/true/Mining 10/";
             CraftingRecipe.craftingRecipes.Add(recipeKey, recipeValue);
 
-            recipeKey = "Aquamarine Ring";
-            recipeValue = "62 1/Home/631/true/Mining 9/";
+            recipeKey = "Transmute Amethyst";
+            recipeValue = "70 2/Home/66/true/Mining 10/";
             CraftingRecipe.craftingRecipes.Add(recipeKey, recipeValue);
 
-            recipeKey = "Jade Ring";
-            recipeValue = "70 1/Home/532/true/Mining 9/";
+            recipeKey = "Transmute Aquamarine";
+            recipeValue = "66 2/Home/62/true/Mining 10/";
             CraftingRecipe.craftingRecipes.Add(recipeKey, recipeValue);
 
-            recipeKey = "Emerald Ring";
-            recipeValue = "60 1/Home/533/true/Mining 9/";
+            recipeKey = "Transmute Jade";
+            recipeValue = "62 2/Home/70/true/Mining 10/";
+            CraftingRecipe.craftingRecipes.Add(recipeKey, recipeValue);
+
+            recipeKey = "Transmute Emerald";
+            recipeValue = "70 2/Home/60/true/Mining 10/";
+            CraftingRecipe.craftingRecipes.Add(recipeKey, recipeValue);
+
+            recipeKey = "Transmute Ruby";
+            recipeValue = "60 2/Home/64/true/Mining 10/";
+            CraftingRecipe.craftingRecipes.Add(recipeKey, recipeValue);
+
+            recipeKey = "Transmute Diamond";
+            recipeValue = "64 2/Home/72/true/Mining 10/";
             CraftingRecipe.craftingRecipes.Add(recipeKey, recipeValue);
 
 

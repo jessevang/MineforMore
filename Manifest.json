@@ -1,8 +1,8 @@
 ﻿{
   "Name": "MineForMore",
   "Author": "Darkmushu",
-  "Version": "1.0.3",
-  "Description": "MineForMore",
+  "Version": "1.1.0",
+  "Description": "More vein drops, upgraded miner professions, uncapped skill levels, mine on day 1, more pickaxe damage per level",
   "UniqueID": "Darkmushu.MineForMore",
   "EntryDll": "MineForMore.dll",
   "MinimumApiVersion": "4.0.0",

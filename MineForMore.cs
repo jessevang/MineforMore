@@ -97,6 +97,16 @@ namespace MineForMore
             Config = helper.ReadConfig<Config>() ?? new Config();
             Farmer self = Game1.player;
 
+            //Handles Content Patching
+            if (!helper.ModRegistry.IsLoaded("Pathoschild.ContentPatcher"))
+            {
+                Monitor.Log("Content Patcher is not installed. Skipping patches.", LogLevel.Warn);
+            }
+
+
+
+               // RegisterContentPatcherPack();
+
 
 
 
@@ -142,11 +152,41 @@ namespace MineForMore
             // Unpatch on game exit
 
 
+
         }
 
 
 
+        private void RegisterContentPatcherPack()
+        {
+            string contentPackPath = Path.Combine(Helper.DirectoryPath, "assets");
 
+            // Ensure content.json exists
+            if (!File.Exists(Path.Combine(contentPackPath, "Content.json")))
+            {
+                Monitor.Log("ERROR: content.json not found! Content Patcher pack will not be loaded.", LogLevel.Error);
+                return;
+            }
+
+            // Register the content pack as a temporary Content Patcher pack
+            var contentPack = Helper.ContentPacks.CreateTemporary(
+                directoryPath: contentPackPath,
+                id: "Darkmushu.MineForMore",
+                name: "MineForMore",
+                description: "Temporary Content Patcher pack for MineForMore",
+                author: "Darkmushu",
+                version: new SemanticVersion(1, 0, 3) // SMAPI's version format
+            );
+
+            if (contentPack != null)
+            {
+                Monitor.Log("Content Patcher pack registered successfully!", LogLevel.Info);
+            }
+            else
+            {
+                Monitor.Log("Failed to register Content Patcher pack!", LogLevel.Error);
+            }
+        }
 
 
         private void onStartOfDay(object sender, EventArgs e)

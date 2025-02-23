@@ -202,7 +202,7 @@ internal class UpdateOreGemDropsPatch : BasePatcher
 
 
 
-    public static bool ModifiedOnStoneDestroyed(string stoneId, int x, int y, StardewValley.Farmer who)
+    public static bool ModifiedOnStoneDestroyed(string stoneId, int x, int y, Farmer who)
     {
         int number = 0;
 

@@ -87,38 +87,38 @@ internal class MineShaftOresPatches : BasePatcher
             {
                 if (chosenGem == 1)
                 {
-                    __result = new Object("60", 1); // Emerald
+                    __result = new Object("12", 1); // Emerald
 
                 }
                 else if (chosenGem == 2)
                 {
-                    __result = new Object("62", 1); //Aquamarine
+                    __result = new Object("14", 1); //Aquamarine
                 }
                 else if (chosenGem == 3)
                 {
-                    __result = new Object("64", 1); //Ruby
+                    __result = new Object("4", 1); //Ruby
                 }
 
                 else if (chosenGem == 4)
                 {
-                    __result = new Object("66", 1); //Amethyst
+                    __result = new Object("8", 1); //Amethyst
 
                 }
                 else if (chosenGem == 5)
                 {
-                    __result = new Object("68", 1); //Topaz
+                    __result = new Object("10", 1); //Topaz
 
 
                 }
                 else if (chosenGem == 6)
                 {
-                    __result = new Object("70", 1); //Jade
+                    __result = new Object("6", 1); //Jade
 
 
                 }
                 else if (chosenGem == 7)
                 {
-                    __result = new Object("72", 1); //Diamond
+                    __result = new Object("2", 1); //Diamond
 
 
                 }

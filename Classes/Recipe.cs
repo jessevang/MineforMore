@@ -67,10 +67,6 @@ namespace MineForMore.Classes
             String recipeValue = "60 5 62 5 64 5 66 5 68 5 70 5 72 5/Home/74/true/Mining 10/";
             CraftingRecipe.craftingRecipes.Add(recipeKey, recipeValue);
 
-            recipeKey = "Transmute Jade";
-            recipeValue = "72 1/Home/70 2/true/Mining 10/";
-            CraftingRecipe.craftingRecipes.Add(recipeKey, recipeValue);
-
             recipeKey = "Transmute Amethyst";
             recipeValue = "70 2/Home/66/true/Mining 10/";
             CraftingRecipe.craftingRecipes.Add(recipeKey, recipeValue);

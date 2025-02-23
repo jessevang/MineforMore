@@ -82,7 +82,7 @@ internal class MineProfessionLevelDescriptionPatch : BasePatcher
             __result.Clear();
             __result.Add("Prospector");
             __result.Add("Chance to find Coal doubled. +" 
-                + Instance.Config.ProspectorProfessionBonusCoalPerLevel + " extra coal drops per mining level. +1% Coal Nodes in Mine"); // Custom profession description
+                + Instance.Config.ProspectorProfessionBonusCoalPerLevel + " extra coal drops per mining level. +1% nodes are coal Nodes"); // Custom profession description
 
         }
         // Miner Profession ID is 22 (Excavator) 
@@ -90,7 +90,7 @@ internal class MineProfessionLevelDescriptionPatch : BasePatcher
         {
             __result.Clear();
             __result.Add("Excavator");
-            __result.Add("Chance to find geodes doubled. +" + Instance.Config.ExcavatorProfessionBonusGeodesPerLevel +" additional node drop per mining level.\n +1% Geode Nodes in Mines"); // Custom profession description
+            __result.Add("Chance to find geodes doubled. +" + Instance.Config.ExcavatorProfessionBonusGeodesPerLevel +" additional node drop per mining level.\n +1% nodes are Geode Nodes"); // Custom profession description
 
         }
         // Miner Profession ID is 23 (Gemologist) 
@@ -98,7 +98,7 @@ internal class MineProfessionLevelDescriptionPatch : BasePatcher
         {
             __result.Clear();
             __result.Add("Gemologist");
-            __result.Add("Gems Worth 30% more. \n New crafting recipes: Transmute Gems \n +1% more gem nodes"); // Custom profession description
+            __result.Add("Gems Worth 30% more. \n +1% nodes are gem nodes"); // Custom profession description
 
         }
 

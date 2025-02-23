@@ -33,27 +33,27 @@ namespace MineForMore
         public double ProspectorProfessionBonusCoalPerLevel { get; set; } = 1;
         public double ExcavatorProfessionBonusGeodesPerLevel { get; set; } = 1;
         public string Comment2 { get; set; } = "==================Flat values added to ore/gems without professions=======================================";
-        public int AddStone { get; set; } =100;
-        public int AddCoal { get; set; } =100;
-        public int AddCooperOre { get; set; } =100;
-        public int AddGoldOre { get; set; } =100;
-        public int AddIronOre { get; set; } =100;
-        public int AddIridiumOre { get; set; } =100;
-        public int AddRadiactiveOre { get; set; } =100;
-        public int AddDiamond { get; set; } =100;
-        public int AddAmethyst { get; set; } =100;
-        public int AddAquamarine { get; set; } =100;
-        public int AddEarthCrystal { get; set; } =100;
-        public int AddEmerald { get; set; } =100;
-        public int AddRuby { get; set; } =100;
-        public int AddTopaz { get; set; } =100;
-        public int AddJade { get; set; } =100;
-        public int AddCinderShard { get; set; } =100;
-        public int AddGeode { get; set; } =100;
-        public int AddFrozenGeode { get; set; } =100;
-        public int AddMagmaGeode { get; set; } =100;
-        public int AddOmniGeode { get; set; } =100;
-        public int AddClay {  get; set; } =100;
+        public int AddStone { get; set; } = 3;
+        public int AddCoal { get; set; } = 3;
+        public int AddCooperOre { get; set; } = 3;
+        public int AddGoldOre { get; set; } = 3;
+        public int AddIronOre { get; set; } = 3;
+        public int AddIridiumOre { get; set; } = 3;
+        public int AddRadiactiveOre { get; set; } = 3;
+        public int AddDiamond { get; set; } = 3;
+        public int AddAmethyst { get; set; } = 3;
+        public int AddAquamarine { get; set; } = 3;
+        public int AddEarthCrystal { get; set; } = 3;
+        public int AddEmerald { get; set; } = 3;
+        public int AddRuby { get; set; } = 3;
+        public int AddTopaz { get; set; } = 3;
+        public int AddJade { get; set; } = 3;
+        public int AddCinderShard { get; set; } = 3;
+        public int AddGeode { get; set; } = 3;
+        public int AddFrozenGeode { get; set; } = 3;
+        public int AddMagmaGeode { get; set; } = 3;
+        public int AddOmniGeode { get; set; } = 3;
+        public int AddClay {  get; set; } = 3;
         public double MultiplyStone { get; set; } = 1.0;
         public double MultiplyCoal { get; set; } = 1.0;
         public double MultiplyCooperOre { get; set; } = 1.0;
@@ -97,11 +97,11 @@ namespace MineForMore
             Farmer self = Game1.player;
 
             //Handles Content Patching
-            if (!helper.ModRegistry.IsLoaded("Pathoschild.ContentPatcher"))
+            /* if (!helper.ModRegistry.IsLoaded("Pathoschild.ContentPatcher"))
             {
                 Monitor.Log("Content Patcher is not installed. Skipping patches.", LogLevel.Warn);
             }
-
+            */
 
 
                // RegisterContentPatcherPack();
@@ -160,7 +160,7 @@ namespace MineForMore
 
         private void onStartOfDay(object sender, EventArgs e)
         {
-            Monitor.Log("DayStarted event triggered!", LogLevel.Info);
+            //Monitor.Log("DayStarted event triggered!", LogLevel.Info);
             this.realCurrentDay = (uint)Game1.stats.DaysPlayed;
             // Check the number of days played
 

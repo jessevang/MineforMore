@@ -139,7 +139,29 @@ internal class UpdateOreGemDropsPatch : BasePatcher
     public static int getNumber(string id, int number)
     {
 
+
         if (id == ("(O)390")) { number = (int)((number + Instance.Config.AddStone) * Instance.Config.MultiplyStone); }
+        if (id == ("(O)452")) { number = (int)((number + Instance.Config.AddStone) * Instance.Config.MultiplyStone); }
+        if (id == ("(O)32")) { number = (int)((number + Instance.Config.AddStone) * Instance.Config.MultiplyStone); }
+        if (id == ("(O)34")) { number = (int)((number + Instance.Config.AddStone) * Instance.Config.MultiplyStone); }
+        if (id == ("(O)36")) { number = (int)((number + Instance.Config.AddStone) * Instance.Config.MultiplyStone); }
+        if (id == ("(O)38")) { number = (int)((number + Instance.Config.AddStone) * Instance.Config.MultiplyStone); }
+        if (id == ("(O)40")) { number = (int)((number + Instance.Config.AddStone) * Instance.Config.MultiplyStone); }
+        if (id == ("(O)343")) { number = (int)((number + Instance.Config.AddStone) * Instance.Config.MultiplyStone); }
+        if (id == ("(O)760")) { number = (int)((number + Instance.Config.AddStone) * Instance.Config.MultiplyStone); }
+        if (id == ("(O)762")) { number = (int)((number + Instance.Config.AddStone) * Instance.Config.MultiplyStone); }
+        if (id == ("(O)48")) { number = (int)((number + Instance.Config.AddStone) * Instance.Config.MultiplyStone); }
+        if (id == ("(O)50")) { number = (int)((number + Instance.Config.AddStone) * Instance.Config.MultiplyStone); }
+        if (id == ("(O)52")) { number = (int)((number + Instance.Config.AddStone) * Instance.Config.MultiplyStone); }
+        if (id == ("(O)54")) { number = (int)((number + Instance.Config.AddStone) * Instance.Config.MultiplyStone); }
+        if (id == ("(O)56")) { number = (int)((number + Instance.Config.AddStone) * Instance.Config.MultiplyStone); }
+        if (id == ("(O)58")) { number = (int)((number + Instance.Config.AddStone) * Instance.Config.MultiplyStone); }
+        if (id == ("(O)668")) { number = (int)((number + Instance.Config.AddStone) * Instance.Config.MultiplyStone); }
+        if (id == ("(O)670")) { number = (int)((number + Instance.Config.AddStone) * Instance.Config.MultiplyStone); }
+        if (id == ("(O)845")) { number = (int)((number + Instance.Config.AddStone) * Instance.Config.MultiplyStone); }
+        if (id == ("(O)846")) { number = (int)((number + Instance.Config.AddStone) * Instance.Config.MultiplyStone); }
+        if (id == ("(O)847")) { number = (int)((number + Instance.Config.AddStone) * Instance.Config.MultiplyStone); }
+
         if (id == ("(O)382")) { number = (int)((number + Instance.Config.AddCoal) * Instance.Config.MultiplyCoal); }
         if (id == ("(O)378")) { number = (int)((number + Instance.Config.AddCooperOre) * Instance.Config.MultiplyCooperOre); }
         if (id == ("(O)384")) { number = (int)((number + Instance.Config.AddGoldOre) * Instance.Config.MultiplyGoldOre); }
@@ -174,6 +196,26 @@ internal class UpdateOreGemDropsPatch : BasePatcher
 
         //handles ores
         if (id == ("(O)390")) { number = (int)((number + MinerProfessionBonusOrePerLevel + Instance.Config.AddStone) * Instance.Config.MultiplyStone);}
+        if (id == ("(O)452")) { number = (int)((number + MinerProfessionBonusOrePerLevel + Instance.Config.AddStone) * Instance.Config.MultiplyStone);}
+        if (id == ("(O)32")) { number = (int)((number + MinerProfessionBonusOrePerLevel + Instance.Config.AddStone) * Instance.Config.MultiplyStone);}
+        if (id == ("(O)34")) { number = (int)((number + MinerProfessionBonusOrePerLevel + Instance.Config.AddStone) * Instance.Config.MultiplyStone);}
+        if (id == ("(O)36")) { number = (int)((number + MinerProfessionBonusOrePerLevel + Instance.Config.AddStone) * Instance.Config.MultiplyStone);}
+        if (id == ("(O)38")) { number = (int)((number + MinerProfessionBonusOrePerLevel + Instance.Config.AddStone) * Instance.Config.MultiplyStone);}
+        if (id == ("(O)40")) { number = (int)((number + MinerProfessionBonusOrePerLevel + Instance.Config.AddStone) * Instance.Config.MultiplyStone);}
+        if (id == ("(O)343")) { number = (int)((number + MinerProfessionBonusOrePerLevel + Instance.Config.AddStone) * Instance.Config.MultiplyStone);}
+        if (id == ("(O)760")) { number = (int)((number + MinerProfessionBonusOrePerLevel + Instance.Config.AddStone) * Instance.Config.MultiplyStone);}
+        if (id == ("(O)762")) { number = (int)((number + MinerProfessionBonusOrePerLevel + Instance.Config.AddStone) * Instance.Config.MultiplyStone);}
+        if (id == ("(O)48")) { number = (int)((number + MinerProfessionBonusOrePerLevel + Instance.Config.AddStone) * Instance.Config.MultiplyStone);}
+        if (id == ("(O)50")) { number = (int)((number + MinerProfessionBonusOrePerLevel + Instance.Config.AddStone) * Instance.Config.MultiplyStone);}
+        if (id == ("(O)52")) { number = (int)((number + MinerProfessionBonusOrePerLevel + Instance.Config.AddStone) * Instance.Config.MultiplyStone);}
+        if (id == ("(O)54")) { number = (int)((number + MinerProfessionBonusOrePerLevel + Instance.Config.AddStone) * Instance.Config.MultiplyStone);}
+        if (id == ("(O)56")) { number = (int)((number + MinerProfessionBonusOrePerLevel + Instance.Config.AddStone) * Instance.Config.MultiplyStone);}
+        if (id == ("(O)58")) { number = (int)((number + MinerProfessionBonusOrePerLevel + Instance.Config.AddStone) * Instance.Config.MultiplyStone);}
+        if (id == ("(O)668")) { number = (int)((number + MinerProfessionBonusOrePerLevel + Instance.Config.AddStone) * Instance.Config.MultiplyStone);}
+        if (id == ("(O)670")) { number = (int)((number + MinerProfessionBonusOrePerLevel + Instance.Config.AddStone) * Instance.Config.MultiplyStone);}
+        if (id == ("(O)845")) { number = (int)((number + MinerProfessionBonusOrePerLevel + Instance.Config.AddStone) * Instance.Config.MultiplyStone);}
+        if (id == ("(O)846")) { number = (int)((number + MinerProfessionBonusOrePerLevel + Instance.Config.AddStone) * Instance.Config.MultiplyStone);}
+        if (id == ("(O)847")) { number = (int)((number + MinerProfessionBonusOrePerLevel + Instance.Config.AddStone) * Instance.Config.MultiplyStone);}
         if (id == ("(O)378")) { number = (int)((number + MinerProfessionBonusOrePerLevel + Instance.Config.AddCooperOre) * Instance.Config.MultiplyCooperOre); }
         if (id == ("(O)384")) { number = (int)((number + MinerProfessionBonusOrePerLevel + Instance.Config.AddGoldOre) * Instance.Config.MultiplyGoldOre); }
         if (id == ("(O)380")) { number = (int)((number + MinerProfessionBonusOrePerLevel + Instance.Config.AddIronOre) * Instance.Config.MultiplyIronOre); }
@@ -265,10 +307,30 @@ internal class UpdateOreGemDropsPatch : BasePatcher
             }
 
         }
+        else if (!who.professions.Contains(18))
+        {
+
+            if (stoneId == "450" || stoneId == "32" || stoneId == "34" || stoneId == "36" || stoneId == "38"
+                || stoneId == "40" || stoneId == "343" || stoneId == "760" || stoneId == "762"
+                || stoneId == "48" || stoneId == "50" || stoneId == "52" || stoneId == "54" || stoneId == "56" || stoneId == "58"
+                || stoneId == "668" || stoneId == "670" || stoneId == "845" || stoneId == "846" || stoneId == "847")
+
+            {
+
+                number = (int)((number + Instance.Config.AddStone) * Instance.Config.MultiplyStone);
+                for (int i = 0; i < number; i++)
+                {
+                    Game1.createObjectDebris("(O)390", x, y, Game1.player.UniqueMultiplayerID);
+                }
+
+            }
+
+        }
 
 
 
-            return true;
+
+        return true;
     }
 
     //handle geodes

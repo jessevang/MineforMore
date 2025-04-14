@@ -1,11 +1,16 @@
 ﻿{
   "Name": "MineForMore",
   "Author": "Darkmushu",
-  "Version": "1.1.1",
+  "Version": "1.1.3",
   "Description": "More vein drops, upgraded miner professions, uncapped skill levels, mine on day 1",
   "UniqueID": "Darkmushu.MineForMore",
   "EntryDll": "MineForMore.dll",
   "MinimumApiVersion": "4.0.0",
-  "UpdateKeys": [ "Nexus:31259" ]
-
+  "UpdateKeys": [ "Nexus:31259" ],
+  "Dependencies": [
+    {
+      "UniqueID": "spacechase0.GenericModConfigMenu",
+      "IsRequired": false
+    }
+  ]
 }

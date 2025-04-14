@@ -1,0 +1,22 @@
+﻿{
+  "profession.18.name": "Miner",
+  "profession.18.desc": "More Ores per vein",
+  "profession.18.detail": "Additional +{{bonus}} ores per mining level",
+
+  "profession.19.name": "Geologist",
+  "profession.19.desc": "More gems per vein",
+  "profession.19.detail": "+({{bonus}}) additional gems per mining level",
+
+  "profession.20.name": "Blacksmith",
+  "profession.20.desc": "Metal bars worth 50% more.\nNew crafting recipe: QuickSmelt\nSmelt ores into bars instantly but cost more resource",
+
+  "profession.21.name": "Prospector",
+  "profession.21.desc": "Chance to find Coal doubled. +{{bonus}} extra coal drops per mining level. +1% nodes are coal Nodes",
+
+  "profession.22.name": "Excavator",
+  "profession.22.desc": "Chance to find geodes doubled. +{{bonus}} additional node drop per mining level.\n+1% nodes are Geode Nodes",
+
+  "profession.23.name": "Gemologist",
+  "profession.23.desc": "Gems Worth 30% more.\n+1% nodes are gem nodes"
+
+}

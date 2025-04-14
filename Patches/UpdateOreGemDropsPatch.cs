@@ -1,17 +1,21 @@
-﻿
-using StardewModdingAPI;
+﻿using StardewModdingAPI;
 using StardewValley;
+using StardewValley.TerrainFeatures;
+using StardewValley.Tools;
+using StardewValley.Extensions;
+using StardewValley.Locations;
+using Microsoft.Xna.Framework;
 using HarmonyLib;
-using Spacechase.Shared.Patching;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Object = StardewValley.Object;
 using MineForMore;
-using static MineForMore.ModEntry;
+using System.Xml.Linq;
+using System.Security.Cryptography;
 
-
-/// <summary>Applies Harmony patches to <see cref="GameLocation"/>.</summary>
-
-internal class UpdateOreGemDropsPatch : BasePatcher
+internal class UpdateOreGemDropsPatch
 {
-
     private readonly Config _config;
 
     public UpdateOreGemDropsPatch(Config config)
@@ -19,334 +23,243 @@ internal class UpdateOreGemDropsPatch : BasePatcher
         _config = config;
     }
 
-    public override void Apply(Harmony harmony, IMonitor monitor)
+    public void Apply(Harmony harmony, IMonitor monitor)
     {
- 
+        // Patch all overloads of createMultipleObjectDebris
+        //PatchCreateMultipleObjectDebris(harmony);
 
-        //2. 4 sets of code to patch what item drops
-        harmony.Patch(
-            original: this.RequireMethod<Game1>(
-                nameof(Game1.createMultipleObjectDebris),
-                new[] { typeof(string), typeof(int), typeof(int), typeof(int) } // Correct parameter types
-            ),
-            prefix: this.GetHarmonyMethod(nameof(Before_createMultipleObjectDebris1)) // prefix method
-        );
+        // Patch stone destruction
+        var stoneDestroyed = AccessTools.Method(typeof(GameLocation), nameof(GameLocation.OnStoneDestroyed));
+        harmony.Patch(stoneDestroyed, prefix: new HarmonyMethod(typeof(UpdateOreGemDropsPatch), nameof(ModifiedOnStoneDestroyed)));
+    }
+    /*
+    private void PatchCreateMultipleObjectDebris(Harmony harmony)
+    {
+        var methods = new (Type[] args, string name)[]
+        {
+            (new[] { typeof(string), typeof(int), typeof(int), typeof(int) }, nameof(Before_createMultipleObjectDebris1)),
+            (new[] { typeof(string), typeof(int), typeof(int), typeof(int), typeof(GameLocation) }, nameof(Before_createMultipleObjectDebris2)),
+            (new[] { typeof(string), typeof(int), typeof(int), typeof(int), typeof(float) }, nameof(Before_createMultipleObjectDebris3)),
+            (new[] { typeof(string), typeof(int), typeof(int), typeof(int), typeof(long) }, nameof(Before_createMultipleObjectDebris4)),
+            (new[] { typeof(string), typeof(int), typeof(int), typeof(int), typeof(long), typeof(GameLocation) }, nameof(Before_createMultipleObjectDebris5))
+        };
 
-        harmony.Patch(
-            original: this.RequireMethod<Game1>(
-                nameof(Game1.createMultipleObjectDebris),
-                new[] { typeof(string), typeof(int), typeof(int), typeof(int), typeof(GameLocation) } // Correct parameter types
-            ),
-            prefix: this.GetHarmonyMethod(nameof(Before_createMultipleObjectDebris2)) // prefix method
-        );
-
-        harmony.Patch(
-            original: this.RequireMethod<Game1>(
-                nameof(Game1.createMultipleObjectDebris),
-                new[] { typeof(string), typeof(int), typeof(int), typeof(int), typeof(float) } // Correct parameter types
-            ),
-            prefix: this.GetHarmonyMethod(nameof(Before_createMultipleObjectDebris3)) // prefix method
-        );
-
-        harmony.Patch(
-            original: this.RequireMethod<Game1>(
-                nameof(Game1.createMultipleObjectDebris),
-                new[] { typeof(string), typeof(int), typeof(int), typeof(int), typeof(long) } // Correct parameter types
-            ),
-            prefix: this.GetHarmonyMethod(nameof(Before_createMultipleObjectDebris4)) // prefix method
-        );
-
-        harmony.Patch(
-            original: this.RequireMethod<Game1>(
-                nameof(Game1.createMultipleObjectDebris),
-                new[] { typeof(string), typeof(int), typeof(int), typeof(int), typeof(long), typeof(GameLocation) } // Correct parameter types
-            ),
-            prefix: this.GetHarmonyMethod(nameof(Before_createMultipleObjectDebris5)) // prefix method
-        );
-
-        harmony.Patch(
-            original: this.RequireMethod<GameLocation>(
-                nameof(GameLocation.OnStoneDestroyed) // Correct parameter types
-            ),
-            prefix: this.GetHarmonyMethod(nameof(ModifiedOnStoneDestroyed)) // prefix method
-        );
-
-
-
-
-
+        foreach (var (args, patchName) in methods)
+        {
+            var method = AccessTools.Method(typeof(Game1), nameof(Game1.createMultipleObjectDebris), args);
+            var prefix = new HarmonyMethod(typeof(UpdateOreGemDropsPatch), patchName);
+            harmony.Patch(method, prefix: prefix);
+        }
     }
 
 
-
     
+    // === Debris Interception Methods ===
 
-
-    //2. 4 sets of function that is called when stone breaks and a ore drops.
     public static bool Before_createMultipleObjectDebris1(string id, int xTile, int yTile, int number)
     {
         number = getNumber(id, number);
-
-            for (int i = 0; i < number; i++)
-        {
+        for (int i = 0; i < number; i++)
             Game1.createObjectDebris(id, xTile, yTile);
-        }
-        return false;  //adding a return false makes it so original code don't run
+        return false;
     }
 
     public static bool Before_createMultipleObjectDebris2(string id, int xTile, int yTile, int number, GameLocation location)
     {
         number = getNumber(id, number);
         for (int i = 0; i < number; i++)
-        {
             Game1.createObjectDebris(id, xTile, yTile, -1, 0, 1f, location);
-        }
-        return false;  //adding a return false makes it so original code don't run
+        return false;
     }
 
     public static bool Before_createMultipleObjectDebris3(string id, int xTile, int yTile, int number, float velocityMultiplier)
     {
         number = getNumber(id, number);
         for (int i = 0; i < number; i++)
-        {
             Game1.createObjectDebris(id, xTile, yTile, -1, 0, velocityMultiplier);
-        }
-        return false;  //adding a return false makes it so original code don't run
+        return false;
     }
 
     public static bool Before_createMultipleObjectDebris4(string id, int xTile, int yTile, int number, long who)
     {
         number = getNumber(id, number, who);
         for (int i = 0; i < number; i++)
-        {
             Game1.createObjectDebris(id, xTile, yTile, who);
-        }
-        return false;  //adding a return false makes it so original code don't run
+        return false;
     }
 
     public static bool Before_createMultipleObjectDebris5(string id, int xTile, int yTile, int number, long who, GameLocation location)
     {
         number = getNumber(id, number, who);
         for (int i = 0; i < number; i++)
-        {
             Game1.createObjectDebris(id, xTile, yTile, who, location);
-        }
-        return false;  //adding a return false makes it so original code don't run
+        return false;
     }
 
 
-    //2. adds number for more ore drops used for multiple debris function without professions
+    // === Helper: Drop Quantity Calculation ===
+
     public static int getNumber(string id, int number)
     {
+        foreach (var entry in ModEntry.Instance.Config.MiningTypeDrop)
+        {
+            // Skip the special case: Ore entry that drops item (O)390 (Stone)
+            if (entry.ObjectID == "(O)390" && entry.Type.Equals("Ore", StringComparison.OrdinalIgnoreCase))
+                continue;
 
-
-        if (id == ("(O)390")) { number = (int)((number + Instance.Config.AddStone) * Instance.Config.MultiplyStone); }
-        if (id == ("(O)452")) { number = (int)((number + Instance.Config.AddStone) * Instance.Config.MultiplyStone); }
-        if (id == ("(O)32")) { number = (int)((number + Instance.Config.AddStone) * Instance.Config.MultiplyStone); }
-        if (id == ("(O)34")) { number = (int)((number + Instance.Config.AddStone) * Instance.Config.MultiplyStone); }
-        if (id == ("(O)36")) { number = (int)((number + Instance.Config.AddStone) * Instance.Config.MultiplyStone); }
-        if (id == ("(O)38")) { number = (int)((number + Instance.Config.AddStone) * Instance.Config.MultiplyStone); }
-        if (id == ("(O)40")) { number = (int)((number + Instance.Config.AddStone) * Instance.Config.MultiplyStone); }
-        if (id == ("(O)343")) { number = (int)((number + Instance.Config.AddStone) * Instance.Config.MultiplyStone); }
-        if (id == ("(O)760")) { number = (int)((number + Instance.Config.AddStone) * Instance.Config.MultiplyStone); }
-        if (id == ("(O)762")) { number = (int)((number + Instance.Config.AddStone) * Instance.Config.MultiplyStone); }
-        if (id == ("(O)48")) { number = (int)((number + Instance.Config.AddStone) * Instance.Config.MultiplyStone); }
-        if (id == ("(O)50")) { number = (int)((number + Instance.Config.AddStone) * Instance.Config.MultiplyStone); }
-        if (id == ("(O)52")) { number = (int)((number + Instance.Config.AddStone) * Instance.Config.MultiplyStone); }
-        if (id == ("(O)54")) { number = (int)((number + Instance.Config.AddStone) * Instance.Config.MultiplyStone); }
-        if (id == ("(O)56")) { number = (int)((number + Instance.Config.AddStone) * Instance.Config.MultiplyStone); }
-        if (id == ("(O)58")) { number = (int)((number + Instance.Config.AddStone) * Instance.Config.MultiplyStone); }
-        if (id == ("(O)668")) { number = (int)((number + Instance.Config.AddStone) * Instance.Config.MultiplyStone); }
-        if (id == ("(O)670")) { number = (int)((number + Instance.Config.AddStone) * Instance.Config.MultiplyStone); }
-        if (id == ("(O)845")) { number = (int)((number + Instance.Config.AddStone) * Instance.Config.MultiplyStone); }
-        if (id == ("(O)846")) { number = (int)((number + Instance.Config.AddStone) * Instance.Config.MultiplyStone); }
-        if (id == ("(O)847")) { number = (int)((number + Instance.Config.AddStone) * Instance.Config.MultiplyStone); }
-
-        if (id == ("(O)382")) { number = (int)((number + Instance.Config.AddCoal) * Instance.Config.MultiplyCoal); }
-        if (id == ("(O)378")) { number = (int)((number + Instance.Config.AddCooperOre) * Instance.Config.MultiplyCooperOre); }
-        if (id == ("(O)384")) { number = (int)((number + Instance.Config.AddGoldOre) * Instance.Config.MultiplyGoldOre); }
-        if (id == ("(O)380")) { number = (int)((number + Instance.Config.AddIronOre) * Instance.Config.MultiplyIronOre); }
-        if (id == ("(O)386")) { number = (int)((number + Instance.Config.AddIridiumOre) * Instance.Config.MultiplyIridiumOre); }
-        if (id == ("(O)909")) { number = (int)((number + Instance.Config.AddRadiactiveOre) * Instance.Config.MultiplyRadiactiveOre); }
-        if (id == ("(O)72")) { number = (int)((number + Instance.Config.AddDiamond) * Instance.Config.MultiplyDiamond); }
-        if (id == ("(O)66")) { number = (int)((number + Instance.Config.AddAmethyst) * Instance.Config.MultiplyAmethyst); }
-        if (id == ("(O)62")) { number = (int)((number + Instance.Config.AddAquamarine) * Instance.Config.MultiplyAquamarine); }
-        if (id == ("(O)86")) { number = (int)((number + Instance.Config.AddEarthCrystal) * Instance.Config.MultiplyEarthCrystal); }
-        if (id == ("(O)60")) { number = (int)((number + Instance.Config.AddEmerald) * Instance.Config.MultiplyEmerald); }
-        if (id == ("(O)64")) { number = (int)((number + Instance.Config.AddRuby) * Instance.Config.MultiplyRuby); }
-        if (id == ("(O)68")) { number = (int)((number + Instance.Config.AddTopaz) * Instance.Config.MultiplyTopaz); }
-        if (id == ("(O)70")) { number = (int)((number + Instance.Config.AddJade) * Instance.Config.MultiplyJade); }
-
-        
+            if (entry.DropsFromObjectIDs?.Contains(id) == true)
+            {
+                number = (int)((number + entry.AddAmount) * entry.Multiplier);
+                break;
+            }
+        }
         return number;
     }
 
-    //2. Added a 2nd method to add double Add due to professional to get gets double ores. used for multiple debris function
+
     public static int getNumber(string id, int number, long who)
     {
+        if (who != null)
+        {
+            Farmer farmer = Game1.getAllFarmers().FirstOrDefault(f => f.UniqueMultiplayerID == who);
+            if (farmer != null)
+            {
+                foreach (var entry in ModEntry.Instance.Config.MiningTypeDrop)
+                {
+                    // Skip the "(O)390" stone drop entry from Ore type
+                    if (entry.ObjectID == "(O)390" && entry.Type.Equals("Ore", StringComparison.OrdinalIgnoreCase))
+                        continue;
 
-       Farmer forPlayer = Game1.GetPlayer(who) ?? Game1.player;
-       Double MinerProfessionBonusOrePerLevel = ((forPlayer != null && forPlayer.professions.Contains(18)) ? (Instance.Config.MinerProfessionBonusOrePerLevel * forPlayer.MiningLevel) : 0.0);
+                    bool matches = entry.DropsFromObjectIDs.Any(ID =>
+                        (ID.StartsWith("(O)") && ID.Length > 3 && ID.Substring(3) == id) || ID == id);
 
-        double GeologistGemsPerLevel = ((forPlayer != null && forPlayer.professions.Contains(19)) ? (Instance.Config.GeologistProfessionBonusGemsPerLevel * forPlayer.MiningLevel) : 0.0);
-        double ProspectorProfessionBonusCoalPerLevel = ((forPlayer != null && forPlayer.professions.Contains(21)) ? (Instance.Config.ProspectorProfessionBonusCoalPerLevel * forPlayer.MiningLevel) : 0.0);
+                    if (!matches)
+                        continue;
+
+                    float bonus = 0f;
+
+                    // Apply profession bonus based on entry type
+                    if (entry.Type.Equals("Ore", StringComparison.OrdinalIgnoreCase) && farmer.professions.Contains(18))
+                        bonus = ModEntry.Instance.Config.MinerProfessionBonusOrePerLevel * farmer.MiningLevel;
+                    else if (entry.Type.Equals("Gem", StringComparison.OrdinalIgnoreCase) && farmer.professions.Contains(19))
+                        bonus = ModEntry.Instance.Config.GeologistProfessionBonusGemsPerLevel * farmer.MiningLevel;
+                    else if (entry.Type.Equals("Geode", StringComparison.OrdinalIgnoreCase) && farmer.professions.Contains(22))
+                        bonus = ModEntry.Instance.Config.ExcavatorProfessionBonusGeodesPerLevel * farmer.MiningLevel;
+                    else if (entry.Type.Equals("Ore", StringComparison.OrdinalIgnoreCase) &&
+                             entry.ObjectID == "(O)382" && farmer.professions.Contains(21)) // Coal check
+                        bonus = ModEntry.Instance.Config.ProspectorProfessionBonusCoalPerLevel * farmer.MiningLevel;
+
+                    int num = (int)((entry.AddAmount + bonus) * entry.Multiplier);
+
+                    if (num > 0)
+                        return number;
+                }
+            }
+        }
+
+        return number;
+    }
+
+
     
-        //Console.WriteLine("Item is: " + id + " - Number Count Before adding value is: " + number + " StoneCount is " + Instance.Config.AddStone + " professionAddedOres: "+ Instance.Config.BonusOresWithMinerProfession+  " StoneMultiplyValue is: " + Instance.Config.MultiplyStone);
+    // === Patch: Custom Drops on Stone Destruction ===
 
+    public static void ModifiedOnStoneDestroyed(string stoneId, int x, int y, Farmer who)
+    {
+        // Only proceed if stoneId is associated with a "Stone"-type drop source
+        bool isValidStone = ModEntry.Instance.Config.MiningTypeDrop.Any(entry =>
+            entry.Type.Equals("Stone", StringComparison.OrdinalIgnoreCase) &&
+            entry.DropsFromObjectIDs.Any(id =>
+                (id.StartsWith("(O)") && id.Substring(3) == stoneId) || id == stoneId));
 
-        //handles ores
-        if (id == ("(O)390")) { number = (int)((number + MinerProfessionBonusOrePerLevel + Instance.Config.AddStone) * Instance.Config.MultiplyStone);}
-        if (id == ("(O)452")) { number = (int)((number + MinerProfessionBonusOrePerLevel + Instance.Config.AddStone) * Instance.Config.MultiplyStone);}
-        if (id == ("(O)32")) { number = (int)((number + MinerProfessionBonusOrePerLevel + Instance.Config.AddStone) * Instance.Config.MultiplyStone);}
-        if (id == ("(O)34")) { number = (int)((number + MinerProfessionBonusOrePerLevel + Instance.Config.AddStone) * Instance.Config.MultiplyStone);}
-        if (id == ("(O)36")) { number = (int)((number + MinerProfessionBonusOrePerLevel + Instance.Config.AddStone) * Instance.Config.MultiplyStone);}
-        if (id == ("(O)38")) { number = (int)((number + MinerProfessionBonusOrePerLevel + Instance.Config.AddStone) * Instance.Config.MultiplyStone);}
-        if (id == ("(O)40")) { number = (int)((number + MinerProfessionBonusOrePerLevel + Instance.Config.AddStone) * Instance.Config.MultiplyStone);}
-        if (id == ("(O)343")) { number = (int)((number + MinerProfessionBonusOrePerLevel + Instance.Config.AddStone) * Instance.Config.MultiplyStone);}
-        if (id == ("(O)760")) { number = (int)((number + MinerProfessionBonusOrePerLevel + Instance.Config.AddStone) * Instance.Config.MultiplyStone);}
-        if (id == ("(O)762")) { number = (int)((number + MinerProfessionBonusOrePerLevel + Instance.Config.AddStone) * Instance.Config.MultiplyStone);}
-        if (id == ("(O)48")) { number = (int)((number + MinerProfessionBonusOrePerLevel + Instance.Config.AddStone) * Instance.Config.MultiplyStone);}
-        if (id == ("(O)50")) { number = (int)((number + MinerProfessionBonusOrePerLevel + Instance.Config.AddStone) * Instance.Config.MultiplyStone);}
-        if (id == ("(O)52")) { number = (int)((number + MinerProfessionBonusOrePerLevel + Instance.Config.AddStone) * Instance.Config.MultiplyStone);}
-        if (id == ("(O)54")) { number = (int)((number + MinerProfessionBonusOrePerLevel + Instance.Config.AddStone) * Instance.Config.MultiplyStone);}
-        if (id == ("(O)56")) { number = (int)((number + MinerProfessionBonusOrePerLevel + Instance.Config.AddStone) * Instance.Config.MultiplyStone);}
-        if (id == ("(O)58")) { number = (int)((number + MinerProfessionBonusOrePerLevel + Instance.Config.AddStone) * Instance.Config.MultiplyStone);}
-        if (id == ("(O)668")) { number = (int)((number + MinerProfessionBonusOrePerLevel + Instance.Config.AddStone) * Instance.Config.MultiplyStone);}
-        if (id == ("(O)670")) { number = (int)((number + MinerProfessionBonusOrePerLevel + Instance.Config.AddStone) * Instance.Config.MultiplyStone);}
-        if (id == ("(O)845")) { number = (int)((number + MinerProfessionBonusOrePerLevel + Instance.Config.AddStone) * Instance.Config.MultiplyStone);}
-        if (id == ("(O)846")) { number = (int)((number + MinerProfessionBonusOrePerLevel + Instance.Config.AddStone) * Instance.Config.MultiplyStone);}
-        if (id == ("(O)847")) { number = (int)((number + MinerProfessionBonusOrePerLevel + Instance.Config.AddStone) * Instance.Config.MultiplyStone);}
-        if (id == ("(O)378")) { number = (int)((number + MinerProfessionBonusOrePerLevel + Instance.Config.AddCooperOre) * Instance.Config.MultiplyCooperOre); }
-        if (id == ("(O)384")) { number = (int)((number + MinerProfessionBonusOrePerLevel + Instance.Config.AddGoldOre) * Instance.Config.MultiplyGoldOre); }
-        if (id == ("(O)380")) { number = (int)((number + MinerProfessionBonusOrePerLevel + Instance.Config.AddIronOre) * Instance.Config.MultiplyIronOre); }
-        if (id == ("(O)386")) { number = (int)((number + MinerProfessionBonusOrePerLevel + Instance.Config.AddIridiumOre) * Instance.Config.MultiplyIridiumOre); }
-        if (id == ("(O)909")) { number = (int)((number + MinerProfessionBonusOrePerLevel + Instance.Config.AddRadiactiveOre) * Instance.Config.MultiplyRadiactiveOre); }
+        if (!isValidStone)
+            return;
 
-        //Hnadles Coal
-        if (id == ("(O)382")) { number = (int)((number + ProspectorProfessionBonusCoalPerLevel + Instance.Config.AddCoal) * Instance.Config.MultiplyCoal); }
+        // Log destruction if setting enabled
+        if (ModEntry.Instance.Config.listStoneDestroyedInConsole &&
+            Game1.objectData.TryGetValue(stoneId, out StardewValley.GameData.Objects.ObjectData value))
+        {
+            ModEntry.Instance.Monitor.Log($"Stone destroyed: {value.Name ?? "Unknown"} (ID: {stoneId}) at ({x}, {y})", LogLevel.Info);
+        }
 
-        //Handle Gems
-        if (id == ("(O)72")) { number = (int)((number + GeologistGemsPerLevel + Instance.Config.AddDiamond) * Instance.Config.MultiplyDiamond); }
-        if (id == ("(O)66")) { number = (int)((number + GeologistGemsPerLevel + Instance.Config.AddAmethyst)  * Instance.Config.MultiplyAmethyst); }
-        if (id == ("(O)62")) { number = (int)((number + GeologistGemsPerLevel + Instance.Config.AddAquamarine)  * Instance.Config.MultiplyAquamarine); }
-        if (id == ("(O)86")) { number = (int)((number + GeologistGemsPerLevel + Instance.Config.AddEarthCrystal)  * Instance.Config.MultiplyEarthCrystal); }
-        if (id == ("(O)60")) { number = (int)((number + GeologistGemsPerLevel + Instance.Config.AddEmerald)  * Instance.Config.MultiplyEmerald); }
-        if (id == ("(O)64")) { number = (int)((number + GeologistGemsPerLevel + Instance.Config.AddRuby)  * Instance.Config.MultiplyRuby); }
-        if (id == ("(O)68")) { number = (int)((number + GeologistGemsPerLevel + Instance.Config.AddTopaz)  * Instance.Config.MultiplyTopaz); }
-        if (id == ("(O)70")) { number = (int)((number + GeologistGemsPerLevel + Instance.Config.AddJade)  * Instance.Config.MultiplyJade); }
+        if (who == null)
+            return;
 
+        foreach (var entry in ModEntry.Instance.Config.MiningTypeDrop)
+        {
+            bool matches = entry.DropsFromObjectIDs.Any(id =>
+                (id.StartsWith("(O)") && id.Substring(3) == stoneId) || id == stoneId);
 
+            if (!matches)
+                continue;
 
+            float bonus = 0f;
 
+            // Example profession logic
+            if (entry.Type.Equals("Stone", StringComparison.OrdinalIgnoreCase) && who.professions.Contains(18))
+                bonus = ModEntry.Instance.Config.MinerProfessionBonusOrePerLevel * who.MiningLevel;
 
-        return number;
+            int num = (int)((entry.AddAmount + bonus) * entry.Multiplier);
+
+            if (num > 0)
+            {
+                for (int i = 0; i < num; i++)
+                    Game1.createObjectDebris(entry.ObjectID, x, y, who.UniqueMultiplayerID);
+            }
+        }
     }
 
-
-
-    public static bool ModifiedOnStoneDestroyed(string stoneId, int x, int y, Farmer who)
-    {
-        int number = 0;
-
-        // Check if the Excavator profession and adds extra Geode drops
-        if (who.professions.Contains(22))
-        {
-            if (stoneId.Equals("75")) // If stone is geo, drop extra geodes.
-            {
-                number = getNumberForGeodes("535", who);
-                for (int i = 0; i < number; i++)
-                {
-                    Game1.createObjectDebris("535", x, y, who.UniqueMultiplayerID);
-                }
-            }
-            else if (stoneId.Equals("76"))
-            {
-                number = getNumberForGeodes("536", who);
-                for (int i = 0; i < number; i++)
-                {
-                    Game1.createObjectDebris("536", x, y, who.UniqueMultiplayerID);
-                }
-            }
-            else if (stoneId.Equals("77"))
-            {
-                number = getNumberForGeodes("537", who);
-                for (int i = 0; i < number; i++)
-                {
-                    Game1.createObjectDebris("537", x, y, who.UniqueMultiplayerID);
-                }
-            }
-            else if (stoneId.Equals("819"))
-            {
-                number = getNumberForGeodes("749", who);
-                for (int i = 0; i < number; i++)
-                {
-                    Game1.createObjectDebris("749", x, y, who.UniqueMultiplayerID);
-                }
-            }
-
-        }
-
-        // Check if the Miner Profession adds additional stone drops if the node is one of the stone versions.
-        if (who.professions.Contains(18))
-        {
-
-            if (stoneId == "450"|| stoneId == "32" || stoneId == "34" || stoneId == "36" || stoneId == "38" 
-                || stoneId == "40" || stoneId == "343" || stoneId == "760" || stoneId == "762" 
-                || stoneId == "48" || stoneId == "50" || stoneId == "52" || stoneId == "54" || stoneId == "56" || stoneId == "58"
-                || stoneId == "668" || stoneId == "670" || stoneId == "845" || stoneId == "846" || stoneId == "847")
-
-            {
-
-                Double MinerProfessionBonusOrePerLevel = Instance.Config.MinerProfessionBonusOrePerLevel * who.MiningLevel;
-                number = (int)((number + MinerProfessionBonusOrePerLevel + Instance.Config.AddStone) * Instance.Config.MultiplyStone);
-                for (int i = 0; i < number; i++)
-                {
-                    Game1.createObjectDebris("(O)390", x, y, Game1.player.UniqueMultiplayerID);
-                }
-
-            }
-
-        }
-        else if (!who.professions.Contains(18))
-        {
-
-            if (stoneId == "450" || stoneId == "32" || stoneId == "34" || stoneId == "36" || stoneId == "38"
-                || stoneId == "40" || stoneId == "343" || stoneId == "760" || stoneId == "762"
-                || stoneId == "48" || stoneId == "50" || stoneId == "52" || stoneId == "54" || stoneId == "56" || stoneId == "58"
-                || stoneId == "668" || stoneId == "670" || stoneId == "845" || stoneId == "846" || stoneId == "847")
-
-            {
-
-                number = (int)((number + Instance.Config.AddStone) * Instance.Config.MultiplyStone);
-                for (int i = 0; i < number; i++)
-                {
-                    Game1.createObjectDebris("(O)390", x, y, Game1.player.UniqueMultiplayerID);
-                }
-
-            }
-
-        }
+    */
 
 
 
 
-        return true;
-    }
-
-    //handle geodes
-    public static int getNumberForGeodes(string id, StardewValley.Farmer who)
+    //for all
+    public static void ModifiedOnStoneDestroyed(string stoneId, int x, int y, Farmer who)
     {
 
-        int number = 0;
-        double ExcavatorProfessionBonusGeodesPerLevel = Instance.Config.ExcavatorProfessionBonusGeodesPerLevel * who.MiningLevel;
-        
-        if (id == ("535")) { number = (int)((number + ExcavatorProfessionBonusGeodesPerLevel + Instance.Config.AddGeode) * Instance.Config.MultiplyGeode); }
-        if (id == ("536")) { number = (int)((number + ExcavatorProfessionBonusGeodesPerLevel + Instance.Config.AddFrozenGeode) * Instance.Config.MultiplyFrozenGeode); }
-        if (id == ("537")) { number = (int)((number + ExcavatorProfessionBonusGeodesPerLevel + Instance.Config.AddMagmaGeode) * Instance.Config.MultiplyMagmaGeode); }
-        if (id == ("749")) { number = (int)((number + ExcavatorProfessionBonusGeodesPerLevel + Instance.Config.AddOmniGeode) * Instance.Config.MultiplyOmniGeode); }
 
+        // Log stone destruction if setting enabled
+        if (ModEntry.Instance.Config.listStoneDestroyedInConsole &&
+            Game1.objectData.TryGetValue(stoneId, out StardewValley.GameData.Objects.ObjectData value))
+        {
+            ModEntry.Instance.Monitor.Log($"Stone destroyed: {value.Name ?? "Unknown"} (ID: {stoneId}) at ({x}, {y})", LogLevel.Info);
+        }
 
-        return number;
+        if (who == null)
+            return;
+
+        foreach (var entry in ModEntry.Instance.Config.MiningTypeDrop)
+        {
+            // Check if stoneId matches any of the valid source nodes
+            bool matches = entry.DropsFromObjectIDs.Any(id =>
+                (id.StartsWith("(O)") && id.Length > 3 && id.Substring(3) == stoneId) || id == stoneId);
+
+            if (!matches)
+                continue;
+
+            float bonus = 0f;
+
+            // Apply profession bonus based on type
+            if (entry.Type.Equals("Ore", StringComparison.OrdinalIgnoreCase) && who.professions.Contains(18))
+                bonus = ModEntry.Instance.Config.MinerProfessionBonusOrePerLevel * who.MiningLevel;
+            else if (entry.Type.Equals("Gem", StringComparison.OrdinalIgnoreCase) && who.professions.Contains(19))
+                bonus = ModEntry.Instance.Config.GeologistProfessionBonusGemsPerLevel * who.MiningLevel;
+            else if (entry.Type.Equals("Geode", StringComparison.OrdinalIgnoreCase) && who.professions.Contains(22))
+                bonus = ModEntry.Instance.Config.ExcavatorProfessionBonusGeodesPerLevel * who.MiningLevel;
+            else if (entry.Type.Equals("Ore", StringComparison.OrdinalIgnoreCase) &&
+                     entry.ObjectID == "(O)382" && who.professions.Contains(21)) // Coal drop check
+                bonus = ModEntry.Instance.Config.ProspectorProfessionBonusCoalPerLevel * who.MiningLevel;
+
+            int num = (int)((entry.AddAmount + bonus) * entry.Multiplier);
+
+            if (num > 0)
+            {
+                for (int i = 0; i < num; i++)
+                    Game1.createObjectDebris(entry.ObjectID, x, y, who.UniqueMultiplayerID);
+            }
+
+        }
     }
 
 

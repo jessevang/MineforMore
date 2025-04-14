@@ -1,148 +1,91 @@
-﻿
-using StardewModdingAPI;
+﻿using StardewModdingAPI;
 using StardewValley;
-using HarmonyLib;
-using Spacechase.Shared.Patching;
-using MineForMore;
 using StardewValley.Locations;
-using StardewValley.Extensions;
-using StardewValley.Objects;
 using Microsoft.Xna.Framework;
+using HarmonyLib;
 using Object = StardewValley.Object;
-using Netcode;
+using System;
+using MineForMore;
 
-
-
-/// <summary>Applies Harmony patches to <see cref="GameLocation"/>.</summary>
-
-internal class MineShaftOresPatches : BasePatcher
+internal class MineShaftOresPatches
 {
+    public static Config Config;
 
-    private readonly Config _config;
-
-    public MineShaftOresPatches(Config config)
+    public MineShaftOresPatches(Config _config)
     {
-        _config = config;
+        Config = _config;
     }
 
-    public override void Apply(Harmony harmony, IMonitor monitor)
+    public void Apply(Harmony harmony, IMonitor monitor)
     {
-        var originalMethod = AccessTools.Method(typeof(MineShaft), "createLitterObject");
+        var original = AccessTools.Method(typeof(MineShaft), "createLitterObject");
 
-        if (originalMethod == null)
+        if (original == null)
         {
             monitor.Log("Failed to find method: MineShaft.createLitterObject", LogLevel.Error);
             return;
         }
 
-        harmony.Patch(
-            original: originalMethod,
-            postfix: new HarmonyMethod(typeof(MineShaftOresPatches), nameof(ModifiedcreateLitterObject))
-        );
-
-
-
+        var postfix = new HarmonyMethod(typeof(MineShaftOresPatches), nameof(ModifiedCreateLitterObject));
+        harmony.Patch(original, postfix: postfix);
     }
 
-    private static void ModifiedcreateLitterObject(double chanceForPurpleStone, double chanceForMysticStone, double gemStoneChance, Vector2 tile, ref Object __result)
+    private static void ModifiedCreateLitterObject(
+     double chanceForPurpleStone,
+     double chanceForMysticStone,
+     double gemStoneChance,
+     Vector2 tile,
+     ref Object __result)
     {
         Random rand = new Random();
         int randomChance = rand.Next(1, 101);
-        int chosenNode = rand.Next(1, 5);
-        int chosenGem = rand.Next(1, 8);
-        // Change result to a random geode if user has profession node 5% chance to convert any stones to geode
-        if (Game1.player.professions.Contains(22))
+
+        // Excavator (ID 22): Randomly replace litter with geode node
+        if (Game1.player.professions.Contains(22) && randomChance == 1)
         {
+            var geodeNodes = Config.MiningTypeDrop
+                .Where(m => m.Type == "Geode")
+                .SelectMany(m => m.DropsFromObjectIDs)
+                .ToList();
 
-
-            if (randomChance ==1)
-            {  
-                if (chosenNode == 1)
-                {
-                    __result = new Object("75", 1); // Geode Stone
-                }
-                else if (chosenNode ==2)
-                {
-                    __result = new Object("76", 1); //Frozen Geode Stone
-                }
-                else if (chosenNode == 3)
-                {
-                    __result = new Object("77", 1); //Magma Geode Stone
-                }
-
-                else if (chosenNode == 4)
-                {
-                    __result = new Object("819", 1); //Omni Geode Stone
-
-                }
-            }
-
-        }
-
-        //adds more gems for Gemologist
-        if (Game1.player.professions.Contains(23))
-        {
-
-            if (randomChance == 2)
+            if (geodeNodes.Count > 0)
             {
-                if (chosenGem == 1)
-                {
-                    __result = new Object("12", 1); // Emerald
-
-                }
-                else if (chosenGem == 2)
-                {
-                    __result = new Object("14", 1); //Aquamarine
-                }
-                else if (chosenGem == 3)
-                {
-                    __result = new Object("4", 1); //Ruby
-                }
-
-                else if (chosenGem == 4)
-                {
-                    __result = new Object("8", 1); //Amethyst
-
-                }
-                else if (chosenGem == 5)
-                {
-                    __result = new Object("10", 1); //Topaz
-
-
-                }
-                else if (chosenGem == 6)
-                {
-                    __result = new Object("6", 1); //Jade
-
-
-                }
-                else if (chosenGem == 7)
-                {
-                    __result = new Object("2", 1); //Diamond
-
-
-                }
+                string randomGeodeNode = geodeNodes[rand.Next(geodeNodes.Count)];
+                __result = new Object(randomGeodeNode, 1);
+                return;
             }
-
         }
 
-
-
-        if (Game1.player.professions.Contains(21))  //Prospector or burrower
+        // Gemologist (ID 23): Randomly replace litter with gem node
+        if (Game1.player.professions.Contains(23) && randomChance == 2)
         {
+            var gemNodes = Config.MiningTypeDrop
+                .Where(m => m.Type == "Gem")
+                .SelectMany(m => m.DropsFromObjectIDs)
+                .ToList();
 
-            if (randomChance == 3)
+            if (gemNodes.Count > 0)
             {
-                __result = new Object("VolcanoCoalNode0", 1); // Geode Stone
-
+                string randomGemNode = gemNodes[rand.Next(gemNodes.Count)];
+                __result = new Object(randomGemNode, 1);
+                return;
             }
-
         }
 
+        // Prospector (ID 21): Randomly replace litter with coal node
+        if (Game1.player.professions.Contains(21) && randomChance == 3)
+        {
+            var coalNodes = Config.MiningTypeDrop
+                .Where(m => m.Name == "Coal")
+                .SelectMany(m => m.DropsFromObjectIDs)
+                .ToList();
 
+            if (coalNodes.Count > 0)
+            {
+                string randomCoalNode = coalNodes[rand.Next(coalNodes.Count)];
+                __result = new Object(randomCoalNode, 1);
+                return;
+            }
+        }
     }
-
-
-
-
 }

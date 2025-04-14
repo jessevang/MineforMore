@@ -1,19 +1,13 @@
-﻿
-using StardewModdingAPI;
+﻿using StardewModdingAPI;
 using StardewValley;
 using HarmonyLib;
-using Spacechase.Shared.Patching;
+using Microsoft.Xna.Framework;
+using System;
 using MineForMore;
 using StardewValley.Menus;
-using Microsoft.Xna.Framework;
 
-
-
-/// <summary>Applies Harmony patches to <see cref="GameLocation"/>.</summary>
-
-internal class UnlimitedMiningLevel : BasePatcher
+internal class UnlimitedMiningLevel
 {
-
     private readonly Config _config;
 
     public UnlimitedMiningLevel(Config config)
@@ -21,57 +15,37 @@ internal class UnlimitedMiningLevel : BasePatcher
         _config = config;
     }
 
-    public override void Apply(Harmony harmony, IMonitor monitor)
+    public void Apply(Harmony harmony, IMonitor monitor)
     {
-        
+        var method = AccessTools.Method(typeof(Farmer), nameof(Farmer.gainExperience));
+        if (method == null)
+        {
+            monitor.Log("Failed to find Farmer.gainExperience for patching.", LogLevel.Error);
+            return;
+        }
 
         harmony.Patch(
-            original: this.RequireMethod<Farmer>(
-            nameof(Farmer.gainExperience) // Correct parameter types
-        ),
-        prefix: this.GetHarmonyMethod(nameof(ModifiedGainExperience)) // prefix method
-
-
-         );
-
-
+            original: method,
+            prefix: new HarmonyMethod(typeof(UnlimitedMiningLevel), nameof(ModifiedGainExperience))
+        );
     }
 
-
-
-    /*Summary of What This Code Does
-    *Handles experience gain for skills (except luck, which is ignored).
-    *Checks if the player is on the server and queues experience messages for clients.
-    *Implements a special "Mastery Level" system once the player reaches level 25.
-    *Calculates level-up based on experience thresholds.
-    *Applies level-ups properly by modifying the correct skill variable.
-    *Ensures the player sees level-up notifications when appropriate.
-
-     */
-    public static void ModifiedGainExperience(int which, int howMuch)
+    public static bool ModifiedGainExperience(Farmer __instance, int which, int howMuch)
     {
-        // If gaining experience in luck (which == 5) or amount is zero or negative, exit early.
         if (which == 5 || howMuch <= 0)
+            return false;
+
+        if (!__instance.IsLocalPlayer && Game1.IsServer)
         {
-            return;
+            __instance.queueMessage(17, __instance, which, howMuch);
+            return false;
         }
 
-        // If the player is not the local player and the game is running as the server, queue the experience gain message for the player.
-        if (!Game1.player.IsLocalPlayer && Game1.IsServer)
-        {
-            Game1.player.queueMessage(17, Game1.player, which, howMuch);
-            return;
-        }
-
-        // If the player's level is 25 or higher, apply Mastery experience instead.
-        if (Game1.player.Level >= 25)
+        if (__instance.Level >= 25)
         {
             int old = MasteryTrackerMenu.getCurrentMasteryLevel();
+            Game1.stats.Increment("MasteryExp", Math.Max(1, which == 0 ? (howMuch / 2) : howMuch));
 
-            // Increment Mastery experience (halved for farming, full for others).
-            Game1.stats.Increment("MasteryExp", Math.Max(1, (which == 0) ? (howMuch / 2) : howMuch));
-
-            // If the player has leveled up in Mastery, display a notification.
             if (MasteryTrackerMenu.getCurrentMasteryLevel() > old)
             {
                 Game1.showGlobalMessage(Game1.content.LoadString("Strings\\1_6_Strings:Mastery_newlevel"));
@@ -79,72 +53,49 @@ internal class UnlimitedMiningLevel : BasePatcher
             }
         }
 
-        // Determine if the experience gained is enough to level up.
-        int newLevel = ModifiedcheckForLevelGain(Game1.player.experiencePoints[which], Game1.player.experiencePoints[which] + howMuch);
+        int oldXP = __instance.experiencePoints[which];
+        int newXP = oldXP + howMuch;
+        int newLevel = ModifiedcheckForLevelGain(oldXP, newXP);
+        __instance.experiencePoints[which] = newXP;
 
-        // Add the experience points to the player's total.
-        Game1.player.experiencePoints[which] += howMuch;
-
-        int oldLevel = -1; // Store the player's current level before applying changes.
-
-        // If `newLevel` is valid (i.e., the player leveled up), update the player's skill level.
-        if (newLevel != -1)
+        int oldLevel = which switch
         {
-            switch (which)
-            {
-                case 0: // Farming
-                    oldLevel = Game1.player.farmingLevel.Value;
-                    Game1.player.farmingLevel.Value = newLevel;
-                    break;
-                case 3: // Mining
-                    oldLevel = Game1.player.miningLevel.Value;
-                    Game1.player.miningLevel.Value = newLevel;
-                    break;
-                case 1: // Fishing
-                    oldLevel = Game1.player.fishingLevel.Value;
-                    Game1.player.fishingLevel.Value = newLevel;
-                    break;
-                case 2: // Foraging
-                    oldLevel = Game1.player.foragingLevel.Value;
-                    Game1.player.foragingLevel.Value = newLevel;
-                    break;
-                case 5: // Luck (Shouldn't reach here because of the early return)
-                    oldLevel = Game1.player.luckLevel.Value;
-                    Game1.player.luckLevel.Value = newLevel;
-                    break;
-                case 4: // Combat
-                    oldLevel = Game1.player.combatLevel.Value;
-                    Game1.player.combatLevel.Value = newLevel;
-                    break;
-            }
-        }
+            0 => __instance.farmingLevel.Value,
+            1 => __instance.fishingLevel.Value,
+            2 => __instance.foragingLevel.Value,
+            3 => __instance.miningLevel.Value,
+            4 => __instance.combatLevel.Value,
+            5 => __instance.luckLevel.Value, // should not happen
+            _ => -1
+        };
 
-        // If the new level is not higher than the old level, exit early.
         if (newLevel <= oldLevel)
+            return false;
+
+        switch (which)
         {
-            return;
+            case 0: __instance.farmingLevel.Value = newLevel; break;
+            case 1: __instance.fishingLevel.Value = newLevel; break;
+            case 2: __instance.foragingLevel.Value = newLevel; break;
+            case 3: __instance.miningLevel.Value = newLevel; break;
+            case 4: __instance.combatLevel.Value = newLevel; break;
         }
 
-        // Add each new level gained to the `newLevels` list to trigger the level-up menu.
         for (int i = oldLevel + 1; i <= newLevel; i++)
         {
-            Game1.player.newLevels.Add(new Point(which, i));
-
-            // If this is the first new level gained, display a notification about new crafting ideas.
-            if (Game1.player.newLevels.Count == 1)
+            __instance.newLevels.Add(new Point(which, i));
+            if (__instance.newLevels.Count == 1)
             {
                 Game1.showGlobalMessage(Game1.content.LoadString("Strings\\1_6_Strings:NewIdeas"));
             }
         }
+
+        return false; // Prevent original method from running
     }
 
-
-
-    //not a harmony patch
     public static int ModifiedgetBaseExperienceForLevel(int level)
     {
-
-        if (level <=10)
+        if (level <= 10)
         {
             return level switch
             {
@@ -163,28 +114,19 @@ internal class UnlimitedMiningLevel : BasePatcher
         }
         else
         {
-            return 15000 + ((level-10) * (5000 + (level * 200)));  //Each level exp increases by 5000 + additional 200 per each level after 10
+            return 15000 + ((level - 10) * (5000 + (level * 200)));
         }
-       
-
     }
 
-    //not for harmony patch
     public static int ModifiedcheckForLevelGain(int oldXP, int newXP)
     {
-        for (int level = 21; level >= 1; level--)
+        for (int level = 25; level >= 1; level--)
         {
-            if (oldXP < ModifiedgetBaseExperienceForLevel(level) && newXP >= ModifiedgetBaseExperienceForLevel(level))
-            {
-
+            int required = ModifiedgetBaseExperienceForLevel(level);
+            if (oldXP < required && newXP >= required)
                 return level;
-            }
         }
 
         return -1;
     }
-
-
-
-
 }

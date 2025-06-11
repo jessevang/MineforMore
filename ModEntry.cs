@@ -211,7 +211,7 @@ namespace MineForMore
                         gmcm.AddBoolOption(
                             mod: ModManifest,
                             name: () => "Mine For More Enabled",
-                            tooltip: () => "Disabling this will disable all functions from this mod except for the generic mod config menus to allow user to re-enable this mod. Use this if you want to disable this mod without deleting it",
+                            tooltip: () => "Disables all functions from this mod except the config menu, allowing you to re-enable it later. Requires restarting the game.",
                             getValue: () => Config.TurnOnMineForMore,
                             setValue: value => Config.TurnOnMineForMore = value
                         );
@@ -221,15 +221,15 @@ namespace MineForMore
                         gmcm.AddBoolOption(
                             mod: ModManifest,
                             name: () => "User Can Mine on Day 1",
-                            tooltip: () => "Allow mine access on day 1. Turning this off will prevent users from going to the mines prior to day 5.",
+                            tooltip: () => "Allows mine access on Day 1. Turning this off will prevent mine access before Day 5.",
                             getValue: () => Config.CanMineOnDay1,
                             setValue: value => Config.CanMineOnDay1 = value
                         );
 
                         gmcm.AddBoolOption(
                             mod: ModManifest,
-                            name: () => "Skill level can Exceed Level 10",
-                            tooltip: () => "Allows all skill levels to exceed 10, saved changes on this option requires restarting the game. Turning this off will disable the harmony patch on Farmer.ExperienceGain. Since this is a harmony patch will require game reset to take effect. You may want to turn this off because other mods may patch this same code. This option won't affect your current Experience amount, it only no longer patches the gain experience which means your skills can't gain exp after you get level 10 or (15,0000 EXP)",
+                            name: () => "Skill Levels Can Exceed 10",
+                            tooltip: () => "Allows skills to exceed level 10. Requires restarting the game. Disabling this will remove the Harmony patch on Farmer.ExperienceGain. This setting doesn't affect current EXP, it prevents further EXP gain beyond level 10.",
                             getValue: () => Config.AllowPlayerToExceedLevel10,
                             setValue: value => Config.AllowPlayerToExceedLevel10 = value
                         );
@@ -237,15 +237,15 @@ namespace MineForMore
                         gmcm.AddBoolOption(
                             mod: ModManifest,
                             name: () => "Allow Updated Level Up Descriptions",
-                            tooltip: () => "Turned on will haromony patch to show more accurate description of what the profession will provide you. Turning this off will only show Vanilla profession description. Updates requires rebooting game to apply",
+                            tooltip: () => "Enables a Harmony patch to show more accurate profession descriptions during level-up. Turning this off will revert to vanilla descriptions. Requires game restart to apply",
                             getValue: () => Config.TurnOnProfessionLevelUpDescription,
                             setValue: value => Config.TurnOnProfessionLevelUpDescription = value
                         );
 
                         gmcm.AddBoolOption(
                             mod: ModManifest,
-                            name: () => "Allow Extra Nodes Spawns",
-                            tooltip: () => "Turning this on will apply Extra node spawn from profession + Non-profession chance. Update requires reboot to apply",
+                            name: () => "Allow Extra Node Spawns",
+                            tooltip: () => "Enables extra node spawns in the mines, based on both base chance and profession bonuses. Requires a game restart to take effect.",
                             getValue: () => Config.AllowExtraNodeSpawnsInMine,
                             setValue: value => Config.AllowExtraNodeSpawnsInMine = value
                         );
@@ -255,8 +255,7 @@ namespace MineForMore
         gmcm.AddSectionTitle(
                 mod: ModManifest,
                 text: () => "Profession Bonuses",
-                tooltip: () => "These settings applies mining drop and multiplier that works with the extra drops from profession. " +
-                "Formula is Ore Drop = (DropCountFromBelow + BonusFromProfession) * MultipierFromBelow"
+                tooltip: () => "These settings apply mining drop bonuses and multipliers based on your professions.\nFormula: Final Drop = (Base Drop + Bonus from Profession) × Multiplier"
             );
 
 
@@ -274,7 +273,7 @@ namespace MineForMore
                         gmcm.AddNumberOption(
                             mod: ModManifest,
                             name: () => "Geologist Bonus (Gem)",
-                            tooltip: () => "Bonus gems amount that drops per each mining level if you have the Geologist profession.",
+                            tooltip: () => "Bonus number of gems dropped per mining level when you have the Geologist profession.",
                             getValue: () => Config.GeologistProfessionBonusGemsPerLevel,
                             setValue: v => Config.GeologistProfessionBonusGemsPerLevel = v,
                             min: 0f,

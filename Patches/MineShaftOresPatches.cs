@@ -7,6 +7,7 @@ using Object = StardewValley.Object;
 using System;
 using System.Linq;
 using MineForMore;
+using System.Collections.Generic;
 
 internal class MineShaftOresPatches
 {
@@ -32,64 +33,53 @@ internal class MineShaftOresPatches
     }
 
     private static void ModifiedCreateLitterObject(
-     double chanceForPurpleStone,
-     double chanceForMysticStone,
-     double gemStoneChance,
-     Vector2 tile,
-     ref Object __result)
+        double chanceForPurpleStone,
+        double chanceForMysticStone,
+        double gemStoneChance,
+        Vector2 tile,
+        ref Object __result)
     {
         Random rand = new Random();
-        int randomChance = rand.Next(1, 101);
         var allDrops = ModEntry.Instance.GetAllDrops();
         if (allDrops == null)
             return;
 
-        // Excavator (ID 22): Randomly replace litter with geode node
-        if (Game1.player.professions.Contains(22) && randomChance == 1)
+        // Try each supported node type (Gem, Geode, Coal, Ore)
+        TryReplaceLitterWithNode("Gem", allDrops, rand, __result: ref __result);
+        TryReplaceLitterWithNode("Geode", allDrops, rand, __result: ref __result);
+        TryReplaceLitterWithNode("Coal&Others", allDrops, rand, __result: ref __result);
+        TryReplaceLitterWithNode("Ore", allDrops, rand, __result: ref __result); // Covers all ores
+    }
+
+    private static void TryReplaceLitterWithNode(string type, IEnumerable<ResourceDropRule> allDrops, Random rand, ref Object __result)
+    {
+        List<ResourceDropRule> candidates = allDrops.Where(m => m.Type == type).ToList();
+        if (!candidates.Any())
+            return;
+
+        foreach (var drop in candidates)
         {
-            var geodeNodes = allDrops
-                .Where(m => m.Type == "Geode")
-                .SelectMany(m => m.DropsFromObjectIDs)
-                .ToList();
+            float chance = drop.ExtraNodeSpawnChancePercent;
 
-            if (geodeNodes.Count > 0)
+            // Always add profession bonus *if* player has profession
+            if (type == "Gem" && Game1.player.professions.Contains(23)) // Gemologist
+                chance += Config.GemNodeSpawnChanceBonusWithProfession;
+            else if (type == "Geode" && Game1.player.professions.Contains(22)) // Excavator
+                chance += Config.GeodeNodeSpawnChanceBonusWithProfession;
+            else if (type == "Coal&Others" && Game1.player.professions.Contains(21)) // Prospector
+                chance += Config.CoalNodeSpawnChanceBonusWithProfession;
+
+            if (chance > 0f && rand.NextDouble() < chance / 100.0)
             {
-                string randomGeodeNode = geodeNodes[rand.Next(geodeNodes.Count)];
-                __result = new Object(randomGeodeNode, 1);
-                return;
-            }
-        }
-
-        // Gemologist (ID 23): Randomly replace litter with gem node
-        if (Game1.player.professions.Contains(23) && randomChance == 2)
-        {
-            var gemNodes = allDrops
-                .Where(m => m.Type == "Gem")
-                .SelectMany(m => m.DropsFromObjectIDs)
-                .ToList();
-
-            if (gemNodes.Count > 0)
-            {
-                string randomGemNode = gemNodes[rand.Next(gemNodes.Count)];
-                __result = new Object(randomGemNode, 1);
-                return;
-            }
-        }
-
-        // Prospector (ID 21): Randomly replace litter with coal node
-        if (Game1.player.professions.Contains(21) && randomChance == 3)
-        {
-            var coalNodes = allDrops
-                .Where(m => m.Type == "Coal & Others")
-                .SelectMany(m => m.DropsFromObjectIDs)
-                .ToList();
-
-            if (coalNodes.Count > 0)
-            {
-                string randomCoalNode = coalNodes[rand.Next(coalNodes.Count)];
-                __result = new Object(randomCoalNode, 1);
-                return;
+                var nodeIDs = drop.DropsFromObjectIDs;
+                if (nodeIDs.Count > 0)
+                {
+                    string chosenID = nodeIDs[rand.Next(nodeIDs.Count)];
+                    __result = new Object(chosenID, 1);
+                    return;
+                }
             }
         }
     }
+
 }

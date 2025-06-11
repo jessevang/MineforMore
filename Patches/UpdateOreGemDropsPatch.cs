@@ -1,15 +1,6 @@
 ﻿using StardewModdingAPI;
 using StardewValley;
-using StardewValley.TerrainFeatures;
-using StardewValley.Tools;
-using StardewValley.Extensions;
-using StardewValley.Locations;
-using Microsoft.Xna.Framework;
 using HarmonyLib;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Object = StardewValley.Object;
 using MineForMore;
 
 internal class UpdateOreGemDropsPatch

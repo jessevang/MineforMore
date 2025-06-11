@@ -35,6 +35,9 @@ internal class UnlimitedMiningLevel
         if (which == 5 || howMuch <= 0)
             return false;
 
+        if (!ModEntry.Instance.Config.AllowPlayerToExceedLevel10 && __instance.GetSkillLevel(which) >= 10)
+            return true; // Let vanilla logic run instead which will cap skill levels at 10
+
         if (!__instance.IsLocalPlayer && Game1.IsServer)
         {
             __instance.queueMessage(17, __instance, which, howMuch);
@@ -56,6 +59,10 @@ internal class UnlimitedMiningLevel
         int oldXP = __instance.experiencePoints[which];
         int newXP = oldXP + howMuch;
         int newLevel = ModifiedcheckForLevelGain(oldXP, newXP);
+
+        if (!ModEntry.Instance.Config.AllowPlayerToExceedLevel10 && newLevel > 10)
+            return false;
+
         __instance.experiencePoints[which] = newXP;
 
         int oldLevel = which switch
@@ -65,7 +72,7 @@ internal class UnlimitedMiningLevel
             2 => __instance.foragingLevel.Value,
             3 => __instance.miningLevel.Value,
             4 => __instance.combatLevel.Value,
-            5 => __instance.luckLevel.Value, // should not happen
+            5 => __instance.luckLevel.Value,
             _ => -1
         };
 
@@ -90,7 +97,7 @@ internal class UnlimitedMiningLevel
             }
         }
 
-        return false; // Prevent original method from running
+        return false;
     }
 
     public static int ModifiedgetBaseExperienceForLevel(int level)

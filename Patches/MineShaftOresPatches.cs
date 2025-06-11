@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework;
 using HarmonyLib;
 using Object = StardewValley.Object;
 using System;
+using System.Linq;
 using MineForMore;
 
 internal class MineShaftOresPatches
@@ -39,11 +40,14 @@ internal class MineShaftOresPatches
     {
         Random rand = new Random();
         int randomChance = rand.Next(1, 101);
+        var allDrops = ModEntry.Instance.GetAllDrops();
+        if (allDrops == null)
+            return;
 
         // Excavator (ID 22): Randomly replace litter with geode node
         if (Game1.player.professions.Contains(22) && randomChance == 1)
         {
-            var geodeNodes = Config.MiningTypeDrop
+            var geodeNodes = allDrops
                 .Where(m => m.Type == "Geode")
                 .SelectMany(m => m.DropsFromObjectIDs)
                 .ToList();
@@ -59,7 +63,7 @@ internal class MineShaftOresPatches
         // Gemologist (ID 23): Randomly replace litter with gem node
         if (Game1.player.professions.Contains(23) && randomChance == 2)
         {
-            var gemNodes = Config.MiningTypeDrop
+            var gemNodes = allDrops
                 .Where(m => m.Type == "Gem")
                 .SelectMany(m => m.DropsFromObjectIDs)
                 .ToList();
@@ -75,8 +79,8 @@ internal class MineShaftOresPatches
         // Prospector (ID 21): Randomly replace litter with coal node
         if (Game1.player.professions.Contains(21) && randomChance == 3)
         {
-            var coalNodes = Config.MiningTypeDrop
-                .Where(m => m.Name == "Coal")
+            var coalNodes = allDrops
+                .Where(m => m.Type == "Coal & Others")
                 .SelectMany(m => m.DropsFromObjectIDs)
                 .ToList();
 

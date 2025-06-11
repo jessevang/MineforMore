@@ -11,7 +11,7 @@
   "profession.20.desc": "Metal bars worth 50% more.\nNew crafting recipe: QuickSmelt\nSmelt ores into bars instantly but cost more resource",
 
   "profession.21.name": "Prospector",
-  "profession.21.desc": "Chance to find Coal doubled. +{{bonus}} extra coal drops per mining level. +1% nodes are coal Nodes",
+  "profession.21.desc": "Chance to find Coal doubled. +{{bonus}} extra coal drops per mining level. +1% nodes are coal Nodes or Clay Nodes",
 
   "profession.22.name": "Excavator",
   "profession.22.desc": "Chance to find geodes doubled. +{{bonus}} additional node drop per mining level.\n+1% nodes are Geode Nodes",

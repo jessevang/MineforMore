@@ -61,9 +61,9 @@ internal class UpdateOreGemDropsPatch
                 bonus = ModEntry.Instance.Config.GeologistProfessionBonusGemsPerLevel * who.MiningLevel;
             else if (entry.Type.Equals("Geode", StringComparison.OrdinalIgnoreCase) && who.professions.Contains(22))
                 bonus = ModEntry.Instance.Config.ExcavatorProfessionBonusGeodesPerLevel * who.MiningLevel;
-            else if (entry.Type.Equals("Ore", StringComparison.OrdinalIgnoreCase) &&
-                     entry.ObjectID == "(O)382" && who.professions.Contains(21))
+            else if (entry.Type.Equals("Coal&Others", StringComparison.OrdinalIgnoreCase) && who.professions.Contains(21))
                 bonus = ModEntry.Instance.Config.ProspectorProfessionBonusCoalPerLevel * who.MiningLevel;
+
 
             int num = (int)((entry.AddAmount + bonus) * entry.Multiplier);
 

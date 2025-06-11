@@ -29,7 +29,7 @@ namespace MineForMore
         public bool AllowExtraNodeSpawnsInMine { get; set; } = true;
 
 
-        public bool listStoneDestroyedInConsole { get; set; } = true;
+        public bool listStoneDestroyedInConsole { get; set; } = false;
 
         public float MinerProfessionBonusOrePerLevel { get; set; } = 1.0f;
         public float GeologistProfessionBonusGemsPerLevel { get; set; } = 1.0f;
@@ -50,13 +50,15 @@ namespace MineForMore
         public ResourceDropRule Clay { get; set; } = new() { Name = "Clay", SkillType = "Mining", Type = "Coal&Others", ObjectID = "(O)330", DropsFromObjectIDs = new() { "818" } };
 
         // Gems
-        public ResourceDropRule Diamond { get; set; } = new() { Name = "Diamond", SkillType = "Mining", Type = "Gem", ObjectID = "(O)72", DropsFromObjectIDs = new() { "2", "44" } };
-        public ResourceDropRule Amethyst { get; set; } = new() { Name = "Amethyst", SkillType = "Mining", Type = "Gem", ObjectID = "(O)66", DropsFromObjectIDs = new() { "8", "44" } };
-        public ResourceDropRule Aquamarine { get; set; } = new() { Name = "Aquamarine", SkillType = "Mining", Type = "Gem", ObjectID = "(O)62", DropsFromObjectIDs = new() { "14", "44" } };
-        public ResourceDropRule Emerald { get; set; } = new() { Name = "Emerald", SkillType = "Mining", Type = "Gem", ObjectID = "(O)60", DropsFromObjectIDs = new() { "12", "44" } };
-        public ResourceDropRule Topaz { get; set; } = new() { Name = "Topaz", SkillType = "Mining", Type = "Gem", ObjectID = "(O)68", DropsFromObjectIDs = new() { "10", "44" } };
-        public ResourceDropRule Ruby { get; set; } = new() { Name = "Ruby", SkillType = "Mining", Type = "Gem", ObjectID = "(O)64", DropsFromObjectIDs = new() { "4", "44" } };
-        public ResourceDropRule Jade { get; set; } = new() { Name = "Jade", SkillType = "Mining", Type = "Gem", ObjectID = "(O)70", DropsFromObjectIDs = new() { "6", "44" } };
+        public ResourceDropRule Diamond { get; set; } = new() { Name = "Diamond", SkillType = "Mining", Type = "Gem", ObjectID = "(O)72", DropsFromObjectIDs = new() { "2" } };
+        public ResourceDropRule Amethyst { get; set; } = new() { Name = "Amethyst", SkillType = "Mining", Type = "Gem", ObjectID = "(O)66", DropsFromObjectIDs = new() { "8" } };
+        public ResourceDropRule Aquamarine { get; set; } = new() { Name = "Aquamarine", SkillType = "Mining", Type = "Gem", ObjectID = "(O)62", DropsFromObjectIDs = new() { "14" } };
+        public ResourceDropRule Emerald { get; set; } = new() { Name = "Emerald", SkillType = "Mining", Type = "Gem", ObjectID = "(O)60", DropsFromObjectIDs = new() { "12" } };
+        public ResourceDropRule Topaz { get; set; } = new() { Name = "Topaz", SkillType = "Mining", Type = "Gem", ObjectID = "(O)68", DropsFromObjectIDs = new() { "10" } };
+        public ResourceDropRule Ruby { get; set; } = new() { Name = "Ruby", SkillType = "Mining", Type = "Gem", ObjectID = "(O)64", DropsFromObjectIDs = new() { "4" } };
+        public ResourceDropRule Jade { get; set; } = new() { Name = "Jade", SkillType = "Mining", Type = "Gem", ObjectID = "(O)70", DropsFromObjectIDs = new() { "6" } };
+
+
 
         // Geodes
         public ResourceDropRule Geode { get; set; } = new() { Name = "Geode", SkillType = "Mining", Type = "Geode", ObjectID = "(O)535", DropsFromObjectIDs = new() { "75" } };

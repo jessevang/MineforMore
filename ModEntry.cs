@@ -25,6 +25,9 @@ namespace MineForMore
         public bool TurnOnMineForMore { get; set; } = true;
         public bool CanMineOnDay1 { get; set; } = true;
         public bool AllowPlayerToExceedLevel10 { get; set; } = true;
+        public bool TurnOnProfessionLevelUpDescription { get; set; } = true;
+        public bool AllowExtraNodeSpawnsInMine { get; set; } = true;
+
 
         public bool listStoneDestroyedInConsole { get; set; } = true;
 
@@ -90,17 +93,21 @@ namespace MineForMore
             {
                 var harmony = new Harmony(ModManifest.UniqueID);
 
-                //Applies ore count bonus based on your mining level, profession, and general flat rate setting.
+
                 new UpdateOreGemDropsPatch(Config).Apply(harmony, Monitor);
 
-                //Applies additional description to level description
-                new MineProfessionLevelDescriptionPatch(Config).Apply(harmony, Monitor);
-                
-                //
-                new MineShaftOresPatches(Config).Apply(harmony, Monitor);
+  
+                if (Config.TurnOnProfessionLevelUpDescription)
+                {
+                    new MineProfessionLevelDescriptionPatch(Config).Apply(harmony, Monitor);
+                }
 
-                
-                //Applies patching Farmer.ExperienceGain to continuely gain exp even after level 10, also sets level 11-infinite level
+                if (Config.AllowExtraNodeSpawnsInMine)
+                {
+                    new MineShaftOresPatches(Config).Apply(harmony, Monitor);
+                }
+
+
                 if (Config.AllowPlayerToExceedLevel10)
                 {
                     new UnlimitedMiningLevel(Config).Apply(harmony, Monitor);
@@ -221,15 +228,31 @@ namespace MineForMore
 
                         gmcm.AddBoolOption(
                             mod: ModManifest,
-                            name: () => "Allow Skill Level to exceed level 10",
+                            name: () => "Skill level can Exceed Level 10",
                             tooltip: () => "Allows all skill levels to exceed 10, saved changes on this option requires restarting the game. Turning this off will disable the harmony patch on Farmer.ExperienceGain. Since this is a harmony patch will require game reset to take effect. You may want to turn this off because other mods may patch this same code. This option won't affect your current Experience amount, it only no longer patches the gain experience which means your skills can't gain exp after you get level 10 or (15,0000 EXP)",
                             getValue: () => Config.AllowPlayerToExceedLevel10,
                             setValue: value => Config.AllowPlayerToExceedLevel10 = value
                         );
 
+                        gmcm.AddBoolOption(
+                            mod: ModManifest,
+                            name: () => "Allow Updated Level Up Descriptions",
+                            tooltip: () => "Turned on will haromony patch to show more accurate description of what the profession will provide you. Turning this off will only show Vanilla profession description. Updates requires rebooting game to apply",
+                            getValue: () => Config.TurnOnProfessionLevelUpDescription,
+                            setValue: value => Config.TurnOnProfessionLevelUpDescription = value
+                        );
+
+                        gmcm.AddBoolOption(
+                            mod: ModManifest,
+                            name: () => "Allow Extra Nodes Spawns",
+                            tooltip: () => "Turning this on will apply Extra node spawn from profession + Non-profession chance. Update requires reboot to apply",
+                            getValue: () => Config.AllowExtraNodeSpawnsInMine,
+                            setValue: value => Config.AllowExtraNodeSpawnsInMine = value
+                        );
 
 
-            gmcm.AddSectionTitle(
+
+        gmcm.AddSectionTitle(
                 mod: ModManifest,
                 text: () => "Profession Bonuses",
                 tooltip: () => "These settings applies mining drop and multiplier that works with the extra drops from profession. " +

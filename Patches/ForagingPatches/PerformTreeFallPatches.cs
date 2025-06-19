@@ -53,17 +53,36 @@ namespace MineForMore.Patches.ForagingPatches
 
             foreach (var rule in rules)
             {
-                if (rule.Type != "Wood" && rule.Type != "Hardwood")
+
+
+
+                if (rule.Type != "Wood" && rule.Type != "Hardwood" && rule.Type != "Seed")
+                {
                     continue;
+                }
 
-                int flat = rule.AddAmount;
-                int scaled = who.professions.Contains(12)
-                    ? (int)Math.Floor(ModEntry.Instance.Config.ForesterWoodPerLevelBonus * currentForagingLevel)
-                    : 0;
 
-                int total = (int)((flat + scaled) * rule.Multiplier);
+                int flat = 0;
+                int scaled = 0;
+                int total = 0;
+                if (rule.Type == "Wood" || rule.Type == "Hardwood")
+                {
+                    flat = rule.AddAmount;
+                    scaled = who.professions.Contains(12) ? (int)Math.Floor(ModEntry.Instance.Config.ForesterWoodPerLevelBonus * currentForagingLevel) : 0;
+
+                }
+                else if (rule.Type == "Seed")
+                {
+                    flat = rule.AddAmount;
+                    scaled = who.professions.Contains(12) ? (int)Math.Floor(ModEntry.Instance.Config.ForesterSeedPerLevelBonus * currentForagingLevel) : 0;
+
+                }
+                total = (int)((flat + scaled) * rule.Multiplier);
+                
                 if (total <= 0)
                     continue;
+
+
 
                 Vector2 dropTile = tileLocation;
 
@@ -72,31 +91,31 @@ namespace MineForMore.Patches.ForagingPatches
                     int dir = __instance.shakeLeft.Value ? -1 : 1;
                     dropTile += new Vector2(dir * 4, 0);
 
+                    Vector2 spawn = (dropTile * 64f) + new Vector2(
+                        Game1.random.Next(-24, 25),
+                        Game1.random.Next(-24, 25)
+                    );
                     Game1.delayedActions.Add(new DelayedAction(1800, () =>
                     {
                         for (int i = 0; i < total; i++)
                         {
-                            Vector2 spawn = (dropTile * 64f) + new Vector2(
-                                Game1.random.Next(-24, 25),
-                                Game1.random.Next(-24, 25)
-                            );
-
-                            Item item = ItemRegistry.Create(rule.Type == "Hardwood" ? "(O)709" : "(O)388");
+                            Item item = ItemRegistry.Create(rule.ObjectID);
                             Game1.createItemDebris(item, spawn, -1, __instance.Location);
                         }
+
                     }));
                 }
-                else
+                else if (!__instance.falling.Value && (rule.Type == "Wood" || rule.Type == "Hardwood"))
                 {
                     for (int i = 0; i < total; i++)
                     {
-                        Vector2 spawn = (dropTile * 64f) + new Vector2(
+                        Vector2 StompSpawn = (dropTile * 64f) + new Vector2(
                             Game1.random.Next(-24, 25),
                             Game1.random.Next(-24, 25)
                         );
 
-                        Item item = ItemRegistry.Create(rule.Type == "Hardwood" ? "(O)709" : "(O)388");
-                        Game1.createItemDebris(item, spawn, -1, __instance.Location);
+                        Item item = ItemRegistry.Create(rule.ObjectID);
+                        Game1.createItemDebris(item, StompSpawn, -1, __instance.Location);
                     }
                 }
             }

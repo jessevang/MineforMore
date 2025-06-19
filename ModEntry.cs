@@ -41,7 +41,8 @@ namespace MineForMore
         public float ExcavatorProfessionBonusGeodesPerLevel { get; set; } = 1.0f;
 
         //Foraging
-        public float ForesterWoodPerLevelBonus = 1.0f;
+        public float ForesterWoodPerLevelBonus = 2.0f;
+        public float ForesterSeedPerLevelBonus = 0.5f;
         public float ForesterTreeGrowthPerLevelBonus = 0.10f;
 
 
@@ -79,19 +80,19 @@ namespace MineForMore
 
         // Foraging: Tree & Stump drops
         public ResourceDropRule Oak_Wood { get; set; } = new() { Name = "Oak Wood", SkillType = "Foraging", Type = "Wood", ObjectID = "(O)388", DropsFromObjectIDs = new() { "TreeOak" } };
-        public ResourceDropRule Oak_Seed { get; set; } = new() { Name = "Oak Seed", SkillType = "Foraging", Type = "Seed", ObjectID = "(O)309", DropsFromObjectIDs = new() { "TreeOak" } };
+        public ResourceDropRule Oak_Seed { get; set; } = new() { Name = "Oak Seed", SkillType = "Foraging", Type = "Seed", ObjectID = "(O)309", AddAmount = 2, DropsFromObjectIDs = new() { "TreeOak" } };
         public ResourceDropRule Oak_Resin { get; set; } = new() { Name = "Oak Resin", SkillType = "Foraging", Type = "Tap", ObjectID = "(O)725", DropsFromObjectIDs = new() { "TreeOak" } };
 
         public ResourceDropRule Maple_Wood { get; set; } = new() { Name = "Maple Wood", SkillType = "Foraging", Type = "Wood", ObjectID = "(O)388", DropsFromObjectIDs = new() { "TreeMaple" } };
-        public ResourceDropRule Maple_Seed { get; set; } = new() { Name = "Maple Seed", SkillType = "Foraging", Type = "Seed", ObjectID = "(O)310", DropsFromObjectIDs = new() { "TreeMaple" } };
+        public ResourceDropRule Maple_Seed { get; set; } = new() { Name = "Maple Seed", SkillType = "Foraging", Type = "Seed", ObjectID = "(O)310", AddAmount = 2, DropsFromObjectIDs = new() { "TreeMaple" } };
         public ResourceDropRule Maple_Syrup { get; set; } = new() { Name = "Maple Syrup", SkillType = "Foraging", Type = "Tap", ObjectID = "(O)724", DropsFromObjectIDs = new() { "TreeMaple" } };
 
         public ResourceDropRule Pine_Wood { get; set; } = new() { Name = "Pine Wood", SkillType = "Foraging", Type = "Wood", ObjectID = "(O)388", DropsFromObjectIDs = new() { "TreePine" } };
-        public ResourceDropRule Pine_Seed { get; set; } = new() { Name = "Pine Cone", SkillType = "Foraging", Type = "Seed", ObjectID = "(O)311", DropsFromObjectIDs = new() { "TreePine" } };
+        public ResourceDropRule Pine_Seed { get; set; } = new() { Name = "Pine Cone", SkillType = "Foraging", Type = "Seed", ObjectID = "(O)311", AddAmount = 2, DropsFromObjectIDs = new() { "TreePine" } };
         public ResourceDropRule Pine_Tar { get; set; } = new() { Name = "Pine Tar", SkillType = "Foraging", Type = "Tap", ObjectID = "(O)726", DropsFromObjectIDs = new() { "TreePine" } };
 
         public ResourceDropRule Mahogany_Hardwood { get; set; } = new() { Name = "Mahogany Hardwood", SkillType = "Foraging", Type = "Hardwood", ObjectID = "(O)709", DropsFromObjectIDs = new() { "TreeMahogany" } };
-        public ResourceDropRule Mahogany_Seed { get; set; } = new() { Name = "Mahogany Seed", SkillType = "Foraging", Type = "Seed", ObjectID = "(O)292", DropsFromObjectIDs = new() { "TreeMahogany" } };
+        public ResourceDropRule Mahogany_Seed { get; set; } = new() { Name = "Mahogany Seed", SkillType = "Foraging", Type = "Seed", ObjectID = "(O)292", AddAmount = 2, DropsFromObjectIDs = new() { "TreeMahogany" } };
         public ResourceDropRule Mahogany_Sap { get; set; } = new() { Name = "Sap", SkillType = "Foraging", Type = "Tap", ObjectID = "(O)92", DropsFromObjectIDs = new() { "TreeMahogany" } };
 
         public ResourceDropRule LargeStump { get; set; } = new() { Name = "Large Stump Hardwood", SkillType = "Foraging", Type = "Hardwood", ObjectID = "(O)709", DropsFromObjectIDs = new() { "LargeStump" }, AddAmount = 2, Multiplier = 1.0 };
@@ -282,7 +283,7 @@ namespace MineForMore
 
         gmcm.AddSectionTitle(
                 mod: ModManifest,
-                text: () => "Profession Bonuses",
+                text: () => "Mining Profession Bonuses",
                 tooltip: () => "These settings apply mining drop bonuses and multipliers based on your professions.\nFormula: Final Drop = (Base Drop + Bonus from Profession) × Multiplier"
             );
 
@@ -363,6 +364,48 @@ namespace MineForMore
                             min: 0f,
                             max: 100f,
                             interval: 0.1f
+                        );
+
+            gmcm.AddSectionTitle(
+                mod: ModManifest,
+                text: () => "Foraging Profession Bonuses",
+                tooltip: () => "These settings apply Foraging drop bonuses and multipliers based on your professions.\nFormula: Final Drop = (Base Drop + Bonus from Profession) × Multiplier"
+            );
+
+
+                        
+                        gmcm.AddNumberOption(
+                            mod: ModManifest,
+                            getValue: () => Config.ForesterWoodPerLevelBonus,
+                            setValue: value => Config.ForesterWoodPerLevelBonus = value,
+                            name: () => "Extra Wood Per Foraging Level",
+                            tooltip: () => "How much extra wood to grant per Foraging level if the player has the Forester profession.",
+                            min: 0f,
+                            max: 10f,
+                            interval: 0.1f
+                        );
+
+                        
+                        gmcm.AddNumberOption(
+                            mod: ModManifest,
+                            getValue: () => Config.ForesterTreeGrowthPerLevelBonus,
+                            setValue: value => Config.ForesterTreeGrowthPerLevelBonus = value,
+                            name: () => "Tree Growth Rate Bonus Per Level",
+                            tooltip: () => "How much faster trees grow per Foraging level with the Forester profession.",
+                            min: 0f,
+                            max: 1f,
+                            interval: 0.01f
+                        );
+
+                        gmcm.AddNumberOption(
+                            mod: ModManifest,
+                            getValue: () => Config.ForesterTreeGrowthPerLevelBonus,
+                            setValue: value => Config.ForesterTreeGrowthPerLevelBonus = value,
+                            name: () => "Tree Seed Bonus Per Level",
+                            tooltip: () => "How much Seed drops per Foraging level with the Forester profession.",
+                            min: 0f,
+                            max: 10f,
+                            interval: 0.01f
                         );
 
             gmcm.AddSectionTitle(

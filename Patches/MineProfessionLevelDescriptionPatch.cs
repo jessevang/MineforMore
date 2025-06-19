@@ -31,7 +31,6 @@ internal class MineProfessionLevelDescriptionPatch
             return;
         var i18n = Instance.Helper.Translation;
 
-        __result.Clear();
 
         switch (whichProfession)
         {
@@ -64,6 +63,18 @@ internal class MineProfessionLevelDescriptionPatch
                 __result.Add(i18n.Get("profession.23.name"));
                 __result.Add(i18n.Get("profession.23.desc"));
                 break;
+            default:
+                // Leave original __result untouched
+                break;
+        }
+
+
+        if (__result.Count != 2)
+        {
+            // Restore placeholder if mod logic failed
+            __result.Clear();
+            __result.Add("Unknown Profession");
+            __result.Add("Description not available.");
         }
     }
 }

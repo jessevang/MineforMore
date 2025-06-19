@@ -41,8 +41,8 @@ namespace MineForMore
         public float ExcavatorProfessionBonusGeodesPerLevel { get; set; } = 1.0f;
 
         //Foraging
-        public float ForesterWoodPerLevelBonus = 2.0f;
-        public float ForesterSeedPerLevelBonus = 0.5f;
+        public float ForesterWoodPerLevelBonus = 3.0f;
+        public float ForesterSeedPerLevelBonus = 1.0f;
         public float ForesterTreeGrowthPerLevelBonus = 0.10f;
 
 
@@ -223,7 +223,8 @@ namespace MineForMore
 
         private void registerGMCM()
         {
-            var gmcm = Helper.ModRegistry.GetApi<IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
+
+            IGenericModConfigMenuApi gmcm = Helper.ModRegistry.GetApi<IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
             if (gmcm is null) return;
 
             gmcm.Register(
@@ -231,13 +232,53 @@ namespace MineForMore
                 reset: () => Config = new Config(),
                 save: () => Helper.WriteConfig(Config)
             );
+            gmcm.AddSectionTitle(
+                mod: ModManifest,
+                text: () => "Edit Skill Settings"
+            );
+            gmcm.AddParagraph(
+                mod: ModManifest,
+                text: () => "Click on one of the Skill pages below to modify the drops without professions and the drop bonuses from a professions based on the skill level."
+             );
+
+            gmcm.AddPageLink(mod: ModManifest, pageId: "Mining Settings", text: () =>"     1. Mining Setting Page", tooltip: () => "");
+            gmcm.AddPageLink(mod: ModManifest, pageId: "Foraging Settings", text: () => "     2. Foraging Setting Page", tooltip: () => "");
 
             gmcm.AddSectionTitle(
                 mod: ModManifest,
-                text: () => "General Settings"
+                text: () => " "
+            );
+            gmcm.AddSectionTitle(
+                mod: ModManifest,
+                text: () => "Other Settings"
             );
 
-                        gmcm.AddBoolOption(
+            gmcm.AddParagraph(
+                mod: ModManifest,
+                text: () => "Click on one of the other pages below to turn off entire function or some functions in this mod so that it can continue to work with other mods"
+             );
+
+            gmcm.AddPageLink(mod: ModManifest, pageId: "Other Settings", text: () => "     3. Other Settings Page", tooltip: () => "");
+
+            MiningConfigPage(gmcm);
+            ForagingConfigPage(gmcm);
+            OtherSettingsPages(gmcm);
+
+        }
+
+        private void OtherSettingsPages(IGenericModConfigMenuApi gmcm)
+        {
+            gmcm.AddPage(mod: ModManifest, pageId: "Other Settings", pageTitle: () => "Other Settings");
+            gmcm.AddSectionTitle(
+                mod: ModManifest,
+                text: () => "Other Settings"
+            );
+            gmcm.AddParagraph(
+                mod: ModManifest,
+                text: () => "If your having issues with this mod working with other mods, feel free to adjust the general setting features below to turn off certain functions in this mod so that you may use other mods that may share the same code they are being overwritten (Harmony Patch)."
+            );
+
+            gmcm.AddBoolOption(
                             mod: ModManifest,
                             name: () => "Mine For More Enabled",
                             tooltip: () => "Disables all functions from this mod except the config menu, allowing you to re-enable it later. Requires restarting the game.",
@@ -247,166 +288,215 @@ namespace MineForMore
 
 
 
-                        gmcm.AddBoolOption(
-                            mod: ModManifest,
-                            name: () => "User Can Mine on Day 1",
-                            tooltip: () => "Allows mine access on Day 1. Turning this off will prevent mine access before Day 5.",
-                            getValue: () => Config.CanMineOnDay1,
-                            setValue: value => Config.CanMineOnDay1 = value
-                        );
+            gmcm.AddBoolOption(
+                mod: ModManifest,
+                name: () => "User Can Mine on Day 1",
+                tooltip: () => "Allows mine access on Day 1. Turning this off will prevent mine access before Day 5.",
+                getValue: () => Config.CanMineOnDay1,
+                setValue: value => Config.CanMineOnDay1 = value
+            );
 
-                        gmcm.AddBoolOption(
-                            mod: ModManifest,
-                            name: () => "Skill Levels Can Exceed 10",
-                            tooltip: () => "Allows skills to exceed level 10. Requires restarting the game. Disabling this will remove the Harmony patch on Farmer.ExperienceGain. This setting doesn't affect current EXP, it prevents further EXP gain beyond level 10.",
-                            getValue: () => Config.AllowPlayerToExceedLevel10,
-                            setValue: value => Config.AllowPlayerToExceedLevel10 = value
-                        );
+            gmcm.AddBoolOption(
+                mod: ModManifest,
+                name: () => "Skill Levels Can Exceed 10",
+                tooltip: () => "Allows skills to exceed level 10. Requires restarting the game. Disabling this will remove the Harmony patch on Farmer.ExperienceGain. This setting doesn't affect current EXP, it prevents further EXP gain beyond level 10.",
+                getValue: () => Config.AllowPlayerToExceedLevel10,
+                setValue: value => Config.AllowPlayerToExceedLevel10 = value
+            );
 
-                        gmcm.AddBoolOption(
-                            mod: ModManifest,
-                            name: () => "Allow Updated Level Up Descriptions",
-                            tooltip: () => "Enables a Harmony patch to show more accurate profession descriptions during level-up. Turning this off will revert to vanilla descriptions. Requires game restart to apply",
-                            getValue: () => Config.TurnOnProfessionLevelUpDescription,
-                            setValue: value => Config.TurnOnProfessionLevelUpDescription = value
-                        );
+            gmcm.AddBoolOption(
+                mod: ModManifest,
+                name: () => "Allow Updated Level Up Descriptions",
+                tooltip: () => "Enables a Harmony patch to show more accurate profession descriptions during level-up. Turning this off will revert to vanilla descriptions. Requires game restart to apply",
+                getValue: () => Config.TurnOnProfessionLevelUpDescription,
+                setValue: value => Config.TurnOnProfessionLevelUpDescription = value
+            );
 
-                        gmcm.AddBoolOption(
-                            mod: ModManifest,
-                            name: () => "Allow Extra Node Spawns",
-                            tooltip: () => "Enables extra node spawns in the mines, based on both base chance and profession bonuses. Requires a game restart to take effect.",
-                            getValue: () => Config.AllowExtraNodeSpawnsInMine,
-                            setValue: value => Config.AllowExtraNodeSpawnsInMine = value
-                        );
+            gmcm.AddBoolOption(
+                mod: ModManifest,
+                name: () => "Allow Extra Node Spawns",
+                tooltip: () => "Enables extra node spawns in the mines, based on both base chance and profession bonuses. Requires a game restart to take effect.",
+                getValue: () => Config.AllowExtraNodeSpawnsInMine,
+                setValue: value => Config.AllowExtraNodeSpawnsInMine = value
+            );
+
+            gmcm.AddBoolOption(
+               mod: ModManifest,
+               name: () => "Log Stone Destruction",
+               tooltip: () => "Print stone destruction to console including information on bonus ore, multiplier, bonus from profession, and expected total from bonus.",
+               getValue: () => Config.listStoneDestroyedInConsole,
+               setValue: value => Config.listStoneDestroyedInConsole = value
+           );
+
+        }
+
+        private void ForagingConfigPage(IGenericModConfigMenuApi gmcm)
+        {
+            gmcm.AddPage(mod: ModManifest, pageId: "Foraging Settings", pageTitle: () => "Foraging Settings");
+            gmcm.AddSectionTitle(
+                    mod: ModManifest,
+                    text: () => "Foraging Profession Bonuses",
+                    tooltip: () => "These settings apply Foraging drop bonuses and multipliers based on your professions.\nFormula: Final Drop = (Base Drop + Bonus from Profession) × Multiplier"
+                );
+
+            gmcm.AddParagraph(
+                mod: ModManifest,
+                text: () => "Update the bonus drops obtained from a profession. Adjust the drop per skill level below to adjust how much bonus drops you get if you have learned the listed profession."
+            );
+
+            gmcm.AddNumberOption(
+                mod: ModManifest,
+                getValue: () => Config.ForesterWoodPerLevelBonus,
+                setValue: value => Config.ForesterWoodPerLevelBonus = value,
+                name: () => "Extra Wood Per Foraging Level",
+                tooltip: () => "How much extra wood to grant per Foraging level if the player has the Forester profession.",
+                min: 0f,
+                max: 10f,
+                interval: 0.1f
+            );
 
 
+            gmcm.AddNumberOption(
+                mod: ModManifest,
+                getValue: () => Config.ForesterTreeGrowthPerLevelBonus,
+                setValue: value => Config.ForesterTreeGrowthPerLevelBonus = value,
+                name: () => "Tree Growth Rate Bonus Per Level",
+                tooltip: () => "How much faster trees grow per Foraging level with the Forester profession.",
+                min: 0f,
+                max: 1f,
+                interval: 0.01f
+            );
 
-        gmcm.AddSectionTitle(
+            gmcm.AddNumberOption(
+                mod: ModManifest,
+                getValue: () => Config.ForesterTreeGrowthPerLevelBonus,
+                setValue: value => Config.ForesterTreeGrowthPerLevelBonus = value,
+                name: () => "Tree Seed Bonus Per Level",
+                tooltip: () => "How much Seed drops per Foraging level with the Forester profession.",
+                min: 0f,
+                max: 10f,
+                interval: 0.01f
+            );
+            
+            gmcm.AddSectionTitle(
+                mod: ModManifest,
+                text: () => ""
+
+            );
+            gmcm.AddSectionTitle(ModManifest, text: () => "Foraging - Configure Drops", tooltip: () => "Set Foraging drop bonuses");
+            gmcm.AddParagraph(
+                mod: ModManifest,
+                text: () => "Update the drops obtained without requiring a profession. These adjust works right away and is added with the profession bonuses before the added values are multiplied with the multiplier below."
+            );
+            foreach (var drop in GetAllRules())
+            {
+                if (drop.SkillType.ToString().Equals("Foraging"))
+                {
+                    AddDropToGMCM(gmcm, drop.Name, () => drop, drop.SkillType);
+                }
+
+            }
+        }
+
+        private void MiningConfigPage(IGenericModConfigMenuApi gmcm)
+        {
+
+            gmcm.AddPage(mod: ModManifest, pageId: "Mining Settings", pageTitle: () => "Mining Settings");
+
+            gmcm.AddSectionTitle(
                 mod: ModManifest,
                 text: () => "Mining Profession Bonuses",
                 tooltip: () => "These settings apply mining drop bonuses and multipliers based on your professions.\nFormula: Final Drop = (Base Drop + Bonus from Profession) × Multiplier"
             );
-
-
-                        gmcm.AddNumberOption(
-                            mod: ModManifest,
-                            name: () => "Miner Bonus (Ore)",
-                            tooltip: () => "Bonus ore amount per each mining level if you have the Miner profession.",
-                            getValue: () => Config.MinerProfessionBonusOrePerLevel,
-                            setValue: v => Config.MinerProfessionBonusOrePerLevel = v,
-                            min: 0f,
-                            max: 10f,
-                            interval: 0.1f
-                        );
-
-                        gmcm.AddNumberOption(
-                            mod: ModManifest,
-                            name: () => "Geologist Bonus (Gem)",
-                            tooltip: () => "Bonus number of gems dropped per mining level when you have the Geologist profession.",
-                            getValue: () => Config.GeologistProfessionBonusGemsPerLevel,
-                            setValue: v => Config.GeologistProfessionBonusGemsPerLevel = v,
-                            min: 0f,
-                            max: 10f,
-                            interval: 0.1f
-                        );
-
-                        gmcm.AddNumberOption(
-                            mod: ModManifest,
-                            name: () => "Gemologist Bonus (Gem Node)",
-                            tooltip: () => "Bonus gem node spawn chance (%) if you have the Gemologist profession.",
-                            getValue: () => Config.GemNodeSpawnChanceBonusWithProfession,
-                            setValue: v => Config.GemNodeSpawnChanceBonusWithProfession = v,
-                            min: 0f,
-                            max: 100f,
-                            interval: 0.1f
-                        );
-
-
-                        gmcm.AddNumberOption(
-                            mod: ModManifest,
-                            name: () => "Prospector Bonus (Coal)",
-                            tooltip: () => "Bonus coal per each mining level if you have the Prospector profession.",
-                            getValue: () => Config.ProspectorProfessionBonusCoalPerLevel,
-                            setValue: v => Config.ProspectorProfessionBonusCoalPerLevel = v,
-                            min: 0f,
-                            max: 10f,
-                            interval: 0.1f
-                        );
-
-                        gmcm.AddNumberOption(
-                            mod: ModManifest,
-                            name: () => "Prospector Bonus (Coal Node)",
-                            tooltip: () => "Bonus coal node spawn chance (%) if you have the Prospector profession.",
-                            getValue: () => Config.CoalNodeSpawnChanceBonusWithProfession,
-                            setValue: v => Config.CoalNodeSpawnChanceBonusWithProfession = v,
-                            min: 0f,
-                            max: 100f,
-                            interval: 0.1f
-                        );
-
-                        gmcm.AddNumberOption(
-                            mod: ModManifest,
-                            name: () => "Excavator Bonus (Geode)",
-                            tooltip: () => "Bonus geodes per each mining level if you have the Excavator profession.",
-                            getValue: () => Config.ExcavatorProfessionBonusGeodesPerLevel,
-                            setValue: v => Config.ExcavatorProfessionBonusGeodesPerLevel = v,
-                            min: 0f,
-                            max: 10f,
-                            interval: 0.1f
-                        );
-
-                        gmcm.AddNumberOption(
-                            mod: ModManifest,
-                            name: () => "Excavator Bonus (Geode Node)",
-                            tooltip: () => "Bonus geode node spawn chance (%) if you have the Excavator profession.",
-                            getValue: () => Config.GeodeNodeSpawnChanceBonusWithProfession,
-                            setValue: v => Config.GeodeNodeSpawnChanceBonusWithProfession = v,
-                            min: 0f,
-                            max: 100f,
-                            interval: 0.1f
-                        );
-
-            gmcm.AddSectionTitle(
+            gmcm.AddParagraph(
                 mod: ModManifest,
-                text: () => "Foraging Profession Bonuses",
-                tooltip: () => "These settings apply Foraging drop bonuses and multipliers based on your professions.\nFormula: Final Drop = (Base Drop + Bonus from Profession) × Multiplier"
+                text: () => "Update the bonus drops obtained from a profession. Adjust the drop per skill level below to adjust how much bonus drops you get if you have learned the listed profession."
             );
 
 
-                        
-                        gmcm.AddNumberOption(
-                            mod: ModManifest,
-                            getValue: () => Config.ForesterWoodPerLevelBonus,
-                            setValue: value => Config.ForesterWoodPerLevelBonus = value,
-                            name: () => "Extra Wood Per Foraging Level",
-                            tooltip: () => "How much extra wood to grant per Foraging level if the player has the Forester profession.",
-                            min: 0f,
-                            max: 10f,
-                            interval: 0.1f
-                        );
+            gmcm.AddNumberOption(
+                mod: ModManifest,
+                name: () => "Miner Bonus (Ore)",
+                tooltip: () => "Bonus ore amount per each mining level if you have the Miner profession.",
+                getValue: () => Config.MinerProfessionBonusOrePerLevel,
+                setValue: v => Config.MinerProfessionBonusOrePerLevel = v,
+                min: 0f,
+                max: 10f,
+                interval: 0.1f
+            );
 
-                        
-                        gmcm.AddNumberOption(
-                            mod: ModManifest,
-                            getValue: () => Config.ForesterTreeGrowthPerLevelBonus,
-                            setValue: value => Config.ForesterTreeGrowthPerLevelBonus = value,
-                            name: () => "Tree Growth Rate Bonus Per Level",
-                            tooltip: () => "How much faster trees grow per Foraging level with the Forester profession.",
-                            min: 0f,
-                            max: 1f,
-                            interval: 0.01f
-                        );
+            gmcm.AddNumberOption(
+                mod: ModManifest,
+                name: () => "Geologist Bonus (Gem)",
+                tooltip: () => "Bonus number of gems dropped per mining level when you have the Geologist profession.",
+                getValue: () => Config.GeologistProfessionBonusGemsPerLevel,
+                setValue: v => Config.GeologistProfessionBonusGemsPerLevel = v,
+                min: 0f,
+                max: 10f,
+                interval: 0.1f
+            );
 
-                        gmcm.AddNumberOption(
-                            mod: ModManifest,
-                            getValue: () => Config.ForesterTreeGrowthPerLevelBonus,
-                            setValue: value => Config.ForesterTreeGrowthPerLevelBonus = value,
-                            name: () => "Tree Seed Bonus Per Level",
-                            tooltip: () => "How much Seed drops per Foraging level with the Forester profession.",
-                            min: 0f,
-                            max: 10f,
-                            interval: 0.01f
-                        );
+            gmcm.AddNumberOption(
+                mod: ModManifest,
+                name: () => "Gemologist Bonus (Gem Node)",
+                tooltip: () => "Bonus gem node spawn chance (%) if you have the Gemologist profession.",
+                getValue: () => Config.GemNodeSpawnChanceBonusWithProfession,
+                setValue: v => Config.GemNodeSpawnChanceBonusWithProfession = v,
+                min: 0f,
+                max: 100f,
+                interval: 0.1f
+            );
+
+
+            gmcm.AddNumberOption(
+                mod: ModManifest,
+                name: () => "Prospector Bonus (Coal)",
+                tooltip: () => "Bonus coal per each mining level if you have the Prospector profession.",
+                getValue: () => Config.ProspectorProfessionBonusCoalPerLevel,
+                setValue: v => Config.ProspectorProfessionBonusCoalPerLevel = v,
+                min: 0f,
+                max: 10f,
+                interval: 0.1f
+            );
+
+            gmcm.AddNumberOption(
+                mod: ModManifest,
+                name: () => "Prospector Bonus (Coal Node)",
+                tooltip: () => "Bonus coal node spawn chance (%) if you have the Prospector profession.",
+                getValue: () => Config.CoalNodeSpawnChanceBonusWithProfession,
+                setValue: v => Config.CoalNodeSpawnChanceBonusWithProfession = v,
+                min: 0f,
+                max: 100f,
+                interval: 0.1f
+            );
+
+            gmcm.AddNumberOption(
+                mod: ModManifest,
+                name: () => "Excavator Bonus (Geode)",
+                tooltip: () => "Bonus geodes per each mining level if you have the Excavator profession.",
+                getValue: () => Config.ExcavatorProfessionBonusGeodesPerLevel,
+                setValue: v => Config.ExcavatorProfessionBonusGeodesPerLevel = v,
+                min: 0f,
+                max: 10f,
+                interval: 0.1f
+            );
+
+            gmcm.AddNumberOption(
+                mod: ModManifest,
+                name: () => "Excavator Bonus (Geode Node)",
+                tooltip: () => "Bonus geode node spawn chance (%) if you have the Excavator profession.",
+                getValue: () => Config.GeodeNodeSpawnChanceBonusWithProfession,
+                setValue: v => Config.GeodeNodeSpawnChanceBonusWithProfession = v,
+                min: 0f,
+                max: 100f,
+                interval: 0.1f
+            );
+
+            gmcm.AddSectionTitle(
+                mod: ModManifest,
+                text: () => ""
+
+            );
 
             gmcm.AddSectionTitle(
                 mod: ModManifest,
@@ -414,48 +504,22 @@ namespace MineForMore
                 tooltip: () => "These settings applies mining drop and multiplier that works with the extra drops from profession. " +
                 "Formula is Ore Drop = (DropCountFromBelow + BonusFromProfession) * MultipierFromBelow"
             );
-
-
-                        foreach (var drop in GetAllRules())
-                        {
-                            if (drop.SkillType.ToString().Equals("Mining"))
-                            {
-                                AddDropToGMCM(gmcm, drop.Name, () => drop, drop.SkillType);
-                            }
-                        }
-
-
-
-            gmcm.AddSectionTitle(ModManifest, text: () => "Foraging - Configure Drops", tooltip: () => "Set Foraging drop bonuses");
-                    foreach (var drop in GetAllRules())
-                    {
-                        if (drop.SkillType.ToString().Equals("Foraging"))
-                        {
-                            AddDropToGMCM(gmcm, drop.Name, () => drop, drop.SkillType);
-                        }
-                         
-                    }
-                        
-
-
-
-            gmcm.AddSectionTitle(
+            gmcm.AddParagraph(
                 mod: ModManifest,
-                text: () => "Debug Options",
-                tooltip: () => "Set this setting for additional logging to assist with troubleshooting"
+                text: () => "Update the drops obtained from without requiring a profession. These adjust works right away without profession, and is added with the profession bonuses."
             );
 
-                        gmcm.AddBoolOption(
-                            mod: ModManifest,
-                            name: () => "Log Stone Destruction",
-                            tooltip: () => "Print stone destruction to console including information on bonus ore, multiplier, bonus from profession, and expected total from bonus.",
-                            getValue: () => Config.listStoneDestroyedInConsole,
-                            setValue: value => Config.listStoneDestroyedInConsole = value
-                        );
+            foreach (var drop in GetAllRules())
+            {
+                if (drop.SkillType.ToString().Equals("Mining"))
+                {
+                    AddDropToGMCM(gmcm, drop.Name, () => drop, drop.SkillType);
+                }
+            }
 
 
         }
-        
+
         private void AddDropToGMCM(IGenericModConfigMenuApi gmcm, string label, Func<ResourceDropRule> getDrop, string skilltype)
         {
             var drop = getDrop();

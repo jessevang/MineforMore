@@ -1,6 +1,8 @@
 ﻿using GenericModConfigMenu;
 using HarmonyLib;
+using Microsoft.Xna.Framework.Input;
 using MineForMore.Classes;
+using MineForMore.Patches.ForagingPatches;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
@@ -31,10 +33,17 @@ namespace MineForMore
 
         public bool listStoneDestroyedInConsole { get; set; } = false;
 
+
+        //Mining
         public float MinerProfessionBonusOrePerLevel { get; set; } = 1.0f;
         public float GeologistProfessionBonusGemsPerLevel { get; set; } = 1.0f;
         public float ProspectorProfessionBonusCoalPerLevel { get; set; } = 1.0f;
         public float ExcavatorProfessionBonusGeodesPerLevel { get; set; } = 1.0f;
+
+        //Foraging
+        public float ForesterWoodPerLevelBonus = 1.0f;
+        public float ForesterTreeGrowthPerLevelBonus = 0.10f;
+
 
         // Ores
         public ResourceDropRule Stone { get; set; } = new() { Name = "Stone", SkillType = "Mining", Type = "Ore", ObjectID = "(O)390", DropsFromObjectIDs = new() { "32", "34", "36", "38", "40", "48", "50", "52", "54", "56", "58", "343", "450", "668", "670", "760", "762", "845", "846", "847" } };
@@ -67,11 +76,36 @@ namespace MineForMore
         public ResourceDropRule OmniGeode { get; set; } = new() { Name = "Omni Geode", SkillType = "Mining", Type = "Geode", ObjectID = "(O)749", DropsFromObjectIDs = new() { "819" } };
 
 
+
+        // Foraging: Tree & Stump drops
+        public ResourceDropRule Oak_Wood { get; set; } = new() { Name = "Oak Wood", SkillType = "Foraging", Type = "Wood", ObjectID = "(O)388", DropsFromObjectIDs = new() { "TreeOak" } };
+        public ResourceDropRule Oak_Seed { get; set; } = new() { Name = "Oak Seed", SkillType = "Foraging", Type = "Seed", ObjectID = "(O)309", DropsFromObjectIDs = new() { "TreeOak" } };
+        public ResourceDropRule Oak_Resin { get; set; } = new() { Name = "Oak Resin", SkillType = "Foraging", Type = "Tap", ObjectID = "(O)725", DropsFromObjectIDs = new() { "TreeOak" } };
+
+        public ResourceDropRule Maple_Wood { get; set; } = new() { Name = "Maple Wood", SkillType = "Foraging", Type = "Wood", ObjectID = "(O)388", DropsFromObjectIDs = new() { "TreeMaple" } };
+        public ResourceDropRule Maple_Seed { get; set; } = new() { Name = "Maple Seed", SkillType = "Foraging", Type = "Seed", ObjectID = "(O)310", DropsFromObjectIDs = new() { "TreeMaple" } };
+        public ResourceDropRule Maple_Syrup { get; set; } = new() { Name = "Maple Syrup", SkillType = "Foraging", Type = "Tap", ObjectID = "(O)724", DropsFromObjectIDs = new() { "TreeMaple" } };
+
+        public ResourceDropRule Pine_Wood { get; set; } = new() { Name = "Pine Wood", SkillType = "Foraging", Type = "Wood", ObjectID = "(O)388", DropsFromObjectIDs = new() { "TreePine" } };
+        public ResourceDropRule Pine_Seed { get; set; } = new() { Name = "Pine Cone", SkillType = "Foraging", Type = "Seed", ObjectID = "(O)311", DropsFromObjectIDs = new() { "TreePine" } };
+        public ResourceDropRule Pine_Tar { get; set; } = new() { Name = "Pine Tar", SkillType = "Foraging", Type = "Tap", ObjectID = "(O)726", DropsFromObjectIDs = new() { "TreePine" } };
+
+        public ResourceDropRule Mahogany_Hardwood { get; set; } = new() { Name = "Mahogany Hardwood", SkillType = "Foraging", Type = "Hardwood", ObjectID = "(O)709", DropsFromObjectIDs = new() { "TreeMahogany" } };
+        public ResourceDropRule Mahogany_Seed { get; set; } = new() { Name = "Mahogany Seed", SkillType = "Foraging", Type = "Seed", ObjectID = "(O)292", DropsFromObjectIDs = new() { "TreeMahogany" } };
+        public ResourceDropRule Mahogany_Sap { get; set; } = new() { Name = "Sap", SkillType = "Foraging", Type = "Tap", ObjectID = "(O)92", DropsFromObjectIDs = new() { "TreeMahogany" } };
+
+        public ResourceDropRule LargeStump { get; set; } = new() { Name = "Large Stump Hardwood", SkillType = "Foraging", Type = "Hardwood", ObjectID = "(O)709", DropsFromObjectIDs = new() { "LargeStump" }, AddAmount = 2, Multiplier = 1.0 };
+        public ResourceDropRule LargeLog { get; set; } = new() { Name = "Large Log Hardwood", SkillType = "Foraging", Type = "Hardwood", ObjectID = "(O)709", DropsFromObjectIDs = new() { "LargeLog" }, AddAmount = 3, Multiplier = 1.0 };
+
+
+
         // Additional node spawn chance if player has specific professions
         public float GemNodeSpawnChanceBonusWithProfession { get; set; } = 1f;
         public float GeodeNodeSpawnChanceBonusWithProfession { get; set; } = 1f;
         public float CoalNodeSpawnChanceBonusWithProfession { get; set; } = 1f;
 
+
+        
     }
 
 
@@ -94,11 +128,13 @@ namespace MineForMore
             if (Config.TurnOnMineForMore)
             {
                 var harmony = new Harmony(ModManifest.UniqueID);
-
-
                 new UpdateOreGemDropsPatch(Config).Apply(harmony, Monitor);
 
-  
+                new MineForMore.Patches.ForagingPatches.PerformTreeFallPatch().Apply(harmony, Monitor);
+
+                new ResourceClumpDestroyedPatch().Apply(harmony, Monitor);
+
+
                 if (Config.TurnOnProfessionLevelUpDescription)
                 {
                     new MineProfessionLevelDescriptionPatch(Config).Apply(harmony, Monitor);
@@ -159,35 +195,25 @@ namespace MineForMore
         }
 
 
-        public IEnumerable<ResourceDropRule> GetAllDrops()
+      
+
+        //gets all DropResourceRules dynamically instead of manually entering each
+        public IEnumerable<ResourceDropRule> GetAllRules()
         {
-            return new List<ResourceDropRule>
+            var config = this.Config;
+            var props = typeof(Config).GetProperties()
+                .Where(pi => pi.PropertyType == typeof(ResourceDropRule));
+
+            foreach (var pi in props)
             {
-                Config.Stone,
-                Config.CopperOre,
-                Config.IronOre,
-                Config.GoldOre,
-                Config.IridiumOre,
-                Config.RadioactiveOre,
-
-                Config.Coal,
-                Config.Clay,
-                Config.CinderShard,
-
-                Config.Diamond,
-                Config.Amethyst,
-                Config.Aquamarine,
-                Config.Emerald,
-                Config.Topaz,
-                Config.Ruby,
-                Config.Jade,
-
-                Config.Geode,
-                Config.FrozenGeode,
-                Config.MagmaGeode,
-                Config.OmniGeode
-            };
+                if (pi.GetValue(config) is ResourceDropRule rule)
+                    yield return rule;
+            }
         }
+
+
+
+
 
         private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
         {
@@ -347,10 +373,27 @@ namespace MineForMore
             );
 
 
-                        foreach (var drop in GetAllDrops())
+                        foreach (var drop in GetAllRules())
                         {
-                            AddDropToGMCM(gmcm, drop.Name, () => drop);
+                            if (drop.SkillType.ToString().Equals("Mining"))
+                            {
+                                AddDropToGMCM(gmcm, drop.Name, () => drop, drop.SkillType);
+                            }
                         }
+
+
+
+            gmcm.AddSectionTitle(ModManifest, text: () => "Foraging - Configure Drops", tooltip: () => "Set Foraging drop bonuses");
+                    foreach (var drop in GetAllRules())
+                    {
+                        if (drop.SkillType.ToString().Equals("Foraging"))
+                        {
+                            AddDropToGMCM(gmcm, drop.Name, () => drop, drop.SkillType);
+                        }
+                         
+                    }
+                        
+
 
 
             gmcm.AddSectionTitle(
@@ -367,9 +410,10 @@ namespace MineForMore
                             setValue: value => Config.listStoneDestroyedInConsole = value
                         );
 
-        }
 
-        private void AddDropToGMCM(IGenericModConfigMenuApi gmcm, string label, Func<ResourceDropRule> getDrop)
+        }
+        
+        private void AddDropToGMCM(IGenericModConfigMenuApi gmcm, string label, Func<ResourceDropRule> getDrop, string skilltype)
         {
             var drop = getDrop();
 
@@ -394,16 +438,20 @@ namespace MineForMore
                 interval: 0.1f
             );
 
-            gmcm.AddNumberOption(
-                mod: ModManifest,
-                name: () => $"{label} - Extra Node Chance (%)",
-                tooltip: () => $"Chance that an extra {label} node appears in the mine (no profession required).",
-                getValue: () => drop.ExtraNodeSpawnChancePercent,
-                setValue: v => drop.ExtraNodeSpawnChancePercent = v,
-                min: 0f,
-                max: 100f,
-                interval: 0.1f
-            );
+            if (drop.SkillType.ToString().Equals("Mining"))
+            {
+                gmcm.AddNumberOption(
+                    mod: ModManifest,
+                    name: () => $"{label} - Extra Node Chance (%)",
+                    tooltip: () => $"Chance that an extra {label} node appears in the mine (no profession required).",
+                    getValue: () => drop.ExtraNodeSpawnChancePercent,
+                    setValue: v => drop.ExtraNodeSpawnChancePercent = v,
+                    min: 0f,
+                    max: 100f,
+                    interval: 0.1f
+                );
+            }
+
         }
 
 

@@ -40,7 +40,7 @@ internal class MineShaftOresPatches
         ref Object __result)
     {
         Random rand = new Random();
-        var allDrops = ModEntry.Instance.GetAllDrops();
+        var allDrops = ModEntry.Instance.GetAllRules();
         if (allDrops == null)
             return;
 

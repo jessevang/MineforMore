@@ -42,8 +42,13 @@ namespace MineForMore
         public float ForesterWoodPerLevelBonus = 3.0f;
         public float ForesterSeedPerLevelBonus = 1.0f;
         public float ForesterTreeGrowthPerLevelBonus = 0.10f;
+
+        public int GathererExtraDropPerLevel = 1;
+
         public float LumberjackHardwoodPerLevelBonus = 0.5f;
         public float LumberjackHardwordDropChancePerLevelBonus = 0.025f;
+
+
 
 
 
@@ -106,7 +111,52 @@ namespace MineForMore
         public float CoalNodeSpawnChanceBonusWithProfession { get; set; } = 1f;
 
 
-        
+        //Foraged items that are gathered in Any Season
+        public ResourceDropRule Sap { get; set; } = new() { Name = "Sap", SkillType = "Foraging", Type = "Forage", ObjectID = "(O)92", AddAmount = 2, Multiplier = 1f, ExtraNodeSpawnChancePercent = 0f, DropsFromObjectIDs = new() { "92" } };
+        public ResourceDropRule SeaUrchin { get; set; } = new() { Name = "Sea Urchin", SkillType = "Foraging", Type = "Forage", ObjectID = "(O)132", AddAmount = 2, Multiplier = 1f, ExtraNodeSpawnChancePercent = 0f, DropsFromObjectIDs = new() { "132" } };
+        public ResourceDropRule Coral { get; set; } = new() { Name = "Coral", SkillType = "Foraging", Type = "Forage", ObjectID = "(O)129", AddAmount = 2, Multiplier = 1f, ExtraNodeSpawnChancePercent = 0f, DropsFromObjectIDs = new() { "129" } };
+        public ResourceDropRule Mussel { get; set; } = new() { Name = "Mussel", SkillType = "Foraging", Type = "Forage", ObjectID = "(O)146", AddAmount = 2, Multiplier = 1f, ExtraNodeSpawnChancePercent = 0f, DropsFromObjectIDs = new() { "146" } };
+        public ResourceDropRule Clam { get; set; } = new() { Name = "Clam", SkillType = "Foraging", Type = "Forage", ObjectID = "(O)145", AddAmount = 2, Multiplier = 1f, ExtraNodeSpawnChancePercent = 0f, DropsFromObjectIDs = new() { "145" } };
+        public ResourceDropRule Oyster { get; set; } = new() { Name = "Oyster", SkillType = "Foraging", Type = "Forage", ObjectID = "(O)309", AddAmount = 2, Multiplier = 1f, ExtraNodeSpawnChancePercent = 0f, DropsFromObjectIDs = new() { "309" } };
+        public ResourceDropRule Seaweed { get; set; } = new() { Name = "Seaweed", SkillType = "Foraging", Type = "Forage", ObjectID = "(O)142", AddAmount = 2, Multiplier = 1f, ExtraNodeSpawnChancePercent = 0f, DropsFromObjectIDs = new() { "142" } };
+        public ResourceDropRule CactusFruit { get; set; } = new() { Name = "Cactus Fruit", SkillType = "Foraging", Type = "Forage", ObjectID = "(O)90", AddAmount = 2, Multiplier = 1f, ExtraNodeSpawnChancePercent = 0f, DropsFromObjectIDs = new() { "90" } };
+
+
+        //Foraged items that are gathered in Spring
+        public ResourceDropRule Daffodil { get; set; } = new() { Name = "Daffodil", SkillType = "Foraging", Type = "Forage", ObjectID = "(O)18", AddAmount = 2, Multiplier = 1f, ExtraNodeSpawnChancePercent = 0f, DropsFromObjectIDs = new() { "18" } };
+        public ResourceDropRule Dandelion { get; set; } = new() { Name = "Dandelion", SkillType = "Foraging", Type = "Forage", ObjectID = "(O)22", AddAmount = 2, Multiplier = 1f, ExtraNodeSpawnChancePercent = 0f, DropsFromObjectIDs = new() { "22" } };
+        public ResourceDropRule Leek { get; set; } = new() { Name = "Leek", SkillType = "Foraging", Type = "Forage", ObjectID = "(O)20", AddAmount = 2, Multiplier = 1f, ExtraNodeSpawnChancePercent = 0f, DropsFromObjectIDs = new() { "20" } };
+        public ResourceDropRule WildHorseradish { get; set; } = new() { Name = "Wild Horseradish", SkillType = "Foraging", Type = "Forage", ObjectID = "(O)16", AddAmount = 2, Multiplier = 1f, ExtraNodeSpawnChancePercent = 0f, DropsFromObjectIDs = new() { "16" } };
+        public ResourceDropRule SpringOnion { get; set; } = new() { Name = "Spring Onion", SkillType = "Foraging", Type = "Forage", ObjectID = "(O)399", AddAmount = 2, Multiplier = 1f, ExtraNodeSpawnChancePercent = 0f, DropsFromObjectIDs = new() { "399" } };
+        public ResourceDropRule Salmonberry { get; set; } = new() { Name = "Salmonberry", SkillType = "Foraging", Type = "Forage", ObjectID = "(O)296", AddAmount = 2, Multiplier = 1f, ExtraNodeSpawnChancePercent = 0f, DropsFromObjectIDs = new() { "296" } };
+        public ResourceDropRule Morel { get; set; } = new() { Name = "Morel", SkillType = "Foraging", Type = "Forage", ObjectID = "(O)257", AddAmount = 2, Multiplier = 1f, ExtraNodeSpawnChancePercent = 0f, DropsFromObjectIDs = new() { "257" } };
+        public ResourceDropRule CommonMushroom { get; set; } = new() { Name = "Common Mushroom", SkillType = "Foraging", Type = "Forage", ObjectID = "(O)404", AddAmount = 2, Multiplier = 1f, ExtraNodeSpawnChancePercent = 0f, DropsFromObjectIDs = new() { "404" } };
+
+        //Foraged items that are gathered in Summer
+        public ResourceDropRule SweetPea { get; set; } = new() { Name = "Sweet Pea", SkillType = "Foraging", Type = "Forage", ObjectID = "(O)402", AddAmount = 2, Multiplier = 1f, ExtraNodeSpawnChancePercent = 0f, DropsFromObjectIDs = new() { "402" } };
+        public ResourceDropRule SpiceBerry { get; set; } = new() { Name = "Spice Berry", SkillType = "Foraging", Type = "Forage", ObjectID = "(O)396", AddAmount = 2, Multiplier = 1f, ExtraNodeSpawnChancePercent = 0f, DropsFromObjectIDs = new() { "396" } };
+        public ResourceDropRule Grape { get; set; } = new() { Name = "Grape", SkillType = "Foraging", Type = "Forage", ObjectID = "(O)398", AddAmount = 2, Multiplier = 1f, ExtraNodeSpawnChancePercent = 0f, DropsFromObjectIDs = new() { "398" } };
+        public ResourceDropRule FiddleheadFern { get; set; } = new() { Name = "Fiddlehead Fern", SkillType = "Foraging", Type = "Forage", ObjectID = "(O)490", AddAmount = 2, Multiplier = 1f, ExtraNodeSpawnChancePercent = 0f, DropsFromObjectIDs = new() { "490" } };
+        public ResourceDropRule RedMushroom { get; set; } = new() { Name = "Red Mushroom", SkillType = "Foraging", Type = "Forage", ObjectID = "(O)420", AddAmount = 2, Multiplier = 1f, ExtraNodeSpawnChancePercent = 0f, DropsFromObjectIDs = new() { "420" } };
+
+        //Foraged items that are gathered in Fall
+        public ResourceDropRule Blackberry { get; set; } = new() { Name = "Blackberry", SkillType = "Foraging", Type = "Forage", ObjectID = "(O)410", AddAmount = 2, Multiplier = 1f, ExtraNodeSpawnChancePercent = 0f, DropsFromObjectIDs = new() { "410" } };
+        public ResourceDropRule Hazelnut { get; set; } = new() { Name = "Hazelnut", SkillType = "Foraging", Type = "Forage", ObjectID = "(O)408", AddAmount = 2, Multiplier = 1f, ExtraNodeSpawnChancePercent = 0f, DropsFromObjectIDs = new() { "408" } };
+        public ResourceDropRule WildPlum { get; set; } = new() { Name = "Wild Plum", SkillType = "Foraging", Type = "Forage", ObjectID = "(O)406", AddAmount = 2, Multiplier = 1f, ExtraNodeSpawnChancePercent = 0f, DropsFromObjectIDs = new() { "406" } };
+        public ResourceDropRule Chanterelle { get; set; } = new() { Name = "Chanterelle", SkillType = "Foraging", Type = "Forage", ObjectID = "(O)422", AddAmount = 2, Multiplier = 1f, ExtraNodeSpawnChancePercent = 0f, DropsFromObjectIDs = new() { "422" } };
+        public ResourceDropRule PurpleMushroom { get; set; } = new() { Name = "Purple Mushroom", SkillType = "Foraging", Type = "Forage", ObjectID = "(O)422", AddAmount = 2, Multiplier = 1f, ExtraNodeSpawnChancePercent = 0f, DropsFromObjectIDs = new() { "422" } };
+
+        //Foraged items that are gathered in Winter
+        public ResourceDropRule WinterRoot { get; set; } = new() { Name = "Winter Root", SkillType = "Foraging", Type = "Forage", ObjectID = "(O)412", AddAmount = 2, Multiplier = 1f, ExtraNodeSpawnChancePercent = 0f, DropsFromObjectIDs = new() { "412" } };
+        public ResourceDropRule SnowYam { get; set; } = new() { Name = "Snow Yam", SkillType = "Foraging", Type = "Forage", ObjectID = "(O)416", AddAmount = 2, Multiplier = 1f, ExtraNodeSpawnChancePercent = 0f, DropsFromObjectIDs = new() { "416" } };
+        public ResourceDropRule Crocus { get; set; } = new() { Name = "Crocus", SkillType = "Foraging", Type = "Forage", ObjectID = "(O)418", AddAmount = 2, Multiplier = 1f, ExtraNodeSpawnChancePercent = 0f, DropsFromObjectIDs = new() { "418" } };
+        public ResourceDropRule CrystalFruit { get; set; } = new() { Name = "Crystal Fruit", SkillType = "Foraging", Type = "Forage", ObjectID = "(O)414", AddAmount = 2, Multiplier = 1f, ExtraNodeSpawnChancePercent = 0f, DropsFromObjectIDs = new() { "414" } };
+        public ResourceDropRule Holly { get; set; } = new() { Name = "Holly", SkillType = "Foraging", Type = "Forage", ObjectID = "(O)421", AddAmount = 2, Multiplier = 1f, ExtraNodeSpawnChancePercent = 0f, DropsFromObjectIDs = new() { "421" } };
+
+        //Foraged items that are gathered in Ginger Island
+        public ResourceDropRule Ginger { get; set; } = new() { Name = "Ginger", SkillType = "Foraging", Type = "Forage", ObjectID = "(O)829", AddAmount = 2, Multiplier = 1f, ExtraNodeSpawnChancePercent = 0f, DropsFromObjectIDs = new() { "829" } };
+        public ResourceDropRule MagmaCap { get; set; } = new() { Name = "Magma Cap", SkillType = "Foraging", Type = "Forage", ObjectID = "(O)851", AddAmount = 2, Multiplier = 1f, ExtraNodeSpawnChancePercent = 0f, DropsFromObjectIDs = new() { "851" } };
+
     }
 
 
@@ -132,6 +182,7 @@ namespace MineForMore
 
                 new MineForMore.Patches.ForagingPatches.PerformTreeFallPatch().Apply(harmony, Monitor);
                 new MineForMore.Patches.ForagingPatches.TreeGrowthPatch().Apply(harmony, Monitor);
+                new MineForMore.Patches.ForagingPatches.OnHarvestedForagePatch().Apply(harmony, Monitor);
 
 
                 new MineForMore.Patches.ForagingPatches.ResourceClumpDestroyedPatch().Apply(harmony, Monitor);

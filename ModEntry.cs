@@ -139,18 +139,18 @@ namespace MineForMore
 
                 if (Config.TurnOnProfessionLevelUpDescription)
                 {
-                    new MineProfessionLevelDescriptionPatch(Config).Apply(harmony, Monitor);
+                    new ProfessionLevelDescriptionPatch(Config).Apply(harmony, Monitor);
                 }
                 
                 if (Config.AllowExtraNodeSpawnsInMine)
                 {
-                    new MineShaftOresPatches(Config).Apply(harmony, Monitor);
+                    new MineForMore.Patches.MiningPatches.MineShaftOresPatches(Config).Apply(harmony, Monitor);
                 }
 
 
                 if (Config.AllowPlayerToExceedLevel10)
                 {
-                    new UnlimitedMiningLevel(Config).Apply(harmony, Monitor);
+                    new UnlimitedSkillLevel(Config).Apply(harmony, Monitor);
                 }
 
                 

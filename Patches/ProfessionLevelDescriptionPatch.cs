@@ -6,11 +6,11 @@ using static MineForMore.ModEntry;
 using StardewValley.Menus;
 using System.Collections.Generic;
 
-internal class MineProfessionLevelDescriptionPatch
+internal class ProfessionLevelDescriptionPatch
 {
     private readonly Config _config;
 
-    public MineProfessionLevelDescriptionPatch(Config config)
+    public ProfessionLevelDescriptionPatch(Config config)
     {
         _config = config;
     }
@@ -20,7 +20,7 @@ internal class MineProfessionLevelDescriptionPatch
         monitor.Log("Patching LevelUpMenu.getProfessionDescription", LogLevel.Debug);
 
         var original = AccessTools.Method(typeof(LevelUpMenu), nameof(LevelUpMenu.getProfessionDescription));
-        var postfix = new HarmonyMethod(typeof(MineProfessionLevelDescriptionPatch), nameof(ModifyProfessionDescription));
+        var postfix = new HarmonyMethod(typeof(ProfessionLevelDescriptionPatch), nameof(ModifyProfessionDescription));
 
         harmony.Patch(original, postfix: postfix);
     }

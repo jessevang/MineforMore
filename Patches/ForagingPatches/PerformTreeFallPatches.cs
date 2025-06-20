@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using HarmonyLib;
 using StardewModdingAPI;
 using System.Linq;
+using System.Xml.Schema;
 
 namespace MineForMore.Patches.ForagingPatches
 {
@@ -54,8 +55,6 @@ namespace MineForMore.Patches.ForagingPatches
             foreach (var rule in rules)
             {
 
-
-
                 if (rule.Type != "Wood" && rule.Type != "Hardwood" && rule.Type != "Seed")
                 {
                     continue;
@@ -101,7 +100,13 @@ namespace MineForMore.Patches.ForagingPatches
                         {
                             Item item = ItemRegistry.Create(rule.ObjectID);
                             Game1.createItemDebris(item, spawn, -1, __instance.Location);
+
                         }
+                        if ((rule.Type == "Wood" || rule.Type == "Hardwood"))
+                        {
+                            TryDropLumberjackHardwood(who, tileLocation, __instance);
+                        }
+                        
 
                     }));
                 }
@@ -116,9 +121,55 @@ namespace MineForMore.Patches.ForagingPatches
 
                         Item item = ItemRegistry.Create(rule.ObjectID);
                         Game1.createItemDebris(item, StompSpawn, -1, __instance.Location);
+
                     }
+
+                    TryDropLumberjackHardwood(who, tileLocation, __instance);
                 }
+            
+           
+            
+            
+            }
+
+
+        }
+
+
+        //Used if user has the Foraging Profession LumberJack to add drops on Tree Fall
+        private static void TryDropLumberjackHardwood(Farmer who, Vector2 tileLocation, Tree tree)
+        {
+            if (!who.professions.Contains(14)) // Lumberjack
+                return;
+
+            int foragingLevel = who.GetSkillLevel(Farmer.foragingSkill);
+            float chance = ModEntry.Instance.Config.LumberjackHardwordDropChancePerLevelBonus * foragingLevel;
+
+            if (Game1.random.NextDouble() >= chance)
+                return;
+
+           int total = (int)(foragingLevel * ModEntry.Instance.Config.LumberjackHardwoodPerLevelBonus);
+
+            for (int i = 0; i < total; i++)
+            {
+                Vector2 dropTile = tileLocation;
+                if (tree.falling.Value)
+                {
+                    int dir = tree.shakeLeft.Value ? -1 : 1;
+                    dropTile += new Vector2(dir * 4, 0);
+                }
+
+                Vector2 spawn = (dropTile * 64f) + new Vector2(
+                    Game1.random.Next(-24, 25),
+                    Game1.random.Next(-24, 25)
+                );
+
+                Item item = ItemRegistry.Create("(O)709"); // Hardwood
+                Game1.createItemDebris(item, spawn, -1, tree.Location);
             }
         }
+
     }
+
+
 }

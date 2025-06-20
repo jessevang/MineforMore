@@ -1,6 +1,11 @@
 ﻿using HarmonyLib;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Locations;
+using StardewValley.Objects;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace MineForMore.Patches.ForagingPatches
 {
@@ -21,13 +26,35 @@ namespace MineForMore.Patches.ForagingPatches
 
         public static void Postfix(GameLocation __instance, Farmer who, StardewValley.Object forage)
         {
-            if (!who.professions.Contains(13)) // Gatherer profession
+            if (forage == null || forage.ItemId == null)
                 return;
 
-            int level = who.GetSkillLevel(Farmer.foragingSkill);
-            int extraCount = level * ModEntry.Instance.Config.GathererExtraDropPerLevel;
+            // Parse numeric item ID from forage.ItemId (removes "(O)" prefix if present)
+            string id = forage.ItemId;
+            if (id.StartsWith("(O)") && int.TryParse(id.Substring(3), out int numericId))
+                id = numericId.ToString();
 
-            for (int i = 0; i < extraCount; i++)
+            // Find matching drop rule
+            var rule = ModEntry.Instance.GetAllRules()
+                .FirstOrDefault(r => r.Type == "Forage" && r.DropsFromObjectIDs.Contains(id));
+
+            if (rule == null)
+                return;
+
+            int baseAmount = rule.AddAmount;
+
+            // Gatherer profession bonus
+            int extraCount = 0;
+            if (who.professions.Contains(13)) // Gatherer
+            {
+                int level = who.GetSkillLevel(Farmer.foragingSkill);
+                extraCount = level * ModEntry.Instance.Config.GathererExtraDropPerLevel;
+            }
+
+            int totalCount = (baseAmount + extraCount);
+            totalCount = (int)Math.Round(totalCount * rule.Multiplier);
+
+            for (int i = 0; i < totalCount; i++)
             {
                 Item extra = forage.getOne();
                 who.addItemToInventoryBool(extra);

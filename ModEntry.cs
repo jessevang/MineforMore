@@ -82,7 +82,13 @@ namespace MineForMore
         public ResourceDropRule MagmaGeode { get; set; } = new() { Name = "Magma Geode", SkillType = "Mining", Type = "Geode", ObjectID = "(O)537", DropsFromObjectIDs = new() { "77" } };
         public ResourceDropRule OmniGeode { get; set; } = new() { Name = "Omni Geode", SkillType = "Mining", Type = "Geode", ObjectID = "(O)749", DropsFromObjectIDs = new() { "819" } };
 
-        
+        // Additional node spawn chance if player has specific professions
+        public float GemNodeSpawnChanceBonusWithProfession { get; set; } = 1f;
+        public float GeodeNodeSpawnChanceBonusWithProfession { get; set; } = 1f;
+        public float CoalNodeSpawnChanceBonusWithProfession { get; set; } = 1f;
+
+
+
 
         // Foraging: Tree & Stump drops
         public ResourceDropRule Oak_Wood { get; set; } = new() { Name = "Oak Wood", SkillType = "Foraging", Type = "Wood", ObjectID = "(O)388", DropsFromObjectIDs = new() { "TreeOak" } };
@@ -105,10 +111,6 @@ namespace MineForMore
         public ResourceDropRule LargeLog { get; set; } = new() { Name = "Large Log Hardwood", SkillType = "Foraging", Type = "Hardwood", ObjectID = "(O)709", DropsFromObjectIDs = new() { "LargeLog" }, AddAmount = 3, Multiplier = 1.0 };
 
 
-        // Additional node spawn chance if player has specific professions
-        public float GemNodeSpawnChanceBonusWithProfession { get; set; } = 1f;
-        public float GeodeNodeSpawnChanceBonusWithProfession { get; set; } = 1f;
-        public float CoalNodeSpawnChanceBonusWithProfession { get; set; } = 1f;
 
 
         //Foraged items that are gathered in Any Season
@@ -322,13 +324,30 @@ namespace MineForMore
             gmcm.AddNumberOption(mod: ModManifest, getValue: () => Config.LumberjackHardwoodPerLevelBonus, setValue: value => Config.LumberjackHardwoodPerLevelBonus = value, name: () => "Lumberjack Hardwood Chance Per Level", tooltip: () => "Chance to drop hardwood from any tree per Foraging level if you have the Lumberjack profession. Value is a percentage (e.g., 0.5 = 50%).", min: 0f, max: 1f, interval: 0.01f);
             gmcm.AddNumberOption(mod: ModManifest, getValue: () => Config.LumberjackHardwordDropChancePerLevelBonus, setValue: value => Config.LumberjackHardwordDropChancePerLevelBonus = value, name: () => "Lumberjack Drop Chance Per Level", tooltip: () => "Chance per Foraging level to trigger a hardwood drop when cutting down any tree (e.g., 0.025 = 2.5% per level).", min: 0f, max: 1f, interval: 0.001f);
             gmcm.AddSectionTitle(mod: ModManifest, text: () => "");
-            gmcm.AddSectionTitle(ModManifest, text: () => "Foraging - Configure Drops", tooltip: () => "Set Foraging drop bonuses");
+            gmcm.AddSectionTitle(ModManifest, text: () => "Foraging - Configure Chopped Tree/stomps Drops", tooltip: () => "Set chopped tree drop bonuses");
             gmcm.AddParagraph(mod: ModManifest, text: () => "Update the drops obtained without requiring a profession. These adjust works right away and is added with the profession bonuses before the added values are multiplied with the multiplier below.");
 
             foreach (var drop in GetAllRules())
             {
                 if (drop.SkillType.ToString().Equals("Foraging"))
+                {
+                    if(!drop.Type.ToString().Equals("Forage"))
                     AddDropToGMCM(gmcm, drop.Name, () => drop, drop.SkillType);
+                }
+                    
+            }
+
+            gmcm.AddSectionTitle(ModManifest, text: () => "Foraging - Configure Foraged Drops", tooltip: () => "Set foraged drop bonuses");
+            gmcm.AddParagraph(mod: ModManifest, text: () => "Update the drops obtained without requiring a profession. These adjust works right away and is added with the profession bonuses before the added values are multiplied with the multiplier below.");
+
+            foreach (var drop in GetAllRules())
+            {
+                if (drop.SkillType.ToString().Equals("Foraging"))
+                {
+                    if (drop.Type.ToString().Equals("Forage"))
+                        AddDropToGMCM(gmcm, drop.Name, () => drop, drop.SkillType);
+                }
+
             }
         }
 

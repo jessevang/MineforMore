@@ -6,6 +6,7 @@ using MineForMore.Patches.ForagingPatches;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
+using StardewValley.TerrainFeatures;
 
 
 namespace MineForMore
@@ -76,7 +77,7 @@ namespace MineForMore
         public ResourceDropRule MagmaGeode { get; set; } = new() { Name = "Magma Geode", SkillType = "Mining", Type = "Geode", ObjectID = "(O)537", DropsFromObjectIDs = new() { "77" } };
         public ResourceDropRule OmniGeode { get; set; } = new() { Name = "Omni Geode", SkillType = "Mining", Type = "Geode", ObjectID = "(O)749", DropsFromObjectIDs = new() { "819" } };
 
-
+        
 
         // Foraging: Tree & Stump drops
         public ResourceDropRule Oak_Wood { get; set; } = new() { Name = "Oak Wood", SkillType = "Foraging", Type = "Wood", ObjectID = "(O)388", DropsFromObjectIDs = new() { "TreeOak" } };
@@ -97,7 +98,6 @@ namespace MineForMore
 
         public ResourceDropRule LargeStump { get; set; } = new() { Name = "Large Stump Hardwood", SkillType = "Foraging", Type = "Hardwood", ObjectID = "(O)709", DropsFromObjectIDs = new() { "LargeStump" }, AddAmount = 2, Multiplier = 1.0 };
         public ResourceDropRule LargeLog { get; set; } = new() { Name = "Large Log Hardwood", SkillType = "Foraging", Type = "Hardwood", ObjectID = "(O)709", DropsFromObjectIDs = new() { "LargeLog" }, AddAmount = 3, Multiplier = 1.0 };
-
 
 
         // Additional node spawn chance if player has specific professions
@@ -130,8 +130,9 @@ namespace MineForMore
             {
                 var harmony = new Harmony(ModManifest.UniqueID);
                 new UpdateOreGemDropsPatch(Config).Apply(harmony, Monitor);
-
                 new MineForMore.Patches.ForagingPatches.PerformTreeFallPatch().Apply(harmony, Monitor);
+                new MineForMore.Patches.ForagingPatches.TreeGrowthPatch().Apply(harmony, Monitor);
+
 
                 new ResourceClumpDestroyedPatch().Apply(harmony, Monitor);
 
@@ -140,7 +141,7 @@ namespace MineForMore
                 {
                     new MineProfessionLevelDescriptionPatch(Config).Apply(harmony, Monitor);
                 }
-
+                
                 if (Config.AllowExtraNodeSpawnsInMine)
                 {
                     new MineShaftOresPatches(Config).Apply(harmony, Monitor);
@@ -152,7 +153,7 @@ namespace MineForMore
                     new UnlimitedMiningLevel(Config).Apply(harmony, Monitor);
                 }
 
-
+                
                 helper.Events.GameLoop.SaveLoaded += OnSaveLoaded;
                 helper.Events.GameLoop.Saving += OnSaving;
                 helper.Events.GameLoop.ReturnedToTitle += OnReturnedToTitle;
@@ -169,7 +170,8 @@ namespace MineForMore
             {
                 Game1.stats.DaysPlayed = 5; 
             }
-
+            
+            
 
             if (Game1.player.professions.Contains(20) && !AddedAddQuickSmeltRecipes)
             {

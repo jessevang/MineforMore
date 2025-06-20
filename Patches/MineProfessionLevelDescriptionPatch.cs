@@ -35,46 +35,56 @@ internal class MineProfessionLevelDescriptionPatch
         switch (whichProfession)
         {
             case 18: // Miner
-                __result.Add($"{i18n.Get("profession.18.name")}\n{i18n.Get("profession.18.desc")}");
-                __result.Add(i18n.Get("profession.18.detail", new { bonus = Instance.Config.MinerProfessionBonusOrePerLevel.ToString("0.0") }));
+                __result = new List<string>
+        {
+            $"{i18n.Get("profession.18.name")}\n{i18n.Get("profession.18.desc")}",
+            i18n.Get("profession.18.detail", new { bonus = Instance.Config.MinerProfessionBonusOrePerLevel.ToString("0.0") })
+        };
                 break;
 
             case 19: // Geologist
-                __result.Add($"{i18n.Get("profession.19.name")}\n{i18n.Get("profession.19.desc")}");
-                __result.Add(i18n.Get("profession.19.detail", new { bonus = Instance.Config.GeologistProfessionBonusGemsPerLevel.ToString("0.0") }));
+                __result = new List<string>
+        {
+            $"{i18n.Get("profession.19.name")}\n{i18n.Get("profession.19.desc")}",
+            i18n.Get("profession.19.detail", new { bonus = Instance.Config.GeologistProfessionBonusGemsPerLevel.ToString("0.0") })
+        };
                 break;
 
             case 20: // Blacksmith
-                __result.Add(i18n.Get("profession.20.name"));
-                __result.Add(i18n.Get("profession.20.desc"));
+                __result = new List<string>
+        {
+            i18n.Get("profession.20.name"),
+            i18n.Get("profession.20.desc")
+        };
                 break;
 
             case 21: // Prospector
-                __result.Add(i18n.Get("profession.21.name"));
-                __result.Add(i18n.Get("profession.21.desc", new { bonus = Instance.Config.ProspectorProfessionBonusCoalPerLevel.ToString("0.0") }));
+                __result = new List<string>
+        {
+            i18n.Get("profession.21.name"),
+            i18n.Get("profession.21.desc", new { bonus = Instance.Config.ProspectorProfessionBonusCoalPerLevel.ToString("0.0") })
+        };
                 break;
 
             case 22: // Excavator
-                __result.Add(i18n.Get("profession.22.name"));
-                __result.Add(i18n.Get("profession.22.desc", new { bonus = Instance.Config.ExcavatorProfessionBonusGeodesPerLevel.ToString("0.0") }));
+                __result = new List<string>
+        {
+            i18n.Get("profession.22.name"),
+            i18n.Get("profession.22.desc", new { bonus = Instance.Config.ExcavatorProfessionBonusGeodesPerLevel.ToString("0.0") })
+        };
                 break;
 
             case 23: // Gemologist
-                __result.Add(i18n.Get("profession.23.name"));
-                __result.Add(i18n.Get("profession.23.desc"));
-                break;
-            default:
-                // Leave original __result untouched
-                break;
-        }
-
-
-        if (__result.Count != 2)
+                __result = new List<string>
         {
-            // Restore placeholder if mod logic failed
-            __result.Clear();
-            __result.Add("Unknown Profession");
-            __result.Add("Description not available.");
+            i18n.Get("profession.23.name"),
+            i18n.Get("profession.23.desc")
+        };
+                break;
         }
+
+
+
+
     }
 }

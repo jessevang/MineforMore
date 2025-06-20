@@ -129,14 +129,16 @@ namespace MineForMore
             if (Config.TurnOnMineForMore)
             {
                 var harmony = new Harmony(ModManifest.UniqueID);
-                new UpdateOreGemDropsPatch(Config).Apply(harmony, Monitor);
+
                 new MineForMore.Patches.ForagingPatches.PerformTreeFallPatch().Apply(harmony, Monitor);
                 new MineForMore.Patches.ForagingPatches.TreeGrowthPatch().Apply(harmony, Monitor);
 
 
-                new ResourceClumpDestroyedPatch().Apply(harmony, Monitor);
+                new MineForMore.Patches.ForagingPatches.ResourceClumpDestroyedPatch().Apply(harmony, Monitor);
 
 
+
+                new MineforMore.Patches.MiningPatches.UpdateOreGemDropsPatch(Config).Apply(harmony, Monitor);
                 if (Config.TurnOnProfessionLevelUpDescription)
                 {
                     new ProfessionLevelDescriptionPatch(Config).Apply(harmony, Monitor);
@@ -144,7 +146,7 @@ namespace MineForMore
                 
                 if (Config.AllowExtraNodeSpawnsInMine)
                 {
-                    new MineForMore.Patches.MiningPatches.MineShaftOresPatches(Config).Apply(harmony, Monitor);
+                    new MineforMore.Patches.MiningPatches.MineShaftOresPatches(Config).Apply(harmony, Monitor);
                 }
 
 

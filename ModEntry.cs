@@ -188,6 +188,7 @@ namespace MineForMore
 
 
                 new MineForMore.Patches.ForagingPatches.ResourceClumpDestroyedPatch().Apply(harmony, Monitor);
+                new MineForMore.Patches.ForagingPatches.CropHarvestPatch().Apply(harmony, Monitor);
 
 
 

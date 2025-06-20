@@ -3,6 +3,7 @@ using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Locations;
 using StardewValley.Objects;
+using StardewValley.TerrainFeatures;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,6 +29,9 @@ namespace MineForMore.Patches.ForagingPatches
         {
             if (forage == null || forage.ItemId == null)
                 return;
+            //Logging to check item
+            //ModEntry.Instance.Monitor.Log($"[Foraging] Picked: ID = {forage.ItemId}, Name = {forage.Name}", LogLevel.Info);
+
 
             // Parse numeric item ID from forage.ItemId (removes "(O)" prefix if present)
             string id = forage.ItemId;

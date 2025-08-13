@@ -1,7 +1,7 @@
 ﻿{
   "Name": "MineForMore",
   "Author": "Darkmushu1",
-  "Version": "1.1.5",
+  "Version": "1.1.6",
   "Description": "More vein drops, upgraded professions for extra drops, uncapped skill levels, mine on day 1",
   "UniqueID": "Darkmushu1.MineForMore",
   "EntryDll": "MineForMore.dll",

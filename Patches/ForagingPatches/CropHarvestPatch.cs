@@ -32,6 +32,7 @@ namespace MineForMore.Patches.ForagingPatches
             if (soil?.crop?.indexOfHarvest.Value == null)
                 return;
 
+            
             var crop = __instance;
             var location = crop.currentLocation; 
 

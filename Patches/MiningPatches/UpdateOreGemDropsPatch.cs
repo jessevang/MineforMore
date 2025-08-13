@@ -15,24 +15,29 @@ namespace MineforMore.Patches.MiningPatches
 
         public void Apply(Harmony harmony, IMonitor monitor)
         {
-            monitor.Log("Patching GameLocation.OnStoneDestroyed with ModifiedOnStoneDestroyed...", LogLevel.Info);
+            if (ModEntry.Instance.Config.DebugMode)
+                monitor.Log("Patching GameLocation.OnStoneDestroyed with ModifiedOnStoneDestroyed...", LogLevel.Info);
             var stoneDestroyed = AccessTools.Method(typeof(GameLocation), nameof(GameLocation.OnStoneDestroyed));
             if (stoneDestroyed == null)
             {
-                monitor.Log("Failed to find GameLocation.OnStoneDestroyed method!", LogLevel.Error);
+                if (ModEntry.Instance.Config.DebugMode)
+                    monitor.Log("Failed to find GameLocation.OnStoneDestroyed method!", LogLevel.Error);
                 return;
             }
             harmony.Patch(stoneDestroyed, prefix: new HarmonyMethod(typeof(UpdateOreGemDropsPatch), nameof(ModifiedOnStoneDestroyed)));
-            monitor.Log("Patch applied to OnStoneDestroyed", LogLevel.Info);
+            if (ModEntry.Instance.Config.DebugMode)
+                monitor.Log("Patch applied to OnStoneDestroyed", LogLevel.Info);
         }
 
         public static void ModifiedOnStoneDestroyed(string stoneId, int x, int y, Farmer who)
         {
-            ModEntry.Instance.Monitor.Log($"[HOOK] OnStoneDestroyed triggered with stoneId={stoneId}, x={x}, y={y}", LogLevel.Warn);
-            if (ModEntry.Instance.Config.listStoneDestroyedInConsole &&
+            if (ModEntry.Instance.Config.DebugMode)
+                ModEntry.Instance.Monitor.Log($"[HOOK] OnStoneDestroyed triggered with stoneId={stoneId}, x={x}, y={y}", LogLevel.Warn);
+            if (ModEntry.Instance.Config.DebugMode &&
                 Game1.objectData.TryGetValue(stoneId, out StardewValley.GameData.Objects.ObjectData value))
             {
-                ModEntry.Instance.Monitor.Log($"Stone destroyed: {value.Name ?? "Unknown"} (ID: {stoneId}) at ({x}, {y})", LogLevel.Info);
+                if (ModEntry.Instance.Config.DebugMode)
+                    ModEntry.Instance.Monitor.Log($"Stone destroyed: {value.Name ?? "Unknown"} (ID: {stoneId}) at ({x}, {y})", LogLevel.Info);
             }
 
             if (who == null)
@@ -67,8 +72,8 @@ namespace MineforMore.Patches.MiningPatches
 
 
                 int num = (int)((entry.AddAmount + bonus) * entry.Multiplier);
-
-                ModEntry.Instance.Monitor.Log($"Matched entry: {entry.Name}, StoneID: {stoneId}, Base: {entry.AddAmount}, Bonus: {bonus}, Multiplier: {entry.Multiplier}, Final drop count: {num} + normal ore drops", LogLevel.Info);
+                if (ModEntry.Instance.Config.DebugMode)
+                    ModEntry.Instance.Monitor.Log($"Matched entry: {entry.Name}, StoneID: {stoneId}, Base: {entry.AddAmount}, Bonus: {bonus}, Multiplier: {entry.Multiplier}, Final drop count: {num} + normal ore drops", LogLevel.Info);
 
                 if (num > 0)
                 {

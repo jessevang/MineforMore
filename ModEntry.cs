@@ -6,8 +6,17 @@ using StardewModdingAPI.Events;
 using StardewValley;
 
 
+
+
 namespace MineForMore
 {
+
+    /// <summary>
+    /// Defines a configurable drop rule used in the Mine For More mod to enhance Mining and Foraging.
+    /// Each rule determines which item drops, under what conditions (such as skill type or object ID),
+    /// and how many items are added or multiplied. It can also control the chance to spawn extra resource nodes.
+    /// This model powers all drop-related behavior for ores, gems, logs, forageables, and more.
+    /// </summary>
     public class ResourceDropRule
     {
         public string Name { get; set; } = "";
@@ -20,6 +29,20 @@ namespace MineForMore
         public List<string> DropsFromObjectIDs { get; set; } = new();
     }
 
+    /// <summary>
+    /// Defines all configurable options for the Mine For More mod, including global toggles,
+    /// skill-specific multipliers, and embedded drop rules for mining and foraging resources.
+    /// 
+    /// This config class controls the behavior of:
+    /// - Feature toggles such as exceeding level 10 or enabling extra node spawns
+    /// - Mining profession bonuses (ore, gems, coal, geodes)
+    /// - Foraging profession bonuses (wood, seeds, tree growth, hardwood, forage quantity)
+    /// - Spawn chance bonuses for special nodes (gems, coal, geodes)
+    /// - All ResourceDropRules for ores, gems, geodes, forage, logs, stumps, and seasonal wild items
+    ///
+    /// Each ResourceDropRule defines what item drops, from which object IDs, and under what conditions.
+    /// These rules are embedded directly in the config and used by mining/foraging patch systems.
+    /// </summary>
     public class Config
     {
         public bool TurnOnMineForMore { get; set; } = true;
@@ -162,6 +185,21 @@ namespace MineForMore
     }
 
 
+
+    /// <summary>
+    /// Mine For More is a Stardew Valley mod that expands the functionality of the Mining and Foraging skills.
+    /// It adds configurable profession-based effects and drop enhancements based on a unified resource drop system.
+    ///
+    /// The mod's logic is structured into modular patch classes located in:
+    /// - <c>Patches/Mining/</c>: for all mining-related patches
+    /// - <c>Patches/Foraging/</c>: for all foraging-related patches
+    /// - <c>Patches/</c>: for general patches that apply to all skills or shared game logic
+    ///
+    /// The mod reads from a central configuration and uses ResourceDropRules to determine bonus drops,
+    /// profession effects, and custom spawn behavior.
+    ///
+    /// This class serves as the main entry point and registers all skill-specific logic via Harmony patches.
+    /// </summary>
     public class ModEntry : Mod
     {
         public static ModEntry Instance { get; private set; }
@@ -182,32 +220,35 @@ namespace MineForMore
             {
                 var harmony = new Harmony(ModManifest.UniqueID);
 
-                new MineForMore.Patches.ForagingPatches.PerformTreeFallPatch().Apply(harmony, Monitor);
-                new MineForMore.Patches.ForagingPatches.TreeGrowthPatch().Apply(harmony, Monitor);
-                new MineForMore.Patches.ForagingPatches.OnHarvestedForagePatch().Apply(harmony, Monitor);
+                // new MineForMore.Patches.ForagingPatches.PerformTreeFallPatch().Apply(harmony, Monitor);
+                // new MineForMore.Patches.ForagingPatches.TreeGrowthPatch().Apply(harmony, Monitor);
+                // new MineForMore.Patches.ForagingPatches.OnHarvestedForagePatch().Apply(harmony, Monitor);
 
 
-                new MineForMore.Patches.ForagingPatches.ResourceClumpDestroyedPatch().Apply(harmony, Monitor);
-                new MineForMore.Patches.ForagingPatches.CropHarvestPatch().Apply(harmony, Monitor);
+                // new MineForMore.Patches.ForagingPatches.ResourceClumpDestroyedPatch().Apply(harmony, Monitor);
+                // new MineForMore.Patches.ForagingPatches.CropHarvestPatch().Apply(harmony, Monitor);
 
-
-
-                new MineforMore.Patches.MiningPatches.UpdateOreGemDropsPatch(Config).Apply(harmony, Monitor);
-                if (Config.TurnOnProfessionLevelUpDescription)
+                if (Config.TurnOnMineForMore)
                 {
-                    new ProfessionLevelDescriptionPatch(Config).Apply(harmony, Monitor);
-                }
-                
-                if (Config.AllowExtraNodeSpawnsInMine)
-                {
-                    new MineforMore.Patches.MiningPatches.MineShaftOresPatches(Config).Apply(harmony, Monitor);
+                    new MineforMore.Patches.MiningPatches.UpdateOreGemDropsPatch(Config).Apply(harmony, Monitor);
+                    if (Config.TurnOnProfessionLevelUpDescription)
+                    {
+                        new ProfessionLevelDescriptionPatch(Config).Apply(harmony, Monitor);
+                    }
+
+                    if (Config.AllowExtraNodeSpawnsInMine)
+                    {
+                        new MineforMore.Patches.MiningPatches.MineShaftOresPatches(Config).Apply(harmony, Monitor);
+                    }
+
+
+                    if (Config.AllowPlayerToExceedLevel10)
+                    {
+                        new UnlimitedSkillLevel(Config).Apply(harmony, Monitor);
+                    }
                 }
 
 
-                if (Config.AllowPlayerToExceedLevel10)
-                {
-                    new UnlimitedSkillLevel(Config).Apply(harmony, Monitor);
-                }
 
                 
                 helper.Events.GameLoop.SaveLoaded += OnSaveLoaded;
@@ -221,14 +262,15 @@ namespace MineForMore
         private void OnSaveLoaded(object sender, SaveLoadedEventArgs e)
         {
 
+            //Handles mine on day 1 logic - entry
             this.realCurrentDay = (uint)Game1.stats.DaysPlayed;
             if (Game1.stats.DaysPlayed <= 5 && Instance.Config.CanMineOnDay1)
             {
                 Game1.stats.DaysPlayed = 5; 
             }
-            
-            
 
+
+            //checks for player's Blacksmith profession and add recipes for quick smelt
             if (Game1.player.professions.Contains(20) && !AddedAddQuickSmeltRecipes)
             {
                 Recipe recipe = new Recipe(Instance);
@@ -279,6 +321,18 @@ namespace MineForMore
             registerGMCM();
         }
 
+        /// <summary>
+        /// Registers the Generic Mod Config Menu (GMCM) entries for the Mine For More mod.
+        /// The configuration UI is modularized for clarity and ease of maintenance:
+        /// 
+        /// - <c>MiningConfigPage()</c>: Defines all GMCM options related to the Mining skill
+        /// - <c>ForagingConfigPage()</c>: Defines all GMCM options related to the Foraging skill
+        /// - <c>OtherSettingsPages()</c>: Defines general mod toggles and compatibility options
+        ///
+        /// Each section is implemented in its own method, so anyone modifying the Mining or Foraging UI
+        /// can update just the corresponding method without needing to touch unrelated logic.
+        /// </summary>
+
         private void registerGMCM()
         {
             IGenericModConfigMenuApi gmcm = Helper.ModRegistry.GetApi<IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
@@ -288,14 +342,14 @@ namespace MineForMore
             gmcm.AddSectionTitle(mod: ModManifest, text: () => "Edit Skill Settings");
             gmcm.AddParagraph(mod: ModManifest, text: () => "Click on one of the Skill pages below to modify the drops without professions and the drop bonuses from a professions based on the skill level.");
             gmcm.AddPageLink(mod: ModManifest, pageId: "Mining Settings", text: () => "     1. Mining Setting Page", tooltip: () => "");
-            gmcm.AddPageLink(mod: ModManifest, pageId: "Foraging Settings", text: () => "     2. Foraging Setting Page", tooltip: () => "");
+            //gmcm.AddPageLink(mod: ModManifest, pageId: "Foraging Settings", text: () => "     2. Foraging Setting Page", tooltip: () => "");
             gmcm.AddSectionTitle(mod: ModManifest, text: () => " ");
             gmcm.AddSectionTitle(mod: ModManifest, text: () => "Other Settings");
             gmcm.AddParagraph(mod: ModManifest, text: () => "Click on one of the other pages below to turn off entire function or some functions in this mod so that it can continue to work with other mods");
             gmcm.AddPageLink(mod: ModManifest, pageId: "Other Settings", text: () => "     3. Other Settings Page", tooltip: () => "");
 
             MiningConfigPage(gmcm);
-            ForagingConfigPage(gmcm);
+            //ForagingConfigPage(gmcm);
             OtherSettingsPages(gmcm);
         }
 

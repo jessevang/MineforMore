@@ -66,6 +66,8 @@
   "gmcm.page.foraging.foraged.paragraph": "Update the drops obtained without requiring a profession. These adjust works right away and is added with the profession bonuses before the added values are multiplied with the multiplier below.",
   "gmcm.foraging.option.gathererExtraPerLevel.name": "Gatherer Extra Drop Per Level",
   "gmcm.foraging.option.gathererExtraPerLevel.tooltip": "How many extra items per Foraging level when the player has the Gatherer profession.",
+  "gmcm.foraging.option.tapperSpeedPerLevel.name": "Tapper speed per level",
+  "gmcm.foraging.option.tapperSpeedPerLevel.tooltip": "If farmer has Tapper Profession then speed it takes for tapper to get syrup is sped up by this value per each Foraging level. Example If this value is set at 0.25 at Level 10 Forage would = 2.5× faster speed on top of original speed. Tapper speed or heavy tapper speed is applied first, then this bonus tapper speed is applied after.",
 
 
 

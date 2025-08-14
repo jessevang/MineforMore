@@ -16,7 +16,8 @@ namespace MineForMore.Patches.ForagingPatches
             var original = AccessTools.Method(typeof(Crop), nameof(Crop.harvest));
             if (original is null)
             {
-                monitor.Log("Failed to find Crop.harvest", LogLevel.Error);
+                if (ModEntry.Instance.Config.DebugMode)
+                    monitor.Log("Failed to find Crop.harvest", LogLevel.Error);
                 return;
             }
 

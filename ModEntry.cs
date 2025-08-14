@@ -68,11 +68,11 @@ namespace MineForMore
         public float ForesterWoodPerLevelBonus { get; set; } = 3.0f;
         public float ForesterSeedPerLevelBonus { get; set; } = 1.0f;
         public float ForesterTreeGrowthPerLevelBonus { get; set; } = 0.10f;
-
         public float GathererExtraDropPerLevel { get; set; } = 1.5f;
-
         public float LumberjackHardwoodPerLevelBonus { get; set; } = 0.5f;
         public float LumberjackHardwordDropChancePerLevelBonus { get; set; } = 0.025f;
+        public float TapperSpeedBonusPercentPerLevel { get; set; } = 0.25f; 
+
 
 
 
@@ -252,7 +252,7 @@ namespace MineForMore
                     new MineForMore.Patches.ForagingPatches.TreeGrowthPatch().Apply(harmony, Monitor);
                     new MineForMore.Patches.ForagingPatches.OnHarvestedForagePatch().Apply(harmony, Monitor);
                     new MineForMore.Patches.ForagingPatches.GetShakenOffItemPatch().Apply(harmony, Monitor);
-
+                    new MineForMore.Patches.ForagingPatches.UpdateTapperProductPatch().Apply(harmony, Monitor);
                     new MineForMore.Patches.ForagingPatches.ResourceClumpDestroyedPatch().Apply(harmony, Monitor);
                     new MineForMore.Patches.ForagingPatches.CropHarvestPatch().Apply(harmony, Monitor);
 
@@ -276,8 +276,6 @@ namespace MineForMore
                 }
 
 
-
-                
                 helper.Events.GameLoop.SaveLoaded += OnSaveLoaded;
                 helper.Events.GameLoop.Saving += OnSaving;
                 helper.Events.GameLoop.ReturnedToTitle += OnReturnedToTitle;
@@ -327,7 +325,7 @@ namespace MineForMore
                 Game1.stats.DaysPlayed = realCurrentDay;
 
             SaveGameIsLoaded = false;
-            //Rebuilgs GMCM so that it uses object item from localized langauges
+            //Rebuilgs GMCM so that it uses original config names instead of object names since object names are unloaded on title page.
             registerGMCM();
         }
 
@@ -446,6 +444,7 @@ namespace MineForMore
             gmcm.AddNumberOption(mod: ModManifest, getValue: () => Config.LumberjackHardwoodPerLevelBonus, setValue: v => Config.LumberjackHardwoodPerLevelBonus = v, name: () => Helper.Translation.Get("gmcm.foraging.option.hardwoodChancePerLevel.name"), tooltip: () => Helper.Translation.Get("gmcm.foraging.option.hardwoodChancePerLevel.tooltip"), min: 0f, max: 1f, interval: 0.01f);
             gmcm.AddNumberOption(mod: ModManifest, getValue: () => Config.LumberjackHardwordDropChancePerLevelBonus, setValue: v => Config.LumberjackHardwordDropChancePerLevelBonus = v, name: () => Helper.Translation.Get("gmcm.foraging.option.hardwoodDropChancePerLevel.name"), tooltip: () => Helper.Translation.Get("gmcm.foraging.option.hardwoodDropChancePerLevel.tooltip"), min: 0f, max: 1f, interval: 0.001f);
             gmcm.AddNumberOption(mod: ModManifest, name: () => Helper.Translation.Get("gmcm.foraging.option.gathererExtraPerLevel.name"), tooltip: () => Helper.Translation.Get("gmcm.foraging.option.gathererExtraPerLevel.tooltip"), getValue: () => (float)Config.GathererExtraDropPerLevel, setValue: v => Config.GathererExtraDropPerLevel = (int)v, min: 0f, max: 10f, interval: 0.01f);
+            gmcm.AddNumberOption(mod: ModManifest, name: () => Helper.Translation.Get("gmcm.foraging.option.tapperSpeedPerLevel.name"), tooltip: () => Helper.Translation.Get("gmcm.foraging.option.tapperSpeedPerLevel.tooltip"), getValue: () => Config.TapperSpeedBonusPercentPerLevel, setValue: v => Config.TapperSpeedBonusPercentPerLevel = MathF.Max(0f, v), min: 0f, max: 10f, interval: 0.05f);
 
 
 

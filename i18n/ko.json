@@ -65,6 +65,8 @@
   "gmcm.page.foraging.foraged.paragraph": "직업 없이도 적용되는 드롭을 조정합니다. 본 설정은 즉시 적용되며, 직업 보너스와 합산된 뒤 아래 배수를 적용합니다.",
   "gmcm.foraging.option.gathererExtraPerLevel.name": "채집가 레벨당 추가 드롭",
   "gmcm.foraging.option.gathererExtraPerLevel.tooltip": "플레이어가 채집가 직업일 때 채집 레벨당 추가로 얻는 아이템 개수.",
+  "gmcm.foraging.option.tapperSpeedPerLevel.name": "탭퍼 속도(레벨당)",
+  "gmcm.foraging.option.tapperSpeedPerLevel.tooltip": "플레이어가 탭퍼 직업일 때, 수액을 얻기까지 걸리는 시간이 채집 레벨마다 이 값만큼 빨라집니다. 예: 값 0.25, 레벨 10 ⇒ 기본 속도 대비 약 2.5배. 기본/헤비 탭퍼 속도가 먼저 적용되고, 그 다음에 이 보너스가 적용됩니다.",
 
 
   "gmcm.page.mining.title": "채광 설정",

@@ -64,6 +64,11 @@
   "gmcm.page.foraging.foraged.sectionTitle": "Gyűjtögetés — felszedett tárgyak zsákmánya",
   "gmcm.page.foraging.foraged.tooltip": "Felszedett tárgyak bónuszainak beállítása",
   "gmcm.page.foraging.foraged.paragraph": "Szakma nélküli zsákmány beállítása. Azonnal érvényes, és a szorzó előtt hozzáadódik.",
+  "gmcm.foraging.option.gathererExtraPerLevel.name": "Gyűjtögető: extra tárgy szintenként",
+  "gmcm.foraging.option.gathererExtraPerLevel.tooltip": "Hány extra tárgy jár minden Gyűjtögetés-szint után, ha a játékosnak Gyűjtögető szakmája van.",
+  "gmcm.foraging.option.tapperSpeedPerLevel.name": "Csapoló sebessége szintenként",
+  "gmcm.foraging.option.tapperSpeedPerLevel.tooltip": "Ha a játékosnak Csapoló szakmája van, a szirup elkészüléséhez szükséges idő minden Gyűjtögetés-szint után ezzel az értékkel gyorsul. Példa: 0.25 értéknél, Gyűjtögetés 10. szinten ≈ az eredetihez képest ~2,5× gyorsabb. A csapoló (vagy nehéz csapoló) alapgyorsítása először érvényesül, ezt követi ez a bónusz.",
+
 
   "gmcm.page.mining.title": "Bányászat beállításai",
   "gmcm.page.mining.prof.title": "Bányászat — szakmabónuszok",

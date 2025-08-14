@@ -17,7 +17,8 @@ namespace MineForMore.Patches.ForagingPatches
             var original = AccessTools.Method(typeof(GameLocation), nameof(GameLocation.OnHarvestedForage));
             if (original is null)
             {
-                monitor.Log("Failed to find GameLocation.OnHarvestedForage", LogLevel.Error);
+                if (ModEntry.Instance.Config.DebugMode)
+                    monitor.Log("Failed to find GameLocation.OnHarvestedForage", LogLevel.Error);
                 return;
             }
 

@@ -66,6 +66,8 @@
   "gmcm.page.foraging.foraged.paragraph": "Ajusta drops sin requerir profesi�n. Se aplican de inmediato y se suman a los bonos antes del multiplicador.",
   "gmcm.foraging.option.gathererExtraPerLevel.name": "Recolector: objetos extra por nivel",
   "gmcm.foraging.option.gathererExtraPerLevel.tooltip": "Cuántos objetos extra por nivel de Recolección cuando el jugador tiene la profesión Recolector.",
+  "gmcm.foraging.option.tapperSpeedPerLevel.name": "Velocidad del Extractor por nivel",
+  "gmcm.foraging.option.tapperSpeedPerLevel.tooltip": "Si el jugador tiene la profesión Extractor, el tiempo para obtener jarabe se acelera este valor por cada nivel de Recolección. Ejemplo: 0.25 en nivel 10 ≈ 2,5× más rápido sobre la velocidad original. La velocidad base o del extractor pesado se aplica primero, y luego este bono.",
 
 
 

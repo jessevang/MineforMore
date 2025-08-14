@@ -66,6 +66,8 @@
   "gmcm.page.foraging.foraged.paragraph": "Ajuste drops sem exigir profissão. Aplicam-se na hora e somam aos bônus antes do multiplicador.",
   "gmcm.foraging.option.gathererExtraPerLevel.name": "Coletor: itens extras por nível",
   "gmcm.foraging.option.gathererExtraPerLevel.tooltip": "Quantos itens extras por nível de Coleta quando o jogador tem a profissão Coletor.",
+  "gmcm.foraging.option.tapperSpeedPerLevel.name": "Velocidade do Sangrador por nível",
+  "gmcm.foraging.option.tapperSpeedPerLevel.tooltip": "Se o jogador tem a profissão Sangrador, o tempo para produzir xarope é reduzido desse valor por nível de Coleta. Ex.: 0,25 no nível 10 ≈ 2,5× mais rápido que a velocidade original. A velocidade base ou do sangrador pesado é aplicada primeiro, depois este bônus.",
 
 
   "gmcm.page.mining.title": "Configurações de Mineração",

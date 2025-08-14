@@ -15,7 +15,8 @@ namespace MineForMore.Patches.ForagingPatches
             var method = AccessTools.Method(typeof(ResourceClump), nameof(ResourceClump.destroy));
             if (method is null)
             {
-                monitor.Log("Failed to find ResourceClump.destroy", LogLevel.Error);
+                if (ModEntry.Instance.Config.DebugMode)
+                    monitor.Log("Failed to find ResourceClump.destroy", LogLevel.Error);
                 return;
             }
 
@@ -33,7 +34,8 @@ namespace MineForMore.Patches.ForagingPatches
 
             var who = axe.getLastFarmerToUse();
             int id = __instance.parentSheetIndex.Value;
-            ModEntry.Instance.Monitor.Log($"[MineForMore] ResourceClump ID = {id}", LogLevel.Debug);
+            if (ModEntry.Instance.Config.DebugMode)
+                ModEntry.Instance.Monitor.Log($"[MineForMore] ResourceClump ID = {id}", LogLevel.Debug);
 
             string idKey = id switch
             {
@@ -41,14 +43,16 @@ namespace MineForMore.Patches.ForagingPatches
                 602 => "LargeLog",
                 _ => null
             };
-            ModEntry.Instance.Monitor.Log($"[MineForMore] Mapped ID {id} to key '{idKey}'", LogLevel.Debug);
+            if (ModEntry.Instance.Config.DebugMode)
+                ModEntry.Instance.Monitor.Log($"[MineForMore] Mapped ID {id} to key '{idKey}'", LogLevel.Debug);
 
             if (idKey == null)
                 return;
 
             var rule = ModEntry.Instance.GetAllRules().FirstOrDefault(r => r.DropsFromObjectIDs.Contains(idKey));
 
-            ModEntry.Instance.Monitor.Log($"[MineForMore] Rule is {rule} ", LogLevel.Debug);
+            if (ModEntry.Instance.Config.DebugMode)
+                ModEntry.Instance.Monitor.Log($"[MineForMore] Rule is {rule} ", LogLevel.Debug);
             if (rule == null)
                 return;
 
@@ -80,8 +84,8 @@ namespace MineForMore.Patches.ForagingPatches
                     Game1.createItemDebris(item, spawn, -1, __instance.Location);
                 }
             }));
-
-            ModEntry.Instance.Monitor.Log($"[MineForMore] Extra hardwood dropped: {extra} from {idKey}", LogLevel.Debug);
+            if (ModEntry.Instance.Config.DebugMode)
+                ModEntry.Instance.Monitor.Log($"[MineForMore] Extra hardwood dropped: {extra} from {idKey}", LogLevel.Debug);
         }
     }
 }

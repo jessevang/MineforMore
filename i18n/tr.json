@@ -66,6 +66,8 @@
   "gmcm.page.foraging.foraged.paragraph": "Meslek gerektirmeyen düşüşleri ayarlayın. Anında uygulanır ve çarpan öncesi bonuslara eklenir.",
   "gmcm.foraging.option.gathererExtraPerLevel.name": "Toplayıcı: seviye başına ekstra eşya",
   "gmcm.foraging.option.gathererExtraPerLevel.tooltip": "Oyuncunun Toplayıcı mesleği varken Toplayıcılık seviyesinin her seviyesi için verilen ekstra eşya sayısı.",
+  "gmcm.foraging.option.tapperSpeedPerLevel.name": "Muslukçu hız (seviye başına)",
+  "gmcm.foraging.option.tapperSpeedPerLevel.tooltip": "Oyuncuda Muslukçu mesleği varsa, şurup üretim süresi Toplayıcılık seviyesinin her bir seviyesi için bu değer kadar kısalır. Örn: Değer 0.25 ve Seviye 10 ⇒ orijinal hıza ek olarak ~2,5× daha hızlı. Temel/ağır musluk hızı önce uygulanır, ardından bu bonus uygulanır.",
 
 
   "gmcm.page.mining.title": "Madencilik ayarları",

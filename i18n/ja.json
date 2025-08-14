@@ -66,6 +66,8 @@
   "gmcm.page.foraging.foraged.paragraph": "職業不要のドロップを調整。即時適用し、倍率前に職業ボーナスへ加算。",
   "gmcm.foraging.option.gathererExtraPerLevel.name": "採取家：レベルごとの追加ドロップ数",
   "gmcm.foraging.option.gathererExtraPerLevel.tooltip": "プレイヤーが採取家の職業を持つ場合、採取レベル1ごとに追加されるアイテム数。",
+  "gmcm.foraging.option.tapperSpeedPerLevel.name": "タッパー速度（レベルごと）",
+  "gmcm.foraging.option.tapperSpeedPerLevel.tooltip": "プレイヤーがタッパーの職業を持つ場合、シロップ完成までの時間が採取レベル1ごとにこの値だけ短縮されます。例：値が0.25で採取Lv10なら元の速度に対して約2.5倍。ベース／ヘビータッパーの効果が先に適用され、その後このボーナスが適用されます.",
 
 
   "gmcm.page.mining.title": "採鉱設定",

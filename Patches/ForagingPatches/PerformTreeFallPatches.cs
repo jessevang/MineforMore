@@ -17,7 +17,8 @@ namespace MineForMore.Patches.ForagingPatches
             var orig = AccessTools.Method(typeof(Tree), "performTreeFall", new[] { typeof(Tool), typeof(int), typeof(Vector2) });
             if (orig is null)
             {
-                monitor.Log("Failed to find Tree.performTreeFall", LogLevel.Error);
+                if (ModEntry.Instance.Config.DebugMode)
+                    monitor.Log("Failed to find Tree.performTreeFall", LogLevel.Error);
                 return;
             }
 

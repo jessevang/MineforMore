@@ -66,6 +66,8 @@
   "gmcm.page.foraging.foraged.paragraph": "Configura i drop senza professione. Applicati subito e sommati ai bonus prima del moltiplicatore.",
   "gmcm.foraging.option.gathererExtraPerLevel.name": "Raccoglitore: oggetti extra per livello",
   "gmcm.foraging.option.gathererExtraPerLevel.tooltip": "Quanti oggetti extra per livello di Raccolta quando il giocatore ha la professione Raccoglitore.",
+  "gmcm.foraging.option.tapperSpeedPerLevel.name": "Velocità dello Spillatore per livello",
+  "gmcm.foraging.option.tapperSpeedPerLevel.tooltip": "Se il giocatore ha la professione Spillatore, il tempo per ottenere lo sciroppo si riduce di questo valore per ogni livello di Raccolta. Esempio: 0,25 al livello 10 ≈ 2,5× più veloce rispetto alla velocità originale. La velocità base o quella del tapper pesante si applica prima, poi questo bonus.",
 
 
 

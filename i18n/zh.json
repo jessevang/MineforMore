@@ -66,6 +66,8 @@
   "gmcm.page.foraging.foraged.paragraph": "调整无职业时的掉落。立即生效，并在应用倍数前与职业加成相加。",
   "gmcm.foraging.option.gathererExtraPerLevel.name": "采集者：每级额外掉落数量",
   "gmcm.foraging.option.gathererExtraPerLevel.tooltip": "当玩家拥有采集者专精时，每点采集等级额外获得的物品数量。",
+  "gmcm.foraging.option.tapperSpeedPerLevel.name": "取浆器速度（每级）",
+  "gmcm.foraging.option.tapperSpeedPerLevel.tooltip": "当玩家拥有取浆者职业时，取浆器获得糖浆所需时间会按采集每级缩短此数值。示例：数值为 0.25 且采集 10 级 ≈ 在原始速度上再快 2.5×。基础/重型取浆器速度先应用，然后再应用此加成。",
 
 
   "gmcm.page.mining.title": "采矿设置",

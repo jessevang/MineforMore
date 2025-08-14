@@ -66,6 +66,8 @@
   "gmcm.page.foraging.foraged.paragraph": "Passe Drops ohne Beruf an. Diese werden sofort angewandt und vor dem Multiplikator mit Berufs-Boni addiert.",
   "gmcm.foraging.option.gathererExtraPerLevel.name": "Sammler: zusätzliche Beute pro Stufe",
   "gmcm.foraging.option.gathererExtraPerLevel.tooltip": "Wie viele zusätzliche Gegenstände pro Sammelstufe, wenn der Spieler die Profession Sammler besitzt.",
+  "gmcm.foraging.option.tapperSpeedPerLevel.name": "Zapfer-Geschwindigkeit pro Stufe",
+  "gmcm.foraging.option.tapperSpeedPerLevel.tooltip": "Hat der Spieler die Profession Zapfer, wird die Zeit bis zur Sirupproduktion pro Sammelstufe um diesen Wert beschleunigt. Beispiel: Wert 0,25 bei Stufe 10 ≈ 2,5× schneller als die Grundgeschwindigkeit. Basis- bzw. Schwerer-Zapfer-Bonus wird zuerst angewendet, danach dieser Bonus.",
 
 
 

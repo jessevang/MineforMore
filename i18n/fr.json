@@ -66,6 +66,8 @@
   "gmcm.page.foraging.foraged.paragraph": "Ajustez les drops sans profession. S�appliquent imm�diatement et s�ajoutent aux bonus avant le multiplicateur.",
   "gmcm.foraging.option.gathererExtraPerLevel.name": "Cueilleur : objets bonus par niveau",
   "gmcm.foraging.option.gathererExtraPerLevel.tooltip": "Nombre d’objets supplémentaires par niveau de Cueillette lorsque le joueur possède la profession Cueilleur.",
+  "gmcm.foraging.option.tapperSpeedPerLevel.name": "Vitesse du tappeur par niveau",
+  "gmcm.foraging.option.tapperSpeedPerLevel.tooltip": "Si le joueur a la profession Tappeur, le temps nécessaire pour produire du sirop est réduit de cette valeur par niveau de Cueillette. Exemple : 0,25 au niv. 10 ≈ 2,5× plus rapide que la vitesse d’origine. La vitesse de base/robuste s’applique d’abord, puis ce bonus.",
 
 
   "gmcm.page.mining.title": "Param�tres de Minage",

@@ -13,7 +13,8 @@ namespace MineForMore.Patches.ForagingPatches
             var original = AccessTools.Method(typeof(Bush), nameof(Bush.GetShakeOffItem));
             if (original == null)
             {
-                monitor.Log("Failed to find Bush.GetShakeOffItem", StardewModdingAPI.LogLevel.Error);
+                if (ModEntry.Instance.Config.DebugMode)
+                    monitor.Log("Failed to find Bush.GetShakeOffItem", StardewModdingAPI.LogLevel.Error);
                 return;
             }
 
@@ -70,7 +71,8 @@ namespace MineForMore.Patches.ForagingPatches
             }
             catch (Exception ex)
             {
-                ModEntry.Instance.Monitor.Log($"[GetShakenOffItemPatch] Error adding extra berries: {ex}", StardewModdingAPI.LogLevel.Error);
+                if (ModEntry.Instance.Config.DebugMode)
+                    ModEntry.Instance.Monitor.Log($"[GetShakenOffItemPatch] Error adding extra berries: {ex}", StardewModdingAPI.LogLevel.Error);
             }
         }
     }

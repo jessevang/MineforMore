@@ -14,7 +14,8 @@ namespace MineForMore.Patches.ForagingPatches
             var method = AccessTools.Method(typeof(Tree), nameof(Tree.dayUpdate));
             if (method == null)
             {
-                monitor.Log("Failed to find Tree.dayUpdate", LogLevel.Error);
+                if (ModEntry.Instance.Config.DebugMode)
+                    monitor.Log("Failed to find Tree.dayUpdate", LogLevel.Error);
                 return;
             }
 

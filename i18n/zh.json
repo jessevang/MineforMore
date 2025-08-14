@@ -64,6 +64,9 @@
   "gmcm.page.foraging.foraged.sectionTitle": "觅食——配置采集物掉落",
   "gmcm.page.foraging.foraged.tooltip": "设置采集物掉落加成",
   "gmcm.page.foraging.foraged.paragraph": "调整无职业时的掉落。立即生效，并在应用倍数前与职业加成相加。",
+  "gmcm.foraging.option.gathererExtraPerLevel.name": "采集者：每级额外掉落数量",
+  "gmcm.foraging.option.gathererExtraPerLevel.tooltip": "当玩家拥有采集者专精时，每点采集等级额外获得的物品数量。",
+
 
   "gmcm.page.mining.title": "采矿设置",
   "gmcm.page.mining.prof.title": "采矿——职业加成",

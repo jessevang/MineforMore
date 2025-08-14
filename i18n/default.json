@@ -64,6 +64,10 @@
   "gmcm.page.foraging.foraged.sectionTitle": "Foraging - Configure Foraged Drops",
   "gmcm.page.foraging.foraged.tooltip": "Set foraged drop bonuses",
   "gmcm.page.foraging.foraged.paragraph": "Update the drops obtained without requiring a profession. These adjust works right away and is added with the profession bonuses before the added values are multiplied with the multiplier below.",
+  "gmcm.foraging.option.gathererExtraPerLevel.name": "Gatherer Extra Drop Per Level",
+  "gmcm.foraging.option.gathererExtraPerLevel.tooltip": "How many extra items per Foraging level when the player has the Gatherer profession.",
+
+
 
   "gmcm.page.mining.title": "Mining Settings",
   "gmcm.page.mining.prof.title": "Mining Profession Bonuses",

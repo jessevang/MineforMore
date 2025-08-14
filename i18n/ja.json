@@ -64,6 +64,9 @@
   "gmcm.page.foraging.foraged.sectionTitle": "牧採 − 採取品ドロップを設定",
   "gmcm.page.foraging.foraged.tooltip": "採取品のドロップボーナスを設定",
   "gmcm.page.foraging.foraged.paragraph": "職業不要のドロップを調整。即時適用し、倍率前に職業ボーナスへ加算。",
+  "gmcm.foraging.option.gathererExtraPerLevel.name": "採取家：レベルごとの追加ドロップ数",
+  "gmcm.foraging.option.gathererExtraPerLevel.tooltip": "プレイヤーが採取家の職業を持つ場合、採取レベル1ごとに追加されるアイテム数。",
+
 
   "gmcm.page.mining.title": "採鉱設定",
   "gmcm.page.mining.prof.title": "採鉱 − 職業ボーナス",

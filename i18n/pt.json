@@ -64,6 +64,9 @@
   "gmcm.page.foraging.foraged.sectionTitle": "Coleta – Configurar drops coletados",
   "gmcm.page.foraging.foraged.tooltip": "Definir bônus dos itens coletados",
   "gmcm.page.foraging.foraged.paragraph": "Ajuste drops sem exigir profissão. Aplicam-se na hora e somam aos bônus antes do multiplicador.",
+  "gmcm.foraging.option.gathererExtraPerLevel.name": "Coletor: itens extras por nível",
+  "gmcm.foraging.option.gathererExtraPerLevel.tooltip": "Quantos itens extras por nível de Coleta quando o jogador tem a profissão Coletor.",
+
 
   "gmcm.page.mining.title": "Configurações de Mineração",
   "gmcm.page.mining.prof.title": "Mineração – Bônus de profissão",

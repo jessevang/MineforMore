@@ -65,14 +65,14 @@ namespace MineForMore
         public float ExcavatorProfessionBonusGeodesPerLevel { get; set; } = 1.0f;
 
         //Foraging
-        public float ForesterWoodPerLevelBonus = 3.0f;
-        public float ForesterSeedPerLevelBonus = 1.0f;
-        public float ForesterTreeGrowthPerLevelBonus = 0.10f;
+        public float ForesterWoodPerLevelBonus { get; set; } = 3.0f;
+        public float ForesterSeedPerLevelBonus { get; set; } = 1.0f;
+        public float ForesterTreeGrowthPerLevelBonus { get; set; } = 0.10f;
 
-        public int GathererExtraDropPerLevel = 1;
+        public float GathererExtraDropPerLevel { get; set; } = 1.5f;
 
-        public float LumberjackHardwoodPerLevelBonus = 0.5f;
-        public float LumberjackHardwordDropChancePerLevelBonus = 0.025f;
+        public float LumberjackHardwoodPerLevelBonus { get; set; } = 0.5f;
+        public float LumberjackHardwordDropChancePerLevelBonus { get; set; } = 0.025f;
 
 
 
@@ -141,12 +141,12 @@ namespace MineForMore
 
         //Foraged items that are gathered in Any Season
         public ResourceDropRule Sap { get; set; } = new() { Name = "Sap", SkillType = "Foraging", Type = "Forage", ObjectID = "(O)92", AddAmount = 2, Multiplier = 1f, ExtraNodeSpawnChancePercent = 0f, DropsFromObjectIDs = new() { "92" } };
-        public ResourceDropRule SeaUrchin { get; set; } = new() { Name = "Sea Urchin", SkillType = "Foraging", Type = "Forage", ObjectID = "(O)132", AddAmount = 2, Multiplier = 1f, ExtraNodeSpawnChancePercent = 0f, DropsFromObjectIDs = new() { "132" } };
-        public ResourceDropRule Coral { get; set; } = new() { Name = "Coral", SkillType = "Foraging", Type = "Forage", ObjectID = "(O)129", AddAmount = 2, Multiplier = 1f, ExtraNodeSpawnChancePercent = 0f, DropsFromObjectIDs = new() { "129" } };
-        public ResourceDropRule Mussel { get; set; } = new() { Name = "Mussel", SkillType = "Foraging", Type = "Forage", ObjectID = "(O)146", AddAmount = 2, Multiplier = 1f, ExtraNodeSpawnChancePercent = 0f, DropsFromObjectIDs = new() { "146" } };
-        public ResourceDropRule Clam { get; set; } = new() { Name = "Clam", SkillType = "Foraging", Type = "Forage", ObjectID = "(O)145", AddAmount = 2, Multiplier = 1f, ExtraNodeSpawnChancePercent = 0f, DropsFromObjectIDs = new() { "145" } };
-        public ResourceDropRule Oyster { get; set; } = new() { Name = "Oyster", SkillType = "Foraging", Type = "Forage", ObjectID = "(O)309", AddAmount = 2, Multiplier = 1f, ExtraNodeSpawnChancePercent = 0f, DropsFromObjectIDs = new() { "309" } };
-        public ResourceDropRule Seaweed { get; set; } = new() { Name = "Seaweed", SkillType = "Foraging", Type = "Forage", ObjectID = "(O)142", AddAmount = 2, Multiplier = 1f, ExtraNodeSpawnChancePercent = 0f, DropsFromObjectIDs = new() { "142" } };
+        public ResourceDropRule SeaUrchin { get; set; } = new() { Name = "Sea Urchin", SkillType = "Foraging", Type = "Forage", ObjectID = "(O)397", AddAmount = 2, Multiplier = 1f, ExtraNodeSpawnChancePercent = 0f, DropsFromObjectIDs = new() { "397" } };
+        public ResourceDropRule Coral { get; set; } = new() { Name = "Coral", SkillType = "Foraging", Type = "Forage", ObjectID = "(O)393", AddAmount = 2, Multiplier = 1f, ExtraNodeSpawnChancePercent = 0f, DropsFromObjectIDs = new() { "393" } };
+        public ResourceDropRule Mussel { get; set; } = new() { Name = "Mussel", SkillType = "Foraging", Type = "Forage", ObjectID = "(O)719", AddAmount = 2, Multiplier = 1f, ExtraNodeSpawnChancePercent = 0f, DropsFromObjectIDs = new() { "719" } };
+        public ResourceDropRule Clam { get; set; } = new() { Name = "Clam", SkillType = "Foraging", Type = "Forage", ObjectID = "(O)372", AddAmount = 2, Multiplier = 1f, ExtraNodeSpawnChancePercent = 0f, DropsFromObjectIDs = new() { "372" } };
+        public ResourceDropRule Oyster { get; set; } = new() { Name = "Oyster", SkillType = "Foraging", Type = "Forage", ObjectID = "(O)723", AddAmount = 2, Multiplier = 1f, ExtraNodeSpawnChancePercent = 0f, DropsFromObjectIDs = new() { "723" } };
+        public ResourceDropRule Seaweed { get; set; } = new() { Name = "Seaweed", SkillType = "Foraging", Type = "Forage", ObjectID = "(O)152", AddAmount = 2, Multiplier = 1f, ExtraNodeSpawnChancePercent = 0f, DropsFromObjectIDs = new() { "152" } };
         public ResourceDropRule CactusFruit { get; set; } = new() { Name = "Cactus Fruit", SkillType = "Foraging", Type = "Forage", ObjectID = "(O)90", AddAmount = 2, Multiplier = 1f, ExtraNodeSpawnChancePercent = 0f, DropsFromObjectIDs = new() { "90" } };
 
 
@@ -185,6 +185,22 @@ namespace MineForMore
         public ResourceDropRule Ginger { get; set; } = new() { Name = "Ginger", SkillType = "Foraging", Type = "Forage", ObjectID = "(O)829", AddAmount = 2, Multiplier = 1f, ExtraNodeSpawnChancePercent = 0f, DropsFromObjectIDs = new() { "829" } };
         public ResourceDropRule MagmaCap { get; set; } = new() { Name = "Magma Cap", SkillType = "Foraging", Type = "Forage", ObjectID = "(O)851", AddAmount = 2, Multiplier = 1f, ExtraNodeSpawnChancePercent = 0f, DropsFromObjectIDs = new() { "851" } };
 
+
+        //Foraged items that are gathered in Desert
+         public ResourceDropRule Coconut { get; set; } = new() { Name = "Coconut", SkillType = "Foraging", Type = "Forage", ObjectID = "(O)88", AddAmount = 2, Multiplier = 1f, ExtraNodeSpawnChancePercent = 0f, DropsFromObjectIDs = new() { "88" } };
+
+        //Cave Foraged items
+
+        //Salmonberry and Blackberry, SpiceBerry, WildPlum already listed
+        public ResourceDropRule Cherry { get; set; } = new() { Name = "Cherry", SkillType = "Foraging", Type = "Forage", ObjectID = "(O)638", AddAmount = 2, Multiplier = 1f, ExtraNodeSpawnChancePercent = 0f, DropsFromObjectIDs = new() { "638" } };
+        public ResourceDropRule Pomegranate { get; set; } = new() { Name = "Pomegranate", SkillType = "Foraging", Type = "Forage", ObjectID = "(O)637", AddAmount = 2, Multiplier = 1f, ExtraNodeSpawnChancePercent = 0f, DropsFromObjectIDs = new() { "637" } };
+        public ResourceDropRule Peach { get; set; } = new() { Name = "Peach", SkillType = "Foraging", Type = "Forage", ObjectID = "(O)636", AddAmount = 2, Multiplier = 1f, ExtraNodeSpawnChancePercent = 0f, DropsFromObjectIDs = new() { "636" } };
+        public ResourceDropRule Apple { get; set; } = new() { Name = "Apple", SkillType = "Foraging", Type = "Forage", ObjectID = "(O)613", AddAmount = 2, Multiplier = 1f, ExtraNodeSpawnChancePercent = 0f, DropsFromObjectIDs = new() { "613" } };
+        public ResourceDropRule Orange { get; set; } = new() { Name = "Orange", SkillType = "Foraging", Type = "Forage", ObjectID = "(O)635", AddAmount = 2, Multiplier = 1f, ExtraNodeSpawnChancePercent = 0f, DropsFromObjectIDs = new() { "635" } };
+  
+        public ResourceDropRule Apricot { get; set; } = new() { Name = "Apricot", SkillType = "Foraging", Type = "Forage", ObjectID = "(O)634", AddAmount = 2, Multiplier = 1f, ExtraNodeSpawnChancePercent = 0f, DropsFromObjectIDs = new() { "634" } };
+ 
+
     }
 
 
@@ -213,7 +229,7 @@ namespace MineForMore
         public bool SaveGameIsLoaded = false;
 
 
-
+        
 
         public override void Entry(IModHelper helper)
         {
@@ -221,22 +237,25 @@ namespace MineForMore
             Config = helper.ReadConfig<Config>();
             helper.Events.GameLoop.GameLaunched += OnGameLaunched;
 
-
+            
             //Gives Ability to turn off Harmony Patching to be able to work with other mods
             if (Config.TurnOnMineForMore)
             {
                 var harmony = new Harmony(ModManifest.UniqueID);
 
-                //new MineForMore.Patches.ForagingPatches.PerformTreeFallPatch().Apply(harmony, Monitor);
-                //new MineForMore.Patches.ForagingPatches.TreeGrowthPatch().Apply(harmony, Monitor);
-                //new MineForMore.Patches.ForagingPatches.OnHarvestedForagePatch().Apply(harmony, Monitor);
-
-
-                new MineForMore.Patches.ForagingPatches.ResourceClumpDestroyedPatch().Apply(harmony, Monitor);
-                new MineForMore.Patches.ForagingPatches.CropHarvestPatch().Apply(harmony, Monitor);
 
                 if (Config.TurnOnMineForMore)
                 {
+
+
+                    new MineForMore.Patches.ForagingPatches.PerformTreeFallPatch().Apply(harmony, Monitor);
+                    new MineForMore.Patches.ForagingPatches.TreeGrowthPatch().Apply(harmony, Monitor);
+                    new MineForMore.Patches.ForagingPatches.OnHarvestedForagePatch().Apply(harmony, Monitor);
+                    new MineForMore.Patches.ForagingPatches.GetShakenOffItemPatch().Apply(harmony, Monitor);
+
+                    new MineForMore.Patches.ForagingPatches.ResourceClumpDestroyedPatch().Apply(harmony, Monitor);
+                    new MineForMore.Patches.ForagingPatches.CropHarvestPatch().Apply(harmony, Monitor);
+
                     new MineforMore.Patches.MiningPatches.UpdateOreGemDropsPatch(Config).Apply(harmony, Monitor);
                     if (Config.TurnOnProfessionLevelUpDescription)
                     {
@@ -252,6 +271,7 @@ namespace MineForMore
                     if (Config.AllowPlayerToExceedLevel10)
                     {
                         new UnlimitedSkillLevel(Config).Apply(harmony, Monitor);
+                   
                     }
                 }
 
@@ -387,14 +407,14 @@ namespace MineForMore
             gmcm.AddSectionTitle(mod: ModManifest, text: () => Helper.Translation.Get("gmcm.section.editSkills.title"));
             gmcm.AddParagraph(mod: ModManifest, text: () => Helper.Translation.Get("gmcm.section.editSkills.desc"));
             gmcm.AddPageLink(mod: ModManifest, pageId: "Mining Settings", text: () => Helper.Translation.Get("gmcm.pageLink.mining.text"), tooltip: () => "");
-            //gmcm.AddPageLink(mod: ModManifest, pageId: "Foraging Settings", text: () => Helper.Translation.Get("gmcm.pageLink.foraging.text"), tooltip: () => "");
+            gmcm.AddPageLink(mod: ModManifest, pageId: "Foraging Settings", text: () => Helper.Translation.Get("gmcm.pageLink.foraging.text"), tooltip: () => "");
             gmcm.AddSectionTitle(mod: ModManifest, text: () => " ");
             gmcm.AddSectionTitle(mod: ModManifest, text: () => Helper.Translation.Get("gmcm.section.other.title"));
             gmcm.AddParagraph(mod: ModManifest, text: () => Helper.Translation.Get("gmcm.section.other.desc"));
             gmcm.AddPageLink(mod: ModManifest, pageId: "Other Settings", text: () => Helper.Translation.Get("gmcm.pageLink.other.text"), tooltip: () => "");
 
             MiningConfigPage(gmcm);
-            //ForagingConfigPage(gmcm);
+            ForagingConfigPage(gmcm);
             OtherSettingsPages(gmcm);
         }
 
@@ -425,6 +445,10 @@ namespace MineForMore
             gmcm.AddNumberOption(mod: ModManifest, getValue: () => Config.ForesterSeedPerLevelBonus, setValue: v => Config.ForesterSeedPerLevelBonus = v, name: () => Helper.Translation.Get("gmcm.foraging.option.seedPerLevel.name"), tooltip: () => Helper.Translation.Get("gmcm.foraging.option.seedPerLevel.tooltip"), min: 0f, max: 10f, interval: 0.01f);
             gmcm.AddNumberOption(mod: ModManifest, getValue: () => Config.LumberjackHardwoodPerLevelBonus, setValue: v => Config.LumberjackHardwoodPerLevelBonus = v, name: () => Helper.Translation.Get("gmcm.foraging.option.hardwoodChancePerLevel.name"), tooltip: () => Helper.Translation.Get("gmcm.foraging.option.hardwoodChancePerLevel.tooltip"), min: 0f, max: 1f, interval: 0.01f);
             gmcm.AddNumberOption(mod: ModManifest, getValue: () => Config.LumberjackHardwordDropChancePerLevelBonus, setValue: v => Config.LumberjackHardwordDropChancePerLevelBonus = v, name: () => Helper.Translation.Get("gmcm.foraging.option.hardwoodDropChancePerLevel.name"), tooltip: () => Helper.Translation.Get("gmcm.foraging.option.hardwoodDropChancePerLevel.tooltip"), min: 0f, max: 1f, interval: 0.001f);
+            gmcm.AddNumberOption(mod: ModManifest, name: () => Helper.Translation.Get("gmcm.foraging.option.gathererExtraPerLevel.name"), tooltip: () => Helper.Translation.Get("gmcm.foraging.option.gathererExtraPerLevel.tooltip"), getValue: () => (float)Config.GathererExtraDropPerLevel, setValue: v => Config.GathererExtraDropPerLevel = (int)v, min: 0f, max: 10f, interval: 0.01f);
+
+
+
 
             gmcm.AddSectionTitle(ModManifest, text: () => Helper.Translation.Get("gmcm.page.foraging.chop.sectionTitle"), tooltip: () => Helper.Translation.Get("gmcm.page.foraging.chop.tooltip")); // Foraging - Configure Chopped Tree/stomps Drops
             gmcm.AddParagraph(mod: ModManifest, text: () => Helper.Translation.Get("gmcm.page.foraging.chop.paragraph"));

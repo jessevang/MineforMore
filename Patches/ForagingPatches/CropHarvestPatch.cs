@@ -58,11 +58,11 @@ namespace MineForMore.Patches.ForagingPatches
             if (who.professions.Contains(13)) // Gatherer
             {
                 int level = who.GetSkillLevel(Farmer.foragingSkill);
-                extraCount = level * ModEntry.Instance.Config.GathererExtraDropPerLevel;
+                extraCount = (int)(level * ModEntry.Instance.Config.GathererExtraDropPerLevel);
             }
 
             int totalCount = (int)Math.Round((baseAmount + extraCount) * rule.Multiplier);
-
+           
             for (int i = 0; i < totalCount; i++)
             {
                 Item extra = new StardewValley.Object(rule.ObjectID, 1);

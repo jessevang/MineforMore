@@ -64,6 +64,9 @@
   "gmcm.page.foraging.foraged.sectionTitle": "Toplayıcılık — Toplanan eşyaların düşüşleri",
   "gmcm.page.foraging.foraged.tooltip": "Toplanan eşyaların düşüş bonuslarını ayarla",
   "gmcm.page.foraging.foraged.paragraph": "Meslek gerektirmeyen düşüşleri ayarlayın. Anında uygulanır ve çarpan öncesi bonuslara eklenir.",
+  "gmcm.foraging.option.gathererExtraPerLevel.name": "Toplayıcı: seviye başına ekstra eşya",
+  "gmcm.foraging.option.gathererExtraPerLevel.tooltip": "Oyuncunun Toplayıcı mesleği varken Toplayıcılık seviyesinin her seviyesi için verilen ekstra eşya sayısı.",
+
 
   "gmcm.page.mining.title": "Madencilik ayarları",
   "gmcm.page.mining.prof.title": "Madencilik — Meslek bonusları",

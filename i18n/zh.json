@@ -1,4 +1,22 @@
 ﻿{
+  "profession.12.name": "护林员",
+  "profession.12.detail": "树木掉落的木材增加25%。每级采集额外+{{bonus}}棵树、+{{bonus1}}颗种子，并加快树木生长速度。",
+
+  "profession.13.name": "采集者",
+  "profession.13.detail": "采集物品有双倍收获的几率。每级采集额外+{{bonus}}个采集物品。",
+
+  "profession.14.name": "樵夫",
+  "profession.14.detail": "所有树木都有机会掉落硬木。硬木掉落几率和树木生长速度随采集等级提升。",
+
+  "profession.15.name": "取汁工",
+  "profession.15.detail": "糖浆售价提高25%。每级采集额外+{{bonus}}取汁速度、+{{bonus1}}糖浆。",
+
+  "profession.16.name": "植物学家",
+  "profession.16.detail": "采集物品始终为最高品质。采集时额外+25%物品。",
+
+  "profession.17.name": "追踪者",
+  "profession.17.detail": "显示可采集物品的位置。采集时额外+50%物品。",
+
   "profession.18.name": "矿工",
   "profession.18.desc": "每条矿脉获得更多矿石",
   "profession.18.detail": "每级采矿额外 +{{bonus}} 矿石",
@@ -68,7 +86,8 @@
   "gmcm.foraging.option.gathererExtraPerLevel.tooltip": "当玩家拥有采集者专精时，每点采集等级额外获得的物品数量。",
   "gmcm.foraging.option.tapperSpeedPerLevel.name": "取浆器速度（每级）",
   "gmcm.foraging.option.tapperSpeedPerLevel.tooltip": "当玩家拥有取浆者职业时，取浆器获得糖浆所需时间会按采集每级缩短此数值。示例：数值为 0.25 且采集 10 级 ≈ 在原始速度上再快 2.5×。基础/重型取浆器速度先应用，然后再应用此加成。",
-
+  "gmcm.foraging.option.tapperExtraQuantityPerLevel.name": "Tapper 每级额外数量",
+  "gmcm.foraging.option.tapperExtraQuantityPerLevel.tooltip": "每级觅食技能额外提供的糖浆单位（加法）。例如：5 级时设为 1.0，则批量大小增加 +5。",
 
   "gmcm.page.mining.title": "采矿设置",
   "gmcm.page.mining.prof.title": "采矿——职业加成",

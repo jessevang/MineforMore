@@ -1,6 +1,6 @@
 ﻿using GenericModConfigMenu;
 using HarmonyLib;
-using MineForMore.Classes;
+using LevelForMore.Classes;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
@@ -11,7 +11,7 @@ using System.Numerics;
 
 
 
-namespace MineForMore
+namespace LevelForMore
 {
 
     /// <summary>
@@ -71,7 +71,9 @@ namespace MineForMore
         public float GathererExtraDropPerLevel { get; set; } = 1.5f;
         public float LumberjackHardwoodPerLevelBonus { get; set; } = 0.5f;
         public float LumberjackHardwordDropChancePerLevelBonus { get; set; } = 0.025f;
-        public float TapperSpeedBonusPercentPerLevel { get; set; } = 0.25f; 
+        public float TapperSpeedBonusPercentPerLevel { get; set; } = 0.25f;
+
+        public float TapperExtraQuantityPerLevel { get; set; } = 1.0f;
 
 
 
@@ -248,15 +250,15 @@ namespace MineForMore
                 {
 
 
-                    new MineForMore.Patches.ForagingPatches.PerformTreeFallPatch().Apply(harmony, Monitor);
-                    new MineForMore.Patches.ForagingPatches.TreeGrowthPatch().Apply(harmony, Monitor);
-                    new MineForMore.Patches.ForagingPatches.OnHarvestedForagePatch().Apply(harmony, Monitor);
-                    new MineForMore.Patches.ForagingPatches.GetShakenOffItemPatch().Apply(harmony, Monitor);
-                    new MineForMore.Patches.ForagingPatches.UpdateTapperProductPatch().Apply(harmony, Monitor);
-                    new MineForMore.Patches.ForagingPatches.ResourceClumpDestroyedPatch().Apply(harmony, Monitor);
-                    new MineForMore.Patches.ForagingPatches.CropHarvestPatch().Apply(harmony, Monitor);
+                    new LevelForMore.Patches.ForagingPatches.PerformTreeFallPatch().Apply(harmony, Monitor);
+                    new LevelForMore.Patches.ForagingPatches.TreeGrowthPatch().Apply(harmony, Monitor);
+                    new LevelForMore.Patches.ForagingPatches.OnHarvestedForagePatch().Apply(harmony, Monitor);
+                    new LevelForMore.Patches.ForagingPatches.GetShakenOffItemPatch().Apply(harmony, Monitor);
+                    new LevelForMore.Patches.ForagingPatches.UpdateTapperProductPatch().Apply(harmony, Monitor);
+                    new LevelForMore.Patches.ForagingPatches.ResourceClumpDestroyedPatch().Apply(harmony, Monitor);
+                    //new MineForMore.Patches.ForagingPatches.CropHarvestPatch().Apply(harmony, Monitor);
 
-                    new MineforMore.Patches.MiningPatches.UpdateOreGemDropsPatch(Config).Apply(harmony, Monitor);
+                    new LevelForMore.Patches.MiningPatches.UpdateOreGemDropsPatch(Config).Apply(harmony, Monitor);
                     if (Config.TurnOnProfessionLevelUpDescription)
                     {
                         new ProfessionLevelDescriptionPatch(Config).Apply(harmony, Monitor);
@@ -264,7 +266,7 @@ namespace MineForMore
 
                     if (Config.AllowExtraNodeSpawnsInMine)
                     {
-                        new MineforMore.Patches.MiningPatches.MineShaftOresPatches(Config).Apply(harmony, Monitor);
+                        new LevelForMore.Patches.MiningPatches.MineShaftOresPatches(Config).Apply(harmony, Monitor);
                     }
 
 
@@ -445,7 +447,7 @@ namespace MineForMore
             gmcm.AddNumberOption(mod: ModManifest, getValue: () => Config.LumberjackHardwordDropChancePerLevelBonus, setValue: v => Config.LumberjackHardwordDropChancePerLevelBonus = v, name: () => Helper.Translation.Get("gmcm.foraging.option.hardwoodDropChancePerLevel.name"), tooltip: () => Helper.Translation.Get("gmcm.foraging.option.hardwoodDropChancePerLevel.tooltip"), min: 0f, max: 1f, interval: 0.001f);
             gmcm.AddNumberOption(mod: ModManifest, name: () => Helper.Translation.Get("gmcm.foraging.option.gathererExtraPerLevel.name"), tooltip: () => Helper.Translation.Get("gmcm.foraging.option.gathererExtraPerLevel.tooltip"), getValue: () => (float)Config.GathererExtraDropPerLevel, setValue: v => Config.GathererExtraDropPerLevel = (int)v, min: 0f, max: 10f, interval: 0.01f);
             gmcm.AddNumberOption(mod: ModManifest, name: () => Helper.Translation.Get("gmcm.foraging.option.tapperSpeedPerLevel.name"), tooltip: () => Helper.Translation.Get("gmcm.foraging.option.tapperSpeedPerLevel.tooltip"), getValue: () => Config.TapperSpeedBonusPercentPerLevel, setValue: v => Config.TapperSpeedBonusPercentPerLevel = MathF.Max(0f, v), min: 0f, max: 10f, interval: 0.05f);
-
+            gmcm.AddNumberOption(mod: ModManifest, getValue: () => Config.TapperExtraQuantityPerLevel, v => Config.TapperExtraQuantityPerLevel = Math.Max(0f, v), name: () => Helper.Translation.Get("gmcm.foraging.option.tapperExtraQuantityPerLevel.name"), () => Helper.Translation.Get("gmcm.foraging.option.tapperExtraQuantityPerLevel.tooltip"), 0f, 20f, 0.25f);
 
 
 

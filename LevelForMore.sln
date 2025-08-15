@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33110.190
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MineForMore", "MineForMore.csproj", "{4F486A77-1652-4447-8DF0-B01A1B77A855}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LevelForMore", "LevelForMore.csproj", "{4F486A77-1652-4447-8DF0-B01A1B77A855}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

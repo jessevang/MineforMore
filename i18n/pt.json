@@ -1,4 +1,22 @@
 {
+  "profession.12.name": "Silvicultor",
+  "profession.12.detail": "As árvores fornecem 25% mais madeira. Adicionalmente, +{{bonus}} árvores, +{{bonus1}} sementes e crescimento mais rápido por nível de coleta.",
+
+  "profession.13.name": "Coletor",
+  "profession.13.detail": "Chance de colheita dupla de itens coletados. Adicionalmente, +{{bonus}} item coletado por nível de coleta.",
+
+  "profession.14.name": "Lenhador",
+  "profession.14.detail": "Todas as árvores têm chance de fornecer madeira nobre. Mais chances de madeira nobre e crescimento mais rápido, ambos escalam com o nível de coleta.",
+
+  "profession.15.name": "Extrator",
+  "profession.15.detail": "Os xaropes valem 25% mais. +{{bonus}} de velocidade de extração, +{{bonus1}} xarope por nível de coleta.",
+
+  "profession.16.name": "Botânico",
+  "profession.16.detail": "Os itens coletados são sempre da mais alta qualidade. Adicionalmente, +25% mais itens ao coletar.",
+
+  "profession.17.name": "Rastreador",
+  "profession.17.detail": "Revela a localização de itens coletáveis. Adicionalmente, +50% mais itens ao coletar.",
+
   "profession.18.name": "Minerador",
   "profession.18.desc": "Mais minérios por veia",
   "profession.18.detail": "+{{bonus}} minérios adicionais por nível de Mineração",
@@ -68,7 +86,8 @@
   "gmcm.foraging.option.gathererExtraPerLevel.tooltip": "Quantos itens extras por nível de Coleta quando o jogador tem a profissão Coletor.",
   "gmcm.foraging.option.tapperSpeedPerLevel.name": "Velocidade do Sangrador por nível",
   "gmcm.foraging.option.tapperSpeedPerLevel.tooltip": "Se o jogador tem a profissão Sangrador, o tempo para produzir xarope é reduzido desse valor por nível de Coleta. Ex.: 0,25 no nível 10 ≈ 2,5× mais rápido que a velocidade original. A velocidade base ou do sangrador pesado é aplicada primeiro, depois este bônus.",
-
+  "gmcm.foraging.option.tapperExtraQuantityPerLevel.name": "Quantidade extra de pipa / nível",
+  "gmcm.foraging.option.tapperExtraQuantityPerLevel.tooltip": "Unidades adicionais de xarope concedidas por nível de Forrageamento (aditivo). Exemplo: 1.0 no nível 5 adiciona +5 ao lote.",
 
   "gmcm.page.mining.title": "Configurações de Mineração",
   "gmcm.page.mining.prof.title": "Mineração – Bônus de profissão",

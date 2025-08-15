@@ -1,10 +1,10 @@
 ﻿{
-  "Name": "MineForMore",
+  "Name": "Level For More",
   "Author": "Darkmushu1",
-  "Version": "1.1.6",
-  "Description": "More vein drops, upgraded professions for extra drops, uncapped skill levels, mine on day 1",
-  "UniqueID": "Darkmushu1.MineForMore",
-  "EntryDll": "MineForMore.dll",
+  "Version": "2.0.0",
+  "Description": "Progression overhaul for Mining, Foraging (and later Combat/Farming/Fishing).",
+  "UniqueID": "Darkmushu1.LevelForMore",
+  "EntryDll": "LevelForMore.dll",
   "MinimumApiVersion": "4.0.0",
   "UpdateKeys": [ "Nexus:31259" ],
   "Dependencies": [

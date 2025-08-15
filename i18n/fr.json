@@ -1,4 +1,22 @@
 {
+  "profession.12.name": "Forestier",
+  "profession.12.detail": "Les arbres donnent 25 % de bois en plus. De plus, +{{bonus}} arbres, +{{bonus1}} graines, et croissance des arbres plus rapide par niveau de cueillette.",
+
+  "profession.13.name": "Cueilleur",
+  "profession.13.detail": "Chance de récolte double d’objets cueillis. De plus, +{{bonus}} objet cueilli par niveau de cueillette.",
+
+  "profession.14.name": "Bûcheron",
+  "profession.14.detail": "Tous les arbres peuvent donner du bois dur. Plus de chances de bois dur et croissance plus rapide, les deux augmentent avec le niveau de cueillette.",
+
+  "profession.15.name": "Tappeur",
+  "profession.15.detail": "Les sirops valent 25 % de plus. +{{bonus}} de vitesse d’extraction, +{{bonus1}} sirop par niveau de cueillette.",
+
+  "profession.16.name": "Botaniste",
+  "profession.16.detail": "Les objets cueillis sont toujours de la meilleure qualité. De plus, +25 % d’objets en plus lors de la cueillette.",
+
+  "profession.17.name": "Pisteur",
+  "profession.17.detail": "Révèle l’emplacement des objets cueillables. De plus, +50 % d’objets en plus lors de la cueillette.",
+
   "profession.18.name": "Mineur",
   "profession.18.desc": "Plus de minerais par veine",
   "profession.18.detail": "+{{bonus}} minerais suppl�mentaires par niveau de Minage",
@@ -68,7 +86,8 @@
   "gmcm.foraging.option.gathererExtraPerLevel.tooltip": "Nombre d’objets supplémentaires par niveau de Cueillette lorsque le joueur possède la profession Cueilleur.",
   "gmcm.foraging.option.tapperSpeedPerLevel.name": "Vitesse du tappeur par niveau",
   "gmcm.foraging.option.tapperSpeedPerLevel.tooltip": "Si le joueur a la profession Tappeur, le temps nécessaire pour produire du sirop est réduit de cette valeur par niveau de Cueillette. Exemple : 0,25 au niv. 10 ≈ 2,5× plus rapide que la vitesse d’origine. La vitesse de base/robuste s’applique d’abord, puis ce bonus.",
-
+  "gmcm.foraging.option.tapperExtraQuantityPerLevel.name": "Quantité extra de sève / niveau",
+  "gmcm.foraging.option.tapperExtraQuantityPerLevel.tooltip": "Unités de sirop supplémentaires accordées par niveau de Forêtage (additif). Exemple : 1,0 au niveau 5 donne +5 à la production.",
 
   "gmcm.page.mining.title": "Param�tres de Minage",
   "gmcm.page.mining.prof.title": "Minage � Bonus de profession",

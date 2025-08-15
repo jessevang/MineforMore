@@ -6,7 +6,7 @@ using StardewValley.TerrainFeatures;
 using StardewValley.Tools;
 using System.Linq;
 
-namespace MineForMore.Patches.ForagingPatches
+namespace LevelForMore.Patches.ForagingPatches
 {
     internal class ResourceClumpDestroyedPatch
     {
@@ -35,7 +35,7 @@ namespace MineForMore.Patches.ForagingPatches
             var who = axe.getLastFarmerToUse();
             int id = __instance.parentSheetIndex.Value;
             if (ModEntry.Instance.Config.DebugMode)
-                ModEntry.Instance.Monitor.Log($"[MineForMore] ResourceClump ID = {id}", LogLevel.Debug);
+                ModEntry.Instance.Monitor.Log($"[Foraging][ResourceClumpDestroyedPatch] ResourceClump ID = {id}", LogLevel.Debug);
 
             string idKey = id switch
             {
@@ -44,7 +44,7 @@ namespace MineForMore.Patches.ForagingPatches
                 _ => null
             };
             if (ModEntry.Instance.Config.DebugMode)
-                ModEntry.Instance.Monitor.Log($"[MineForMore] Mapped ID {id} to key '{idKey}'", LogLevel.Debug);
+                ModEntry.Instance.Monitor.Log($"[Foraging][ResourceClumpDestroyedPatch] Mapped ID {id} to key '{idKey}'", LogLevel.Debug);
 
             if (idKey == null)
                 return;
@@ -52,7 +52,7 @@ namespace MineForMore.Patches.ForagingPatches
             var rule = ModEntry.Instance.GetAllRules().FirstOrDefault(r => r.DropsFromObjectIDs.Contains(idKey));
 
             if (ModEntry.Instance.Config.DebugMode)
-                ModEntry.Instance.Monitor.Log($"[MineForMore] Rule is {rule} ", LogLevel.Debug);
+                ModEntry.Instance.Monitor.Log($"[Foraging][ResourceClumpDestroyedPatch] Rule is {rule} ", LogLevel.Debug);
             if (rule == null)
                 return;
 
@@ -85,7 +85,7 @@ namespace MineForMore.Patches.ForagingPatches
                 }
             }));
             if (ModEntry.Instance.Config.DebugMode)
-                ModEntry.Instance.Monitor.Log($"[MineForMore] Extra hardwood dropped: {extra} from {idKey}", LogLevel.Debug);
+                ModEntry.Instance.Monitor.Log($"[Foraging][ResourceClumpDestroyedPatch] Extra hardwood dropped: {extra} from {idKey}", LogLevel.Debug);
         }
     }
 }

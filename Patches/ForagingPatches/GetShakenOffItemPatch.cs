@@ -1,10 +1,11 @@
-﻿using System;
-using System.Linq;
-using HarmonyLib;
+﻿using HarmonyLib;
+using StardewModdingAPI;
 using StardewValley;
 using StardewValley.TerrainFeatures;
+using System;
+using System.Linq;
 
-namespace MineForMore.Patches.ForagingPatches
+namespace LevelForMore.Patches.ForagingPatches
 {
     public class GetShakenOffItemPatch
     {
@@ -46,10 +47,27 @@ namespace MineForMore.Patches.ForagingPatches
                 int baseAmount = rule.AddAmount;
 
                 int gathererBonus = 0;
+                int level = who.GetSkillLevel(Farmer.foragingSkill);
                 if (who.professions.Contains(Farmer.gatherer)) // 13
                 {
-                    int level = who.GetSkillLevel(Farmer.foragingSkill);
+
                     gathererBonus = (int)(level * ModEntry.Instance.Config.GathererExtraDropPerLevel);
+                    if (ModEntry.Instance.Config.DebugMode)
+                        ModEntry.Instance.Monitor.Log($"[Foraging][GetShakenOffItemPatch] Farmer Has Gatherer Profession ExtraCount= {gathererBonus}", LogLevel.Info);
+                }
+                if (who.professions.Contains(Farmer.botanist)) // 16
+                {
+
+                    gathererBonus = (int)(gathererBonus * 1.25);
+                    if (ModEntry.Instance.Config.DebugMode)
+                        ModEntry.Instance.Monitor.Log($"[Foraging][GetShakenOffItemPatch] Farmer Has Botanist Profession ExtraCount= {gathererBonus}", LogLevel.Info);
+                }
+                if (who.professions.Contains(Farmer.tracker)) // 17
+                {
+
+                    gathererBonus = (int)(gathererBonus * 1.50);
+                    if (ModEntry.Instance.Config.DebugMode)
+                        ModEntry.Instance.Monitor.Log($"[Foraging][GetShakenOffItemPatch] Farmer Has Tracker Profession ExtraCount= {gathererBonus}", LogLevel.Info);
                 }
 
                 int extraCount = (int)Math.Round((baseAmount + gathererBonus) * rule.Multiplier);
@@ -72,7 +90,7 @@ namespace MineForMore.Patches.ForagingPatches
             catch (Exception ex)
             {
                 if (ModEntry.Instance.Config.DebugMode)
-                    ModEntry.Instance.Monitor.Log($"[GetShakenOffItemPatch] Error adding extra berries: {ex}", StardewModdingAPI.LogLevel.Error);
+                    ModEntry.Instance.Monitor.Log($"[Foraging][GetShakenOffItemPatch] Error adding extra berries: {ex}", StardewModdingAPI.LogLevel.Error);
             }
         }
     }

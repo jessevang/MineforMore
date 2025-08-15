@@ -1,7 +1,25 @@
 ﻿{
+  "profession.12.name": "Forester",
+  "profession.12.detail": "Trees drop 25% more wood. Additional +{{bonus}} Trees, +{{bonus1}} seeds, and tree grows faster per forage level",
+
+  "profession.13.name": "Gatherer",
+  "profession.13.detail": "Chance for double harvest of foraged items. Additional +{{bonus}} foraged item per each forage level",
+
+  "profession.14.name": "Lumberjack",
+  "profession.14.detail": "All trees have a chance to drop hardwood. Even more chances for hardwood drops and faster tree growth, both scales with forage level.",
+
+  "profession.15.name": "Tapper",
+  "profession.15.detail": "Syrups worth 25% more. +{{bonus}} faster tapping, +{{bonus1}} syrup per forage level.",
+
+  "profession.16.name": "Botanist",
+  "profession.16.detail": "Foraged items are always highest quality. Additional +25% more Foraged items when foraging",
+
+  "profession.17.name": "Tracker",
+  "profession.17.detail": "Location of forgeable items revealed. Additional +50% more Foraged items when foraging",
+
   "profession.18.name": "Miner",
   "profession.18.desc": "More Ores per vein",
-  "profession.18.detail": "Additional +{{bonus}} ores per mining level",
+  "profession.18.detail": "Additional +{{bonus}} forages per mining level",
 
   "profession.19.name": "Geologist",
   "profession.19.desc": "More gems per vein",
@@ -68,7 +86,8 @@
   "gmcm.foraging.option.gathererExtraPerLevel.tooltip": "How many extra items per Foraging level when the player has the Gatherer profession.",
   "gmcm.foraging.option.tapperSpeedPerLevel.name": "Tapper speed per level",
   "gmcm.foraging.option.tapperSpeedPerLevel.tooltip": "If farmer has Tapper Profession then speed it takes for tapper to get syrup is sped up by this value per each Foraging level. Example If this value is set at 0.25 at Level 10 Forage would = 2.5× faster speed on top of original speed. Tapper speed or heavy tapper speed is applied first, then this bonus tapper speed is applied after.",
-
+  "gmcm.foraging.option.tapperExtraQuantityPerLevel.name": "Tapper Extra Quantity / Level",
+  "gmcm.foraging.option.tapperExtraQuantityPerLevel.tooltip": "Additional syrup units granted per Foraging level (additive). Example: 1.0 at level 5 adds +5 to the batch size.",
 
 
   "gmcm.page.mining.title": "Mining Settings",

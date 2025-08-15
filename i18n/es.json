@@ -1,4 +1,22 @@
 {
+  "profession.12.name": "Guardabosques",
+  "profession.12.detail": "Los árboles sueltan un 25 % más de madera. Además, +{{bonus}} árboles, +{{bonus1}} semillas y los árboles crecen más rápido por cada nivel de recolección.",
+
+  "profession.13.name": "Recolector",
+  "profession.13.detail": "Probabilidad de cosecha doble en objetos recolectados. Además, +{{bonus}} objeto recolectado por cada nivel de recolección.",
+
+  "profession.14.name": "Leñador",
+  "profession.14.detail": "Todos los árboles tienen la posibilidad de soltar madera noble. Más posibilidades de madera noble y crecimiento más rápido, ambos escalan con el nivel de recolección.",
+
+  "profession.15.name": "Extractor",
+  "profession.15.detail": "Los jarabes valen un 25 % más. +{{bonus}} de velocidad de extracción, +{{bonus1}} jarabe por nivel de recolección.",
+
+  "profession.16.name": "Botánico",
+  "profession.16.detail": "Los objetos recolectados son siempre de la más alta calidad. Además, +25% más objetos recolectados al recolectar.",
+
+  "profession.17.name": "Rastreador",
+  "profession.17.detail": "Revela la ubicación de objetos recolectables. Además, +50% más objetos recolectados al recolectar.",
+
   "profession.18.name": "Minero",
   "profession.18.desc": "M�s minerales por veta",
   "profession.18.detail": "+{{bonus}} minerales adicionales por nivel de Miner�a",
@@ -68,7 +86,8 @@
   "gmcm.foraging.option.gathererExtraPerLevel.tooltip": "Cuántos objetos extra por nivel de Recolección cuando el jugador tiene la profesión Recolector.",
   "gmcm.foraging.option.tapperSpeedPerLevel.name": "Velocidad del Extractor por nivel",
   "gmcm.foraging.option.tapperSpeedPerLevel.tooltip": "Si el jugador tiene la profesión Extractor, el tiempo para obtener jarabe se acelera este valor por cada nivel de Recolección. Ejemplo: 0.25 en nivel 10 ≈ 2,5× más rápido sobre la velocidad original. La velocidad base o del extractor pesado se aplica primero, y luego este bono.",
-
+  "gmcm.foraging.option.tapperExtraQuantityPerLevel.name": "Cantidad extra de pipa / nivel",
+  "gmcm.foraging.option.tapperExtraQuantityPerLevel.tooltip": "Unidades adicionales de jarabe por nivel de Recolección (aditivo). Ejemplo: 1.0 en nivel 5 añade +5 al lote.",
 
 
   "gmcm.page.mining.title": "Ajustes de Miner�a",

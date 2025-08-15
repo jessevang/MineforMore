@@ -6,10 +6,10 @@ using HarmonyLib;
 using Object = StardewValley.Object;
 using System;
 using System.Linq;
-using MineForMore;
+using LevelForMore;
 using System.Collections.Generic;
 
-namespace MineforMore.Patches.MiningPatches
+namespace LevelForMore.Patches.MiningPatches
 {
 
 

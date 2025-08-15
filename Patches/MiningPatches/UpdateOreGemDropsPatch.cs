@@ -1,8 +1,8 @@
 ﻿using StardewModdingAPI;
 using StardewValley;
 using HarmonyLib;
-using MineForMore;
-namespace MineforMore.Patches.MiningPatches
+using LevelForMore;
+namespace LevelForMore.Patches.MiningPatches
 {
     internal class UpdateOreGemDropsPatch
     {

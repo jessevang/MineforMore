@@ -1,4 +1,22 @@
 {
+  "profession.12.name": "Förster",
+  "profession.12.detail": "Bäume lassen 25 % mehr Holz fallen. Zusätzlich +{{bonus}} Bäume, +{{bonus1}} Samen und schnelleres Baumwachstum pro Sammelstufe.",
+
+  "profession.13.name": "Sammler",
+  "profession.13.detail": "Chance auf doppelte Ernte bei gesammelten Gegenständen. Zusätzlich +{{bonus}} gesammelter Gegenstand pro Sammelstufe.",
+
+  "profession.14.name": "Holzfäller",
+  "profession.14.detail": "Alle Bäume können Hartholz fallen lassen. Noch mehr Chancen auf Hartholz und schnelleres Baumwachstum, beides skaliert mit Sammelstufe.",
+
+  "profession.15.name": "Zapfer",
+  "profession.15.detail": "Sirup ist 25 % mehr wert. +{{bonus}} schnelleres Zapfen, +{{bonus1}} Sirup pro Sammelstufe.",
+
+  "profession.16.name": "Botaniker",
+  "profession.16.detail": "Gesammelte Gegenstände haben immer höchste Qualität. Zusätzlich +25 % mehr Gegenstände beim Sammeln.",
+
+  "profession.17.name": "Fährtenleser",
+  "profession.17.detail": "Standorte von sammelbaren Gegenständen werden angezeigt. Zusätzlich +50 % mehr Gegenstände beim Sammeln.",
+
   "profession.18.name": "Bergmann",
   "profession.18.desc": "Mehr Erz pro Ader",
   "profession.18.detail": "Zus�tzlich +{{bonus}} Erz pro Bergbaustufe",
@@ -68,7 +86,8 @@
   "gmcm.foraging.option.gathererExtraPerLevel.tooltip": "Wie viele zusätzliche Gegenstände pro Sammelstufe, wenn der Spieler die Profession Sammler besitzt.",
   "gmcm.foraging.option.tapperSpeedPerLevel.name": "Zapfer-Geschwindigkeit pro Stufe",
   "gmcm.foraging.option.tapperSpeedPerLevel.tooltip": "Hat der Spieler die Profession Zapfer, wird die Zeit bis zur Sirupproduktion pro Sammelstufe um diesen Wert beschleunigt. Beispiel: Wert 0,25 bei Stufe 10 ≈ 2,5× schneller als die Grundgeschwindigkeit. Basis- bzw. Schwerer-Zapfer-Bonus wird zuerst angewendet, danach dieser Bonus.",
-
+  "gmcm.foraging.option.tapperExtraQuantityPerLevel.name": "Tapper: Zusätzliche Menge pro Stufe",
+  "gmcm.foraging.option.tapperExtraQuantityPerLevel.tooltip": "Zusätzliche Sirup-Einheiten pro Foraging-Stufe (additiv). Beispiel: 1,0 bei Stufe 5 ergibt +5 auf die Charge.",
 
 
   "gmcm.page.mining.title": "Bergbau-Einstellungen",

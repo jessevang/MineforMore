@@ -1,4 +1,4 @@
-﻿using MineForMore;
+﻿using LevelForMore;
 using StardewValley.TerrainFeatures;
 using StardewValley.Tools;
 using StardewValley;
@@ -8,7 +8,7 @@ using StardewModdingAPI;
 using System.Linq;
 using System.Xml.Schema;
 
-namespace MineForMore.Patches.ForagingPatches
+namespace LevelForMore.Patches.ForagingPatches
 {
     internal class PerformTreeFallPatch
     {

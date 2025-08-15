@@ -1,4 +1,22 @@
 ﻿{
+  "profession.12.name": "フォレスター",
+  "profession.12.detail": "木は25%多く木材を落とします。さらに採取レベルごとに+{{bonus}}本の木、+{{bonus1}}個の種、成長速度が上がります。",
+
+  "profession.13.name": "採取家",
+  "profession.13.detail": "採取したアイテムが2倍になるチャンス。さらに採取レベルごとに+{{bonus}}個の採取アイテム。",
+
+  "profession.14.name": "木こり",
+  "profession.14.detail": "すべての木がハードウッドを落とす可能性があります。ハードウッドのドロップ率と成長速度が採取レベルでさらに上昇します。",
+
+  "profession.15.name": "樹液採取者",
+  "profession.15.detail": "シロップの価値が25%増加します。さらに採取レベルごとに+{{bonus}}採取速度、+{{bonus1}}シロップ。",
+
+  "profession.16.name": "植物学者",
+  "profession.16.detail": "採取品は常に最高品質です。さらに採取時に+25%多く入手します。",
+
+  "profession.17.name": "追跡者",
+  "profession.17.detail": "採取可能なアイテムの位置を表示します。さらに採取時に+50%多く入手します。",
+
   "profession.18.name": "鉱夫",
   "profession.18.desc": "鉱脈ごとの鉱石が増える",
   "profession.18.detail": "採鉱レベルごとに +{{bonus}} 個の鉱石を追加",
@@ -68,7 +86,8 @@
   "gmcm.foraging.option.gathererExtraPerLevel.tooltip": "プレイヤーが採取家の職業を持つ場合、採取レベル1ごとに追加されるアイテム数。",
   "gmcm.foraging.option.tapperSpeedPerLevel.name": "タッパー速度（レベルごと）",
   "gmcm.foraging.option.tapperSpeedPerLevel.tooltip": "プレイヤーがタッパーの職業を持つ場合、シロップ完成までの時間が採取レベル1ごとにこの値だけ短縮されます。例：値が0.25で採取Lv10なら元の速度に対して約2.5倍。ベース／ヘビータッパーの効果が先に適用され、その後このボーナスが適用されます.",
-
+  "gmcm.foraging.option.tapperExtraQuantityPerLevel.name": "タッパー追加量／レベル",
+  "gmcm.foraging.option.tapperExtraQuantityPerLevel.tooltip": "採集スキルのレベルごとに追加されるシロップの単位（加算式）。例：レベル5で1.0なら、バッチサイズが＋5されます。",
 
   "gmcm.page.mining.title": "採鉱設定",
   "gmcm.page.mining.prof.title": "採鉱 − 職業ボーナス",

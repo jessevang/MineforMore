@@ -7,7 +7,7 @@ using StardewValley.TerrainFeatures;
 using System;
 using System.Linq;
 
-namespace MineForMore.Patches.ForagingPatches
+namespace LevelForMore.Patches.ForagingPatches
 {
     public class CropHarvestPatch
     {
@@ -53,13 +53,28 @@ namespace MineForMore.Patches.ForagingPatches
                 return;
 
             int baseAmount = rule.AddAmount;
-
+            
             int extraCount = 0;
+    
             Farmer who = Game1.player; 
             if (who.professions.Contains(13)) // Gatherer
             {
                 int level = who.GetSkillLevel(Farmer.foragingSkill);
-                extraCount = (int)(level * ModEntry.Instance.Config.GathererExtraDropPerLevel);
+                extraCount += (int)(level * ModEntry.Instance.Config.GathererExtraDropPerLevel);
+                if (ModEntry.Instance.Config.DebugMode)
+                    ModEntry.Instance.Monitor.Log($"[Foraging][CropHarvestPatch] Farmer Has Tracker Profession ExtraCount= {extraCount}", LogLevel.Info);
+            }
+            if (who.professions.Contains(16)) // Botanist
+            {
+                extraCount = (int)(extraCount * 1.25);
+                if (ModEntry.Instance.Config.DebugMode)
+                    ModEntry.Instance.Monitor.Log($"[Foraging][CropHarvestPatch] Farmer Has Botanist Profession ExtraCount= {extraCount}", LogLevel.Info);
+            }
+            if (who.professions.Contains(17)) // Tracker 
+            {
+                if (ModEntry.Instance.Config.DebugMode)
+                    ModEntry.Instance.Monitor.Log($"[Foraging][CropHarvestPatch] Farmer Has Tracker Profession ExtraCount= {extraCount}", LogLevel.Info);
+                extraCount = (int)(extraCount * 1.50);
             }
 
             int totalCount = (int)Math.Round((baseAmount + extraCount) * rule.Multiplier);

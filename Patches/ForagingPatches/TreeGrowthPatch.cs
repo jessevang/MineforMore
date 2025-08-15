@@ -4,7 +4,7 @@ using StardewValley;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 
-namespace MineForMore.Patches.ForagingPatches
+namespace LevelForMore.Patches.ForagingPatches
 {
     [HarmonyPatch(typeof(Tree), nameof(Tree.dayUpdate))]
     internal class TreeGrowthPatch

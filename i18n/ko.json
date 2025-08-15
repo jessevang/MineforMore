@@ -1,4 +1,22 @@
 ﻿{
+  "profession.12.name": "삼림 관리인",
+  "profession.12.detail": "나무에서 나무가 25% 더 떨어집니다. 채집 레벨당 추가로 +{{bonus}} 그루, +{{bonus1}} 씨앗, 나무 성장 속도 증가.",
+
+  "profession.13.name": "채집가",
+  "profession.13.detail": "채집 아이템이 두 배로 나올 확률. 채집 레벨당 추가로 +{{bonus}}개의 채집 아이템.",
+
+  "profession.14.name": "벌목꾼",
+  "profession.14.detail": "모든 나무에서 단단한 목재가 나올 수 있습니다. 채집 레벨에 따라 단단한 목재 확률과 나무 성장 속도가 증가합니다.",
+
+  "profession.15.name": "수액 채취자",
+  "profession.15.detail": "시럽 가치가 25% 증가합니다. 채집 레벨당 +{{bonus}} 채취 속도, +{{bonus1}} 시럽.",
+
+  "profession.16.name": "식물학자",
+  "profession.16.detail": "채집한 아이템은 항상 최고 품질입니다. 채집 시 추가로 25% 더 획득.",
+
+  "profession.17.name": "추적자",
+  "profession.17.detail": "채집 가능한 아이템 위치를 표시합니다. 채집 시 추가로 50% 더 획득.",
+
   "profession.18.name": "광부",
   "profession.18.desc": "광맥당 더 많은 광석",
   "profession.18.detail": "채광 레벨당 +{{bonus}} 광석 추가",
@@ -67,6 +85,8 @@
   "gmcm.foraging.option.gathererExtraPerLevel.tooltip": "플레이어가 채집가 직업일 때 채집 레벨당 추가로 얻는 아이템 개수.",
   "gmcm.foraging.option.tapperSpeedPerLevel.name": "탭퍼 속도(레벨당)",
   "gmcm.foraging.option.tapperSpeedPerLevel.tooltip": "플레이어가 탭퍼 직업일 때, 수액을 얻기까지 걸리는 시간이 채집 레벨마다 이 값만큼 빨라집니다. 예: 값 0.25, 레벨 10 ⇒ 기본 속도 대비 약 2.5배. 기본/헤비 탭퍼 속도가 먼저 적용되고, 그 다음에 이 보너스가 적용됩니다.",
+  "gmcm.foraging.option.tapperExtraQuantityPerLevel.name": "타퍼 추가 수량／레벨당",
+  "gmcm.foraging.option.tapperExtraQuantityPerLevel.tooltip": "포리징 레벨당 추가 시럽 단위(가감 방식). 예: 레벨 5에 1.0이면 배치 크기가 +5 증가합니다.",
 
 
   "gmcm.page.mining.title": "채광 설정",

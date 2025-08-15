@@ -1,4 +1,22 @@
 ﻿{
+  "profession.12.name": "Erdész",
+  "profession.12.detail": "A fák 25%-kal több fát adnak. További +{{bonus}} fa, +{{bonus1}} mag és gyorsabb növekedés minden egyes gyűjtögetési szint után.",
+
+  "profession.13.name": "Gyűjtögető",
+  "profession.13.detail": "Esély a kétszeres begyűjtésre a gyűjtött tárgyaknál. Minden gyűjtögetési szint után +{{bonus}} további tárgy.",
+
+  "profession.14.name": "Favágó",
+  "profession.14.detail": "Minden fa eséllyel ad keményfát. Több esély keményfára és gyorsabb növekedés, mindkettő a gyűjtögetési szinttel skálázódik.",
+
+  "profession.15.name": "Csapoló",
+  "profession.15.detail": "A szirupok 25%-kal többet érnek. +{{bonus}} gyorsabb csapolás, +{{bonus1}} szirup minden gyűjtögetési szint után.",
+
+  "profession.16.name": "Botanikus",
+  "profession.16.detail": "A gyűjtött tárgyak mindig a legmagasabb minőségűek. Továbbá +25% több tárgy gyűjtéskor.",
+
+  "profession.17.name": "Nyomkövető",
+  "profession.17.detail": "Felfedi a gyűjthető tárgyak helyét. Továbbá +50% több tárgy gyűjtéskor.",
+
   "profession.18.name": "Bányász",
   "profession.18.desc": "Több érctárgy egy érpercből",
   "profession.18.detail": "Szintenként +{{bonus}} érctárgy a Bányászatban",
@@ -68,7 +86,8 @@
   "gmcm.foraging.option.gathererExtraPerLevel.tooltip": "Hány extra tárgy jár minden Gyűjtögetés-szint után, ha a játékosnak Gyűjtögető szakmája van.",
   "gmcm.foraging.option.tapperSpeedPerLevel.name": "Csapoló sebessége szintenként",
   "gmcm.foraging.option.tapperSpeedPerLevel.tooltip": "Ha a játékosnak Csapoló szakmája van, a szirup elkészüléséhez szükséges idő minden Gyűjtögetés-szint után ezzel az értékkel gyorsul. Példa: 0.25 értéknél, Gyűjtögetés 10. szinten ≈ az eredetihez képest ~2,5× gyorsabb. A csapoló (vagy nehéz csapoló) alapgyorsítása először érvényesül, ezt követi ez a bónusz.",
-
+  "gmcm.foraging.option.tapperExtraQuantityPerLevel.name": "Csap extra mennyiség / szint",
+  "gmcm.foraging.option.tapperExtraQuantityPerLevel.tooltip": "Szintenként (gyűjtögetés) hozzáadott extra szirup egységek (összeadódik). Példa: 1,0 érték 5. szinten +5 egységet ad a tételhez.",
 
   "gmcm.page.mining.title": "Bányászat beállításai",
   "gmcm.page.mining.prof.title": "Bányászat — szakmabónuszok",

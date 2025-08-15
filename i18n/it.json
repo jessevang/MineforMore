@@ -1,4 +1,22 @@
 {
+  "profession.12.name": "Boscaiolo",
+  "profession.12.detail": "Gli alberi rilasciano il 25% di legno in più. Inoltre, +{{bonus}} alberi, +{{bonus1}} semi e crescita più rapida per livello di raccolta.",
+
+  "profession.13.name": "Raccoglitore",
+  "profession.13.detail": "Possibilità di raccolta doppia di oggetti selvatici. Inoltre, +{{bonus}} oggetto raccolto per livello di raccolta.",
+
+  "profession.14.name": "Taglialegna",
+  "profession.14.detail": "Tutti gli alberi possono dare legno duro. Maggiori possibilità di legno duro e crescita più rapida, entrambi scalano con il livello di raccolta.",
+
+  "profession.15.name": "Estrattore",
+  "profession.15.detail": "Gli sciroppi valgono il 25% in più. +{{bonus}} velocità di estrazione, +{{bonus1}} sciroppo per livello di raccolta.",
+
+  "profession.16.name": "Botanico",
+  "profession.16.detail": "Gli oggetti raccolti sono sempre della massima qualità. Inoltre, +25% di oggetti in più durante la raccolta.",
+
+  "profession.17.name": "Tracciatore",
+  "profession.17.detail": "Rivela la posizione degli oggetti raccoglibili. Inoltre, +50% di oggetti in più durante la raccolta.",
+
   "profession.18.name": "Minatore",
   "profession.18.desc": "Pi� minerali per vena",
   "profession.18.detail": "+{{bonus}} minerali extra per livello di Estrazione",
@@ -68,7 +86,8 @@
   "gmcm.foraging.option.gathererExtraPerLevel.tooltip": "Quanti oggetti extra per livello di Raccolta quando il giocatore ha la professione Raccoglitore.",
   "gmcm.foraging.option.tapperSpeedPerLevel.name": "Velocità dello Spillatore per livello",
   "gmcm.foraging.option.tapperSpeedPerLevel.tooltip": "Se il giocatore ha la professione Spillatore, il tempo per ottenere lo sciroppo si riduce di questo valore per ogni livello di Raccolta. Esempio: 0,25 al livello 10 ≈ 2,5× più veloce rispetto alla velocità originale. La velocità base o quella del tapper pesante si applica prima, poi questo bonus.",
-
+  "gmcm.foraging.option.tapperExtraQuantityPerLevel.name": "Quantità extra di sciroppo / livello",
+  "gmcm.foraging.option.tapperExtraQuantityPerLevel.tooltip": "Unità aggiuntive di sciroppo concesse per livello di Foraggio (additivo). Esempio: 1,0 al livello 5 aggiunge +5 al lotto.",
 
 
   "gmcm.page.mining.title": "Impostazioni Estrazione",

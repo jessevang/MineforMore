@@ -1,4 +1,22 @@
 ﻿{
+  "profession.12.name": "Ormancı",
+  "profession.12.detail": "Ağaçlar %25 daha fazla odun verir. Her seviye toplayıcılık için +{{bonus}} ağaç, +{{bonus1}} tohum ve daha hızlı ağaç büyümesi.",
+
+  "profession.13.name": "Toplayıcı",
+  "profession.13.detail": "Toplanan eşyalar için çift hasat şansı. Her toplayıcılık seviyesi için +{{bonus}} ek toplanan eşya.",
+
+  "profession.14.name": "Oduncu",
+  "profession.14.detail": "Tüm ağaçların sert odun verme ihtimali vardır. Sert odun şansı ve ağaç büyüme hızı toplayıcılık seviyesi ile artar.",
+
+  "profession.15.name": "Ağaç Özütçüsü",
+  "profession.15.detail": "Şuruplar %25 daha değerli. Her toplayıcılık seviyesi için +{{bonus}} toplama hızı, +{{bonus1}} şurup.",
+
+  "profession.16.name": "Botanikçi",
+  "profession.16.detail": "Toplanan eşyalar her zaman en yüksek kalitededir. Toplarken %25 daha fazla eşya.",
+
+  "profession.17.name": "İz Sürücü",
+  "profession.17.detail": "Toplanabilir eşyaların yerini gösterir. Toplarken %50 daha fazla eşya.",
+
   "profession.18.name": "Madenci",
   "profession.18.desc": "Damar başına daha fazla maden",
   "profession.18.detail": "Madencilik seviyesine göre +{{bonus}} ek maden",
@@ -68,6 +86,8 @@
   "gmcm.foraging.option.gathererExtraPerLevel.tooltip": "Oyuncunun Toplayıcı mesleği varken Toplayıcılık seviyesinin her seviyesi için verilen ekstra eşya sayısı.",
   "gmcm.foraging.option.tapperSpeedPerLevel.name": "Muslukçu hız (seviye başına)",
   "gmcm.foraging.option.tapperSpeedPerLevel.tooltip": "Oyuncuda Muslukçu mesleği varsa, şurup üretim süresi Toplayıcılık seviyesinin her bir seviyesi için bu değer kadar kısalır. Örn: Değer 0.25 ve Seviye 10 ⇒ orijinal hıza ek olarak ~2,5× daha hızlı. Temel/ağır musluk hızı önce uygulanır, ardından bu bonus uygulanır.",
+  "gmcm.foraging.option.tapperExtraQuantityPerLevel.name": "Damlatıcı Ek Miktarı / Seviye",
+  "gmcm.foraging.option.tapperExtraQuantityPerLevel.tooltip": "Her Toplayıcılık seviyesi başına ek şurup birimi (toplam ekleme). Örnek: 1,0 değeri Seviye 5'te parti boyutuna +5 ekler.",
 
 
   "gmcm.page.mining.title": "Madencilik ayarları",

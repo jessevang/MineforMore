@@ -1,7 +1,7 @@
 ﻿using StardewValley;
 
 
-namespace MineForMore.Classes
+namespace LevelForMore.Classes
 {
     internal class Recipe
     {

@@ -8,7 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace MineForMore.Patches.ForagingPatches
+namespace LevelForMore.Patches.ForagingPatches
 {
     public class OnHarvestedForagePatch
     {
@@ -31,12 +31,12 @@ namespace MineForMore.Patches.ForagingPatches
         public static void Postfix(GameLocation __instance, Farmer who, StardewValley.Object forage)
         {
             if (ModEntry.Instance.Config.DebugMode)
-                ModEntry.Instance.Monitor.Log($"[Foraging] Check Forage Item: ID = {forage.ItemId}, Name = {forage.Name}, ForageType = {forage.GetType} ", LogLevel.Info);
+                ModEntry.Instance.Monitor.Log($"[Foraging][OnHarvestedForagePatch] Check Forage Item: ID = {forage.ItemId}, Name = {forage.Name}, ForageType = {forage.GetType} ", LogLevel.Info);
             if (forage == null || forage.ItemId == null)
                 return;
             //Logging to check item
             if (ModEntry.Instance.Config.DebugMode)
-                ModEntry.Instance.Monitor.Log($"[Foraging] Picked: ID = {forage.ItemId}, Name = {forage.Name}", LogLevel.Info);
+                ModEntry.Instance.Monitor.Log($"[Foraging][OnHarvestedForagePatch] Picked: ID = {forage.ItemId}, Name = {forage.Name}", LogLevel.Info);
 
 
 
@@ -49,7 +49,7 @@ namespace MineForMore.Patches.ForagingPatches
 
 
 
-            // Find matching drop rule
+
             var rule = ModEntry.Instance.GetAllRules()
                 .FirstOrDefault(r => r.Type == "Forage" && r.DropsFromObjectIDs.Contains(id));
 
@@ -57,29 +57,49 @@ namespace MineForMore.Patches.ForagingPatches
 
             if (rule == null)
             {
-                //Logging to check item
+
                 if (ModEntry.Instance.Config.DebugMode)
-                    ModEntry.Instance.Monitor.Log($"[Foraging] There is no rule found for this item meaning it's not listed rule is = {rule}", LogLevel.Info);
+                    ModEntry.Instance.Monitor.Log($"[Foraging][OnHarvestedForagePatch] There is no rule found for this item meaning it's not listed rule is = {rule}", LogLevel.Info);
                 return;
             }
                 
 
-            //Logging to check item
+
             if (ModEntry.Instance.Config.DebugMode)
-                ModEntry.Instance.Monitor.Log($"[Foraging] rule = {rule}", LogLevel.Info);
+                ModEntry.Instance.Monitor.Log($"[Foraging][OnHarvestedForagePatch] rule [Add = {rule.AddAmount}, Multiplier = {rule.Multiplier}]", LogLevel.Info);
 
             int baseAmount = rule.AddAmount;
 
-            // Gatherer profession bonus
+
             int extraCount = 0;
             if (who.professions.Contains(13)) // Gatherer
             {
                 int level = who.GetSkillLevel(Farmer.foragingSkill);
                 extraCount = (int)(level * ModEntry.Instance.Config.GathererExtraDropPerLevel);
+                if (ModEntry.Instance.Config.DebugMode)
+                    ModEntry.Instance.Monitor.Log($"[Foraging][OnHarvestedForagePatch] Farmer Has Gatherer Profession ExtraCount= {extraCount}", LogLevel.Info);
+            }
+            if (who.professions.Contains(16)) // Botanist
+            {
+                int level = who.GetSkillLevel(Farmer.foragingSkill);
+                extraCount = (int)(extraCount*1.25);
+                if (ModEntry.Instance.Config.DebugMode)
+                    ModEntry.Instance.Monitor.Log($"[Foraging][OnHarvestedForagePatch] Farmer Has Bontanist Profession ExtraCount= {extraCount}", LogLevel.Info);
+            }
+            if (who.professions.Contains(17)) // Tracker 
+            {
+                int level = who.GetSkillLevel(Farmer.foragingSkill);
+                extraCount = (int)(extraCount * 1.5);
+                if (ModEntry.Instance.Config.DebugMode)
+                    ModEntry.Instance.Monitor.Log($"[Foraging][OnHarvestedForagePatch] Farmer Has Tracker Profession ExtraCount= {extraCount}", LogLevel.Info);
             }
 
             int totalCount = (baseAmount + extraCount);
             totalCount = (int)Math.Round(totalCount * rule.Multiplier);
+            if (ModEntry.Instance.Config.DebugMode)
+                ModEntry.Instance.Monitor.Log($"[Foraging][OnHarvestedForagePatch] {rule.Name}: base({baseAmount}) + Extra({extraCount})* Multiplier({rule.Multiplier}) = Total({totalCount})", LogLevel.Info);
+
+
 
             for (int i = 0; i < totalCount; i++)
             {

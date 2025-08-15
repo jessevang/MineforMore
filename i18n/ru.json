@@ -1,4 +1,22 @@
 ﻿{
+  "profession.12.name": "Лесник",
+  "profession.12.detail": "Деревья дают на 25 % больше древесины. Дополнительно: +{{bonus}} деревьев, +{{bonus1}} семян и более быстрый рост деревьев за каждый уровень собирательства.",
+
+  "profession.13.name": "Собиратель",
+  "profession.13.detail": "Шанс на двойной сбор собранных предметов. Дополнительно +{{bonus}} предмет за каждый уровень собирательства.",
+
+  "profession.14.name": "Дровосек",
+  "profession.14.detail": "Все деревья могут дать твёрдую древесину. Шанс на твёрдую древесину и скорость роста увеличиваются с уровнем собирательства.",
+
+  "profession.15.name": "Сборщик сока",
+  "profession.15.detail": "Сиропы стоят на 25 % дороже. +{{bonus}} скорость сбора, +{{bonus1}} сироп за уровень собирательства.",
+
+  "profession.16.name": "Ботаник",
+  "profession.16.detail": "Собранные предметы всегда наивысшего качества. Дополнительно +25 % больше предметов при сборе.",
+
+  "profession.17.name": "Следопыт",
+  "profession.17.detail": "Показывает местоположение собираемых предметов. Дополнительно +50 % больше предметов при сборе.",
+
   "profession.18.name": "Шахтёр",
   "profession.18.desc": "Больше руды с жилы",
   "profession.18.detail": "+{{bonus}} руды за уровень Горного дела",
@@ -68,7 +86,8 @@
   "gmcm.foraging.option.gathererExtraPerLevel.tooltip": "Сколько дополнительных предметов за уровень навыка «Собирательство», если у игрока есть профессия «Собиратель».",
   "gmcm.foraging.option.tapperSpeedPerLevel.name": "Скорость сборщика сока за уровень",
   "gmcm.foraging.option.tapperSpeedPerLevel.tooltip": "Если у игрока есть профессия «Сборщик сока», время до получения сиропа сокращается на это значение за каждый уровень навыка «Собирательство». Пример: 0.25 на ур. 10 ≈ в 2,5 раза быстрее базовой скорости. Сначала применяется базовая/тяжёлая скорость, затем этот бонус.",
-
+  "gmcm.foraging.option.tapperExtraQuantityPerLevel.name": "Damlatıcı Ek Miktarı / Seviye",
+  "gmcm.foraging.option.tapperExtraQuantityPerLevel.tooltip": "Her Foraj seviyesi başına ek şurup birimi (artı ekleme). Örnek: Seviyede 1,0 ve seviye 5, parti boyutuna +5 ekler.",
 
   "gmcm.page.mining.title": "Настройки горного дела",
   "gmcm.page.mining.prof.title": "Горное дело — бонусы профессий",

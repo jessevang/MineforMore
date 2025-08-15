@@ -3,7 +3,7 @@ using StardewValley;
 using HarmonyLib;
 using Microsoft.Xna.Framework;
 using System;
-using MineForMore;
+using LevelForMore;
 using StardewValley.Menus;
 
 internal class UnlimitedSkillLevel

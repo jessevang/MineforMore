@@ -17,26 +17,39 @@ internal class UnlimitedSkillLevel
 
     public void Apply(Harmony harmony, IMonitor monitor)
     {
-        var method = AccessTools.Method(typeof(Farmer), nameof(Farmer.gainExperience));
-        if (method == null)
+        // Patch Farmer.gainExperience (prefix) — your existing behavior
+        var gainExp = AccessTools.Method(typeof(Farmer), nameof(Farmer.gainExperience));
+        if (gainExp == null)
         {
             monitor.Log("Failed to find Farmer.gainExperience for patching.", LogLevel.Error);
             return;
         }
-
         harmony.Patch(
-            original: method,
+            original: gainExp,
             prefix: new HarmonyMethod(typeof(UnlimitedSkillLevel), nameof(ModifiedGainExperience))
+        );
+
+        // NEW: Patch Farmer.getBaseExperienceForLevel (postfix) to reflect our thresholds globally
+        var getBaseForLevel = AccessTools.Method(typeof(Farmer), nameof(Farmer.getBaseExperienceForLevel), new[] { typeof(int) });
+        if (getBaseForLevel == null)
+        {
+            monitor.Log("Failed to find Farmer.getBaseExperienceForLevel for patching.", LogLevel.Error);
+            return;
+        }
+        harmony.Patch(
+            original: getBaseForLevel,
+            postfix: new HarmonyMethod(typeof(UnlimitedSkillLevel), nameof(GetBaseExperienceForLevel_Postfix))
         );
     }
 
+    // Prefix: replaces vanilla gainExperience logic where applicable (unchanged from your version)
     public static bool ModifiedGainExperience(Farmer __instance, int which, int howMuch)
     {
         if (which == 5 || howMuch <= 0)
             return false;
 
         if (!ModEntry.Instance.Config.AllowPlayerToExceedLevel10 && __instance.GetSkillLevel(which) >= 10)
-            return true; // Let vanilla logic run instead which will cap skill levels at 10
+            return true; // Let vanilla logic run (cap at 10)
 
         if (!__instance.IsLocalPlayer && Game1.IsServer)
         {
@@ -100,6 +113,22 @@ internal class UnlimitedSkillLevel
         return false;
     }
 
+    // NEW: Postfix to replace Farmer.getBaseExperienceForLevel's return value with our thresholds when allowed.
+    // Signature must match: static method, (int level, ref int __result)
+    public static void GetBaseExperienceForLevel_Postfix(int level, ref int __result)
+    {
+        // If user does NOT allow >10 levels and level > 10, keep vanilla result (usually -1).
+        if (!ModEntry.Instance.Config.AllowPlayerToExceedLevel10 && level > 10)
+            return;
+
+        int custom = ModifiedgetBaseExperienceForLevel(level);
+
+        // Only override if our function has a defined threshold
+        if (custom >= 0)
+            __result = custom;
+        // else leave vanilla's __result as-is (for unexpected negative levels, etc.)
+    }
+
     public static int ModifiedgetBaseExperienceForLevel(int level)
     {
         if (level <= 10)
@@ -119,36 +148,39 @@ internal class UnlimitedSkillLevel
                 _ => -1,
             };
         }
-        else
+        else if (level <= 1000)
         {
+            // Custom cumulative threshold beyond 10
             return 15000 + ((level - 10) * (1000 + (level * 100)));
 
-            /*Level	XP required at level (increment)
-            Level	Calculation	                                        XP Required
-            11	    15000 + (1 × (1000 + 11×100)) = 15000 + 1×2100	    17,100
-            12	    15000 + (2 × (1000 + 12×100)) = 15000 + 2×2200	    19,400
-            13	    15000 + (3 × (1000 + 13×100)) = 15000 + 3×2300	    21,900
-            14	    15000 + (4 × (1000 + 14×100)) = 15000 + 4×2400	    24,600
-            15	    15000 + (5 × (1000 + 15×100)) = 15000 + 5×2500	    27,500
-            16	    15000 + (6 × (1000 + 16×100)) = 15000 + 6×2600	    30,600
-            17	    15000 + (7 × (1000 + 17×100)) = 15000 + 7×2700	    33,900
-            18	    15000 + (8 × (1000 + 18×100)) = 15000 + 8×2800	    37,400
-            19	    15000 + (9 × (1000 + 19×100)) = 15000 + 9×2900	    41,100
-            20	    15000 + (10× (1000 + 20×100)) = 15000 + 10×3000	    45,000 (about twice as much exp as level 10(15,000xp)
-            
-            At level 50 you'll need   141,000xp
-            At level 75 you'll need   247,500xp
-            At level 100 you'll need  375,000xp
-             
-             */
+            /*
+            Examples:
+             11 -> 17100
+             12 -> 19400
+             13 -> 21900
+             14 -> 24600
+             15 -> 27500
+             16 -> 30600
+             17 -> 33900
+             18 -> 37400
+             19 -> 41100
+             20 -> 45000
+            */
+        }
+        else
+        {
+            return -1;
         }
     }
 
     public static int ModifiedcheckForLevelGain(int oldXP, int newXP)
     {
-        for (int level = 25; level >= 1; level--)
+        for (int level = 1000; level >= 1; level--)
         {
             int required = ModifiedgetBaseExperienceForLevel(level);
+            if (required < 0)
+                continue;
+
             if (oldXP < required && newXP >= required)
                 return level;
         }

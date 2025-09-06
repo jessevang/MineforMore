@@ -245,6 +245,11 @@ namespace LevelForMore
             {
                 var harmony = new Harmony(ModManifest.UniqueID);
 
+                if (Config.CanMineOnDay1)
+                {
+                    new LevelForMore.Patches.MiningPatches.LandslidePatch().Apply(harmony, Monitor);
+                }
+
 
                 if (Config.TurnOnMineForMore)
                 {
@@ -290,14 +295,16 @@ namespace LevelForMore
 
         private void OnSaveLoaded(object sender, SaveLoadedEventArgs e)
         {
+            
             SaveGameIsLoaded = true;
+            /*
             //Handles mine on day 1 logic - entry
             this.realCurrentDay = (uint)Game1.stats.DaysPlayed;
             if (Game1.stats.DaysPlayed <= 5 && Instance.Config.CanMineOnDay1)
             {
                 Game1.stats.DaysPlayed = 5; 
             }
-
+            */
 
             //checks for player's Blacksmith profession and add recipes for quick smelt
             if (Game1.player.professions.Contains(20) && !AddedAddQuickSmeltRecipes)
@@ -317,15 +324,19 @@ namespace LevelForMore
 
         private void OnSaving(object sender, SavingEventArgs e)
         {
+            /*
             if (Config.CanMineOnDay1)
                 Game1.stats.DaysPlayed = realCurrentDay;
+            */
         }
 
         private void OnReturnedToTitle(object sender, ReturnedToTitleEventArgs e)
         {
+            /*
             if (Config.CanMineOnDay1)
                 Game1.stats.DaysPlayed = realCurrentDay;
 
+            */
             SaveGameIsLoaded = false;
             //Rebuilgs GMCM so that it uses original config names instead of object names since object names are unloaded on title page.
             registerGMCM();

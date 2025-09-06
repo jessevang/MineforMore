@@ -14,6 +14,7 @@ internal class ProfessionLevelDescriptionPatch
     public ProfessionLevelDescriptionPatch(Config config)
     {
         _config = config;
+        
     }
 
     public void Apply(Harmony harmony, IMonitor monitor)

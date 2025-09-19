@@ -39,6 +39,8 @@ namespace LevelForMore.Patches.ForagingPatches
 
                 string qid = tapper.heldObject.Value.QualifiedItemId;
                 bool isSyrupLike = qid == "(O)724" || qid == "(O)725" || qid == "(O)726"; // Maple / Oak / Pine
+
+                //isSyrupLike = true;  //Added to see if any item can be increased if tapped.
                 if (!isSyrupLike) return;
 
 

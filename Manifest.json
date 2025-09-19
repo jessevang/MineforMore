@@ -1,7 +1,7 @@
 ﻿{
   "Name": "Level For More",
   "Author": "Darkmushu1",
-  "Version": "2.0.1",
+  "Version": "2.0.3",
   "Description": "Progression overhaul for Mining, Foraging (and later Combat/Farming/Fishing).",
   "UniqueID": "Darkmushu1.LevelForMore",
   "EntryDll": "LevelForMore.dll",

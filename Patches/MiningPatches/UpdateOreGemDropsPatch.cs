@@ -43,10 +43,7 @@ namespace LevelForMore.Patches.MiningPatches
             if (who == null)
                 return;
 
-            IEnumerable<ResourceDropRule> drops = typeof(Config)
-                .GetProperties()
-                .Where(p => p.PropertyType == typeof(ResourceDropRule))
-                .Select(p => p.GetValue(ModEntry.Instance.Config) as ResourceDropRule);
+            IEnumerable<ResourceDropRule> drops = ModEntry.Instance.GetAllRules();
 
             foreach (var entry in drops)
             {

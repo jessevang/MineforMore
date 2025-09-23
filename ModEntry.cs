@@ -1,11 +1,12 @@
 ﻿using GenericModConfigMenu;
 using HarmonyLib;
 using LevelForMore.Classes;
+using Newtonsoft.Json;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
-using Newtonsoft.Json;
 using System.Runtime.Serialization;
+
 
 namespace LevelForMore
 {
@@ -93,6 +94,48 @@ public class Config
         [JsonIgnore] public ResourceDropRule MagmaGeode { get; set; } = new() { Name = "Magma Geode", SkillType = "Mining", Type = "Geode", ObjectID = "(O)537", DropsFromObjectIDs = new() { "77" } };
         [JsonIgnore] public ResourceDropRule OmniGeode { get; set; } = new() { Name = "Omni Geode", SkillType = "Mining", Type = "Geode", ObjectID = "(O)749", DropsFromObjectIDs = new() { "819" } };
 
+        // More Custom Gems Conversion (dynamic bonus handled by ExtraMoreCustomGemsDropsPatch)
+        [JsonIgnore] public ResourceDropRule Alexandrite { get; set; } = new() { Name = "Alexandrite", SkillType = "Mining", Type = "MoreCustomGemsConversion", ObjectID = "(O)Alexandrite" };
+        [JsonIgnore] public ResourceDropRule Ammolite { get; set; } = new() { Name = "Ammolite", SkillType = "Mining", Type = "MoreCustomGemsConversion", ObjectID = "(O)Ammolite" };
+        [JsonIgnore] public ResourceDropRule Apatite { get; set; } = new() { Name = "Apatite", SkillType = "Mining", Type = "MoreCustomGemsConversion", ObjectID = "(O)Apatite" };
+        [JsonIgnore] public ResourceDropRule Azurite { get; set; } = new() { Name = "Azurite", SkillType = "Mining", Type = "MoreCustomGemsConversion", ObjectID = "(O)Azurite" };
+        [JsonIgnore] public ResourceDropRule Bloodstone { get; set; } = new() { Name = "Bloodstone", SkillType = "Mining", Type = "MoreCustomGemsConversion", ObjectID = "(O)Bloodstone" };
+        [JsonIgnore] public ResourceDropRule BlueZircon { get; set; } = new() { Name = "Blue Zircon", SkillType = "Mining", Type = "MoreCustomGemsConversion", ObjectID = "(O)BlueZircon" };
+        [JsonIgnore] public ResourceDropRule BrownZircon { get; set; } = new() { Name = "Brown Zircon", SkillType = "Mining", Type = "MoreCustomGemsConversion", ObjectID = "(O)BrownZircon" };
+        [JsonIgnore] public ResourceDropRule Chryzokola { get; set; } = new() { Name = "Chryzokola", SkillType = "Mining", Type = "MoreCustomGemsConversion", ObjectID = "(O)Chryzokola" };
+        [JsonIgnore] public ResourceDropRule Clinohumite { get; set; } = new() { Name = "Clinohumite", SkillType = "Mining", Type = "MoreCustomGemsConversion", ObjectID = "(O)Clinohumite" };
+        [JsonIgnore] public ResourceDropRule BlueCoral { get; set; } = new() { Name = "Blue Coral", SkillType = "Mining", Type = "MoreCustomGemsConversion", ObjectID = "(O)BlueCoral" };
+        [JsonIgnore] public ResourceDropRule BrownCoral { get; set; } = new() { Name = "Brown Coral", SkillType = "Mining", Type = "MoreCustomGemsConversion", ObjectID = "(O)BrownCoral" };
+        [JsonIgnore] public ResourceDropRule GreenCoral { get; set; } = new() { Name = "Green Coral", SkillType = "Mining", Type = "MoreCustomGemsConversion", ObjectID = "(O)GreenCoral" };
+        [JsonIgnore] public ResourceDropRule PurpleCoral { get; set; } = new() { Name = "Purple Coral", SkillType = "Mining", Type = "MoreCustomGemsConversion", ObjectID = "(O)PurpleCoral" };
+        [JsonIgnore] public ResourceDropRule CrystalOfLife { get; set; } = new() { Name = "Crystal of Life", SkillType = "Mining", Type = "MoreCustomGemsConversion", ObjectID = "(O)CrystalOfLife" };
+        [JsonIgnore] public ResourceDropRule CrystalOfDeath { get; set; } = new() { Name = "Crystal of Death", SkillType = "Mining", Type = "MoreCustomGemsConversion", ObjectID = "(O)CrystalOfDeath" };
+        [JsonIgnore] public ResourceDropRule CrystalOfLifeAndDeath { get; set; } = new() { Name = "Crystal of Life and Death", SkillType = "Mining", Type = "MoreCustomGemsConversion", ObjectID = "(O)CrystalOfLifeAndDeath" };
+        [JsonIgnore] public ResourceDropRule Cymophane { get; set; } = new() { Name = "Cymophane", SkillType = "Mining", Type = "MoreCustomGemsConversion", ObjectID = "(O)Cymophane" };
+        [JsonIgnore] public ResourceDropRule Danburite { get; set; } = new() { Name = "Danburite", SkillType = "Mining", Type = "MoreCustomGemsConversion", ObjectID = "(O)Danburite" };
+        [JsonIgnore] public ResourceDropRule FireAgate { get; set; } = new() { Name = "Fire Agate", SkillType = "Mining", Type = "MoreCustomGemsConversion", ObjectID = "(O)FireAgate" };
+        [JsonIgnore] public ResourceDropRule Fluorite { get; set; } = new() { Name = "Fluorite", SkillType = "Mining", Type = "MoreCustomGemsConversion", ObjectID = "(O)Fluorite" };
+        [JsonIgnore] public ResourceDropRule Labradorite { get; set; } = new() { Name = "Labradorite", SkillType = "Mining", Type = "MoreCustomGemsConversion", ObjectID = "(O)Labradorite" };
+        [JsonIgnore] public ResourceDropRule LavaCrystal { get; set; } = new() { Name = "Lava Crystal", SkillType = "Mining", Type = "MoreCustomGemsConversion", ObjectID = "(O)LavaCrystal" };
+        [JsonIgnore] public ResourceDropRule MossAgate { get; set; } = new() { Name = "Moss Agate", SkillType = "Mining", Type = "MoreCustomGemsConversion", ObjectID = "(O)MossAgate" };
+        [JsonIgnore] public ResourceDropRule Phosphophyllite { get; set; } = new() { Name = "Phosphophyllite", SkillType = "Mining", Type = "MoreCustomGemsConversion", ObjectID = "(O)Phosphophyllite" };
+        [JsonIgnore] public ResourceDropRule Andesine { get; set; } = new() { Name = "Andesine", SkillType = "Mining", Type = "MoreCustomGemsConversion", ObjectID = "(O)Andesine" };
+        [JsonIgnore] public ResourceDropRule Aventurine { get; set; } = new() { Name = "Aventurine", SkillType = "Mining", Type = "MoreCustomGemsConversion", ObjectID = "(O)Aventurine" };
+        [JsonIgnore] public ResourceDropRule LavenderQuartz { get; set; } = new() { Name = "Lavender Quartz", SkillType = "Mining", Type = "MoreCustomGemsConversion", ObjectID = "(O)LavenderQuartz" };
+        [JsonIgnore] public ResourceDropRule RutilatedQuartz { get; set; } = new() { Name = "Rutilated Quartz", SkillType = "Mining", Type = "MoreCustomGemsConversion", ObjectID = "(O)RutilatedQuartz" };
+        [JsonIgnore] public ResourceDropRule RedZircon { get; set; } = new() { Name = "Red Zircon", SkillType = "Mining", Type = "MoreCustomGemsConversion", ObjectID = "(O)RedZircon" };
+        [JsonIgnore] public ResourceDropRule PurpleSapphire { get; set; } = new() { Name = "Purple Sapphire", SkillType = "Mining", Type = "MoreCustomGemsConversion", ObjectID = "(O)PurpleSapphire" };
+        [JsonIgnore] public ResourceDropRule VioletSapphire { get; set; } = new() { Name = "Violet Sapphire", SkillType = "Mining", Type = "MoreCustomGemsConversion", ObjectID = "(O)VioletSapphire" };
+        [JsonIgnore] public ResourceDropRule StarGarnet { get; set; } = new() { Name = "Star Garnet", SkillType = "Mining", Type = "MoreCustomGemsConversion", ObjectID = "(O)StarGarnet" };
+        [JsonIgnore] public ResourceDropRule GoldTopaz { get; set; } = new() { Name = "Gold Topaz", SkillType = "Mining", Type = "MoreCustomGemsConversion", ObjectID = "(O)GoldTopaz" };
+        [JsonIgnore] public ResourceDropRule SkyBlueTopaz { get; set; } = new() { Name = "Sky Blue Topaz", SkillType = "Mining", Type = "MoreCustomGemsConversion", ObjectID = "(O)SkyBlueTopaz" };
+        [JsonIgnore] public ResourceDropRule YellowTopaz { get; set; } = new() { Name = "Yellow Topaz", SkillType = "Mining", Type = "MoreCustomGemsConversion", ObjectID = "(O)YellowTopaz" };
+        [JsonIgnore] public ResourceDropRule YellowZircon { get; set; } = new() { Name = "Yellow Zircon", SkillType = "Mining", Type = "MoreCustomGemsConversion", ObjectID = "(O)YellowZircon" };
+        [JsonIgnore] public ResourceDropRule Zircon { get; set; } = new() { Name = "Zircon", SkillType = "Mining", Type = "MoreCustomGemsConversion", ObjectID = "(O)Zircon" };
+
+
+
+        //FOraging item list
         [JsonIgnore] public ResourceDropRule Oak_Wood { get; set; } = new() { Name = "Oak Wood", SkillType = "Foraging", Type = "Wood", ObjectID = "(O)388", DropsFromObjectIDs = new() { "TreeOak" } };
         [JsonIgnore] public ResourceDropRule Oak_Seed { get; set; } = new() { Name = "Oak Seed", SkillType = "Foraging", Type = "Seed", ObjectID = "(O)309", AddAmount = 2, DropsFromObjectIDs = new() { "TreeOak" } };
         [JsonIgnore] public ResourceDropRule Oak_Resin { get; set; } = new() { Name = "Oak Resin", SkillType = "Foraging", Type = "Tap", ObjectID = "(O)725", DropsFromObjectIDs = new() { "TreeOak" } };
@@ -236,7 +279,13 @@ public class Config
                     new LevelForMore.Patches.ForagingPatches.UpdateTapperProductPatch().Apply(harmony, Monitor);
                     new LevelForMore.Patches.ForagingPatches.ResourceClumpDestroyedPatch().Apply(harmony, Monitor);
 
+
                     new LevelForMore.Patches.MiningPatches.UpdateOreGemDropsPatch(Config).Apply(harmony, Monitor);
+
+                    new LevelForMore.Patches.MiningPatches.ExtraMoreCustomGemsDrops_OnPickupAndManualDropPatch(Config, Monitor).Apply(harmony);
+
+
+
                     if (Config.TurnOnProfessionLevelUpDescription)
                     {
                         new ProfessionLevelDescriptionPatch(Config).Apply(harmony, Monitor);
@@ -251,13 +300,23 @@ public class Config
                     {
                         new UnlimitedSkillLevel(Config).Apply(harmony, Monitor);
                     }
+
+
+
+
+
+
                 }
 
                 helper.Events.GameLoop.SaveLoaded += OnSaveLoaded;
                 helper.Events.GameLoop.Saving += OnSaving;
                 helper.Events.GameLoop.ReturnedToTitle += OnReturnedToTitle;
+
+
             }
         }
+
+
 
         private void OnSaveLoaded(object sender, SaveLoadedEventArgs e)
         {
@@ -422,7 +481,22 @@ public class Config
             gmcm.AddParagraph(mod: ModManifest, text: () => Helper.Translation.Get("gmcm.page.mining.drops.paragraph"));
 
             foreach (var drop in GetAllRules())
-                if (drop.SkillType.ToString().Equals("Mining"))
+                if (drop.SkillType.ToString().Equals("Mining") && !drop.Type.ToString().Equals("MoreCustomGemsConversion"))
+                {
+                    string dropName = drop.Name;
+                    if (SaveGameIsLoaded)
+                    {
+                        dropName = GetObjectName(drop.ObjectID, drop.Name);
+                    }
+
+                    AddDropToGMCM(gmcm, dropName, () => drop, drop.SkillType);
+                }
+
+
+            gmcm.AddSectionTitle(mod: ModManifest, text: () => "[CP] More Custom Gems Conversion");
+
+            foreach (var drop in GetAllRules())
+                if (drop.SkillType.ToString().Equals("Mining") && drop.Type.ToString().Equals("MoreCustomGemsConversion"))
                 {
                     string dropName = drop.Name;
                     if (SaveGameIsLoaded)
@@ -439,7 +513,9 @@ public class Config
             var drop = getDrop();
             gmcm.AddNumberOption(mod: ModManifest, name: () => Helper.Translation.Get("gmcm.drop.addAmount.name", new { label }), tooltip: () => Helper.Translation.Get("gmcm.drop.addAmount.tooltip", new { label }), getValue: () => drop.AddAmount, setValue: v => drop.AddAmount = v, min: 0, max: 50);
             gmcm.AddNumberOption(mod: ModManifest, name: () => Helper.Translation.Get("gmcm.drop.multiplier.name", new { label }), tooltip: () => Helper.Translation.Get("gmcm.drop.multiplier.tooltip", new { label }), getValue: () => (float)drop.Multiplier, setValue: v => drop.Multiplier = v, min: 0f, max: 10f, interval: 0.1f);
-            if (skilltype.ToString().Equals("Mining")) gmcm.AddNumberOption(mod: ModManifest, name: () => Helper.Translation.Get("gmcm.drop.extraNodeChance.name", new { label }), tooltip: () => Helper.Translation.Get("gmcm.drop.extraNodeChance.tooltip", new { label }), getValue: () => drop.ExtraNodeSpawnChancePercent, setValue: v => drop.ExtraNodeSpawnChancePercent = v, min: 0f, max: 100f, interval: 0.1f);
+            if (skilltype.ToString().Equals("Mining") && !drop.Type.Equals("MoreCustomGemsConversion")) gmcm.AddNumberOption(mod: ModManifest, name: () => Helper.Translation.Get("gmcm.drop.extraNodeChance.name", new { label }), tooltip: () => Helper.Translation.Get("gmcm.drop.extraNodeChance.tooltip", new { label }), getValue: () => drop.ExtraNodeSpawnChancePercent, setValue: v => drop.ExtraNodeSpawnChancePercent = v, min: 0f, max: 100f, interval: 0.1f);
         }
+
+
     }
 }
